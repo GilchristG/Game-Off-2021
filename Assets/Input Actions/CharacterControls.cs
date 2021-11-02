@@ -44,6 +44,15 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LightAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""de3b25fa-77f2-4894-a985-5092527df452"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -233,6 +242,17 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0449bf4e-6c71-4678-9cdd-9001efdf0206"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -243,6 +263,7 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
         m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
         m_Controls_Move = m_Controls.FindAction("Move", throwIfNotFound: true);
         m_Controls_Jump = m_Controls.FindAction("Jump", throwIfNotFound: true);
+        m_Controls_LightAttack = m_Controls.FindAction("LightAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -304,12 +325,14 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
     private IControlsActions m_ControlsActionsCallbackInterface;
     private readonly InputAction m_Controls_Move;
     private readonly InputAction m_Controls_Jump;
+    private readonly InputAction m_Controls_LightAttack;
     public struct ControlsActions
     {
         private @CharacterControls m_Wrapper;
         public ControlsActions(@CharacterControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Controls_Move;
         public InputAction @Jump => m_Wrapper.m_Controls_Jump;
+        public InputAction @LightAttack => m_Wrapper.m_Controls_LightAttack;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,6 +348,9 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnJump;
+                @LightAttack.started -= m_Wrapper.m_ControlsActionsCallbackInterface.OnLightAttack;
+                @LightAttack.performed -= m_Wrapper.m_ControlsActionsCallbackInterface.OnLightAttack;
+                @LightAttack.canceled -= m_Wrapper.m_ControlsActionsCallbackInterface.OnLightAttack;
             }
             m_Wrapper.m_ControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -335,6 +361,9 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @LightAttack.started += instance.OnLightAttack;
+                @LightAttack.performed += instance.OnLightAttack;
+                @LightAttack.canceled += instance.OnLightAttack;
             }
         }
     }
@@ -343,5 +372,6 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnLightAttack(InputAction.CallbackContext context);
     }
 }

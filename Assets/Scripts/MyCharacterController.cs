@@ -17,12 +17,14 @@ public class MyCharacterController : MonoBehaviour
 
     private PlayerInput playerInput;
     private Rigidbody2D rb;
+    private Animator animator;
 
     private CharacterControls characterControls; // This is the generated json file
 
     //Input Actions
     private InputAction jumpAction;
     private InputAction moveAction;
+    private InputAction lightAttackAction;
 
     private void Awake()
     {
@@ -30,13 +32,16 @@ public class MyCharacterController : MonoBehaviour
         
         playerInput = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
 
         //Set the Input Actions
         moveAction = characterControls.Controls.Move; // This is one way to set it
         jumpAction = playerInput.actions["Jump"]; // This is a slightly different way that doesn't use the json file
+        lightAttackAction = characterControls.Controls.LightAttack;
 
         //Subscribe to the actions
         jumpAction.performed += Jump;
+        lightAttackAction.started += LightAttack;
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -45,8 +50,15 @@ public class MyCharacterController : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
+    private void LightAttack(InputAction.CallbackContext context)
+    {
+        animator.SetTrigger("LightAttack");
+    }
+
     private void Update()
     {
+        animator.SetBool("Grounded", isGrounded());
+        animator.SetFloat("HorSpeed", Mathf.Abs(rb.velocity.x));
         lateralMovement(); // For some reason, if this is done in FixedUpdate, input is ignored 99% of the time
     }
 
