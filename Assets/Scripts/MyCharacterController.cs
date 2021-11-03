@@ -58,7 +58,8 @@ public class MyCharacterController : MonoBehaviour
     private void Update()
     {
         animator.SetBool("Grounded", isGrounded());
-        animator.SetFloat("HorSpeed", Mathf.Abs(rb.velocity.x));
+        animator.SetFloat("HorSpeed", rb.velocity.x);
+        animator.SetBool("IsStationary", rb.velocity.x == 0 ? true : false);
         lateralMovement(); // For some reason, if this is done in FixedUpdate, input is ignored 99% of the time
     }
 
