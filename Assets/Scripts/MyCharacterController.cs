@@ -35,9 +35,9 @@ public class MyCharacterController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
 
         //Set the Input Actions
-        moveAction = characterControls.Controls.Move; // This is one way to set it
+        moveAction = characterControls.InGame.Move; // This is one way to set it
         jumpAction = playerInput.actions["Jump"]; // This is a slightly different way that doesn't use the json file
-        lightAttackAction = characterControls.Controls.LightAttack;
+        lightAttackAction = characterControls.InGame.LightAttack;
 
         //Subscribe to the actions
         jumpAction.performed += Jump;
@@ -93,11 +93,11 @@ public class MyCharacterController : MonoBehaviour
 
     private void OnEnable()
     {
-        characterControls.Controls.Enable();
+        characterControls.InGame.Enable();
     }
 
     private void OnDisable()
     {
-        characterControls.Controls.Disable();
+        characterControls.InGame.Disable();
     }
 }

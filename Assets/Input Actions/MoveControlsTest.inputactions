@@ -1,5 +1,5 @@
 {
-    "name": "CharacterControls",
+    "name": "MoveControlsTest",
     "maps": [
         {
             "name": "InGame",
@@ -27,6 +27,24 @@
                     "name": "LightAttack",
                     "type": "Button",
                     "id": "de3b25fa-77f2-4894-a985-5092527df452",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HeavyAttack",
+                    "type": "Button",
+                    "id": "b169f9a3-a8ca-4ec7-8b21-d1899dcbaf0f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SpecialAttack",
+                    "type": "Button",
+                    "id": "a4776b54-c1b3-4467-ae48-ac22d131121d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -224,11 +242,33 @@
                 {
                     "name": "",
                     "id": "0449bf4e-6c71-4678-9cdd-9001efdf0206",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "LightAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "613bd950-b96d-4a86-80b8-f93450bbebdb",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HeavyAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4ed2131-6b24-4b6c-9b25-8ad07790bf18",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SpecialAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
