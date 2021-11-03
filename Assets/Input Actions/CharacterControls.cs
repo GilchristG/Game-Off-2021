@@ -53,6 +53,24 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""9bb4be70-e0df-4f9b-af22-cb3824167231"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SpecialAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""a72ba5fa-f758-4a86-8ffd-f68f69e39457"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -246,11 +264,33 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0449bf4e-6c71-4678-9cdd-9001efdf0206"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""LightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e94c5f09-b8e2-4d59-97f2-8a19f2b0f94b"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""112a0720-b915-4e59-8c49-6c076a1ae000"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpecialAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -264,6 +304,8 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
         m_InGame_Move = m_InGame.FindAction("Move", throwIfNotFound: true);
         m_InGame_Jump = m_InGame.FindAction("Jump", throwIfNotFound: true);
         m_InGame_LightAttack = m_InGame.FindAction("LightAttack", throwIfNotFound: true);
+        m_InGame_HeavyAttack = m_InGame.FindAction("HeavyAttack", throwIfNotFound: true);
+        m_InGame_SpecialAttack = m_InGame.FindAction("SpecialAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -326,6 +368,8 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Move;
     private readonly InputAction m_InGame_Jump;
     private readonly InputAction m_InGame_LightAttack;
+    private readonly InputAction m_InGame_HeavyAttack;
+    private readonly InputAction m_InGame_SpecialAttack;
     public struct InGameActions
     {
         private @CharacterControls m_Wrapper;
@@ -333,6 +377,8 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_InGame_Move;
         public InputAction @Jump => m_Wrapper.m_InGame_Jump;
         public InputAction @LightAttack => m_Wrapper.m_InGame_LightAttack;
+        public InputAction @HeavyAttack => m_Wrapper.m_InGame_HeavyAttack;
+        public InputAction @SpecialAttack => m_Wrapper.m_InGame_SpecialAttack;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -351,6 +397,12 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                 @LightAttack.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnLightAttack;
                 @LightAttack.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnLightAttack;
                 @LightAttack.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnLightAttack;
+                @HeavyAttack.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnHeavyAttack;
+                @HeavyAttack.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnHeavyAttack;
+                @HeavyAttack.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnHeavyAttack;
+                @SpecialAttack.started -= m_Wrapper.m_InGameActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.performed -= m_Wrapper.m_InGameActionsCallbackInterface.OnSpecialAttack;
+                @SpecialAttack.canceled -= m_Wrapper.m_InGameActionsCallbackInterface.OnSpecialAttack;
             }
             m_Wrapper.m_InGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -364,6 +416,12 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
                 @LightAttack.started += instance.OnLightAttack;
                 @LightAttack.performed += instance.OnLightAttack;
                 @LightAttack.canceled += instance.OnLightAttack;
+                @HeavyAttack.started += instance.OnHeavyAttack;
+                @HeavyAttack.performed += instance.OnHeavyAttack;
+                @HeavyAttack.canceled += instance.OnHeavyAttack;
+                @SpecialAttack.started += instance.OnSpecialAttack;
+                @SpecialAttack.performed += instance.OnSpecialAttack;
+                @SpecialAttack.canceled += instance.OnSpecialAttack;
             }
         }
     }
@@ -373,5 +431,7 @@ public partial class @CharacterControls : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLightAttack(InputAction.CallbackContext context);
+        void OnHeavyAttack(InputAction.CallbackContext context);
+        void OnSpecialAttack(InputAction.CallbackContext context);
     }
 }

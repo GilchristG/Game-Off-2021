@@ -311,7 +311,7 @@ MonoBehaviour:
     m_ActionName: Controls/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Controls
+  m_DefaultActionMap: InGame
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &377822534

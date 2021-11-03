@@ -25,6 +25,8 @@ public class MyCharacterController : MonoBehaviour
     private InputAction jumpAction;
     private InputAction moveAction;
     private InputAction lightAttackAction;
+    private InputAction heavyAttackAction;
+    private InputAction specialAttackAction;
 
     private void Awake()
     {
@@ -38,10 +40,14 @@ public class MyCharacterController : MonoBehaviour
         moveAction = characterControls.InGame.Move; // This is one way to set it
         jumpAction = playerInput.actions["Jump"]; // This is a slightly different way that doesn't use the json file
         lightAttackAction = characterControls.InGame.LightAttack;
+        heavyAttackAction = characterControls.InGame.HeavyAttack;
+        specialAttackAction = characterControls.InGame.SpecialAttack;
 
         //Subscribe to the actions
         jumpAction.performed += Jump;
         lightAttackAction.started += LightAttack;
+        heavyAttackAction.started += HeavyAttack;
+        specialAttackAction.started += SpecialAttack;
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -53,6 +59,16 @@ public class MyCharacterController : MonoBehaviour
     private void LightAttack(InputAction.CallbackContext context)
     {
         animator.SetTrigger("LightAttack");
+    }
+
+    private void HeavyAttack(InputAction.CallbackContext context)
+    {
+        animator.SetTrigger("HeavyAttack");
+    }
+
+    private void SpecialAttack(InputAction.CallbackContext context)
+    {
+        animator.SetTrigger("SpecialAttack");
     }
 
     private void Update()
