@@ -122,19 +122,32 @@ public class MyCharacterController : MonoBehaviour
 
             //Get the last 1-3 inputs depending on how we check last movement for moves
 
-            string bufferResult = "";
+            byte bufferResult = 0b_0000;
 
             foreach (CommandInputs ci in buffer)
             {
-                bufferResult += ci.ToString();
+                switch (ci)
+                {
+                    case CommandInputs.light:
+                        bufferResult |= 0b_0001;
+                        break;
+                    case CommandInputs.heavy:
+                        bufferResult |= 0b_0010;
+                        break;
+                    case CommandInputs.special:
+                        bufferResult |= 0b_0100;
+                        break;
+                }
             }
 
-            Debug.Log(bufferResult);
+            Debug.Log(bufferResult.ToString());
 
-            if (!bufferResult.Equals(""))
+            switch (bufferResult)
             {
-                acceptingCommands = false;
-                animator.SetTrigger("LightAttack");
+                case 0b_0001:
+                    acceptingCommands = false;
+                    animator.SetTrigger("LightAttack");
+                    break;
             }
 
             buffer.Clear();
