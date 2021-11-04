@@ -66,7 +66,7 @@ public class MyCharacterController : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (isGrounded())
+        if (isGrounded() && acceptingCommands)
             rb.AddForce(Vector2.up * characterStats.jumpForce, ForceMode2D.Impulse);
     }
 
