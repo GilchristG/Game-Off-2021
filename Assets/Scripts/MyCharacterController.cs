@@ -107,12 +107,21 @@ public class MyCharacterController : MonoBehaviour
 
         //Check if the move can even be entered before checking the buffer
         if (buffer.Count > 0)
+        {
             isPressingButtons = true;
+        }
         else
+        {
             isPressingButtons = false;
+        }
+
+
 
         if (!acceptingCommands)
+        {
+            buffer.Clear();
             return;
+        }
 
         //Check if two or more buttons are pressed
         multiTimer += Time.deltaTime;
@@ -126,7 +135,7 @@ public class MyCharacterController : MonoBehaviour
 
             foreach (CommandInputs ci in buffer)
             {
-                switch (ci)
+                switch(ci)
                 {
                     case CommandInputs.light:
                         bufferResult |= 0b_0001;
@@ -138,9 +147,8 @@ public class MyCharacterController : MonoBehaviour
                         bufferResult |= 0b_0100;
                         break;
                 }
+                
             }
-
-            Debug.Log(bufferResult.ToString());
 
             switch (bufferResult)
             {
@@ -150,13 +158,14 @@ public class MyCharacterController : MonoBehaviour
                     break;
                 case 0b_0010:
                     acceptingCommands = false;
-                    animator.SetTrigger("LightAttack");
+                    animator.SetTrigger("HeavyAttack");
                     break;
                 case 0b_0100:
                     acceptingCommands = false;
-                    animator.SetTrigger("LightAttack");
+                    animator.SetTrigger("SpecialAttack");
                     break;
             }
+
 
             buffer.Clear();
         }
