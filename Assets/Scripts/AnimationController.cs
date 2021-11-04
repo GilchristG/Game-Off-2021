@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This began as an animation controller but it also kinda controls attacks oh well
 public class AnimationController : MonoBehaviour
 {
     MyCharacterController moveController;
-
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,22 @@ public class AnimationController : MonoBehaviour
 
     public void clearCurrentMove()
     {
-        moveController.clearCurrentMove();
+        moveController.currentMove = null;
+    }
+
+    public void setLightAttack()
+    {
+        moveController.currentMove = moveController.moveSet.lightAttack;
+    }
+
+    public void setHeavyAttack()
+    {
+        moveController.currentMove = moveController.moveSet.heavyAttack;
+    }
+
+    public void setSpecialAttack()
+    {
+        moveController.currentMove = moveController.moveSet.neutralSpecial;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -46,11 +61,11 @@ public class AnimationController : MonoBehaviour
             if (collision.gameObject.GetComponent<MyCharacterController>() != null && 
                 collision.gameObject.GetComponent<MyCharacterController>().isBlocking)
             {
-                collision.gameObject.GetComponent<CharacterHealth>().takeDamage(moveController.currentMove.chipDamage);
+                collision.gameObject.GetComponent<CharacterHealth>().takeDamage(moveController.currentMove.chipDamage, moveController.currentMove);
             }
             else
             {
-                collision.gameObject.GetComponent<CharacterHealth>().takeDamage(moveController.currentMove.damage);
+                collision.gameObject.GetComponent<CharacterHealth>().takeDamage(moveController.currentMove.damage, moveController.currentMove);
             }
         }
     }

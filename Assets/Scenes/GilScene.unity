@@ -694,7 +694,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isBlocking: 0
+  isHitStunned: 0
   currentMove: {fileID: 0}
+  moveSet: {fileID: 0}
   buffer: 
   bufferLength: 0.25
   multiTimer: 0
@@ -1824,6 +1826,7 @@ GameObject:
   - component: {fileID: 1422530991}
   - component: {fileID: 1422530990}
   - component: {fileID: 1422530992}
+  - component: {fileID: 1422530994}
   - component: {fileID: 1422530993}
   m_Layer: 0
   m_Name: Dummy Target
@@ -1960,6 +1963,33 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1422530994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422530988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b786b3f8c9e1a45b14f427d1b73701, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterStats: {fileID: 0}
+  leftFoot: {fileID: 0}
+  rightFoot: {fileID: 0}
+  floorMask:
+    serializedVersion: 2
+    m_Bits: 0
+  isBlocking: 0
+  isHitStunned: 0
+  currentMove: {fileID: 0}
+  moveSet: {fileID: 0}
+  buffer: 
+  bufferLength: 0.25
+  multiTimer: 0
+  acceptingCommands: 0
+  isPressingButtons: 0
 --- !u!1 &1434021115
 GameObject:
   m_ObjectHideFlags: 0

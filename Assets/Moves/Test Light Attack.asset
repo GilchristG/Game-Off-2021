@@ -16,9 +16,5 @@ MonoBehaviour:
   moveAnimation: PlaceholderLightAttack
   damage: 3
   chipDamage: 1
-  startupFrames: 2
-  activeFrames: 2
-  recoveryFramesOnHit: 0
-  recoveryFramesOnWhiff: 0
-  hitStunFrames: 0
-  blockStunFrames: 0
+  hitStunTime: 0
+  blockStunTime: 0

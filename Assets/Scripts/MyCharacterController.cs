@@ -14,8 +14,12 @@ public class MyCharacterController : MonoBehaviour
     public LayerMask floorMask;
 
     public bool isBlocking;
+    public bool isHitStunned;
 
+    [HideInInspector]
     public Move currentMove;
+    [HideInInspector]
+    public MoveSet moveSet;
 
     private PlayerInput playerInput;
     private Rigidbody2D rb;
@@ -23,8 +27,6 @@ public class MyCharacterController : MonoBehaviour
 
     private CharacterControls characterControls; // This is the generated json file
     private AnimationController animationController;
-
-    private MoveSet moveSet;
 
     //Input Actions
     private InputAction jumpAction;
@@ -103,13 +105,11 @@ public class MyCharacterController : MonoBehaviour
         animator.SetBool("IsStationary", rb.velocity.x == 0 ? true : false);
         lateralMovement(); // For some reason, if this is done in FixedUpdate, input is ignored 99% of the time
 
-
         //Check if the move can even be entered before checking the buffer
         if (buffer.Count > 0)
             isPressingButtons = true;
         else
             isPressingButtons = false;
-
 
         if (!acceptingCommands)
             return;
@@ -134,7 +134,6 @@ public class MyCharacterController : MonoBehaviour
             if (!bufferResult.Equals(""))
             {
                 acceptingCommands = false;
-                currentMove = moveSet.lightAttack;
                 animator.SetTrigger("LightAttack");
             }
 
@@ -184,10 +183,5 @@ public class MyCharacterController : MonoBehaviour
     private void OnDisable()
     {
         characterControls.InGame.Disable();
-    }
-
-    public void clearCurrentMove()
-    {
-        currentMove = null;
     }
 }
