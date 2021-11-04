@@ -51,8 +51,8 @@ public class MyCharacterController : MonoBehaviour
         animationController = GetComponentInChildren<AnimationController>();
 
         //Set the Input Actions
-        moveAction = characterControls.InGame.Move; // This is one way to set it
-        jumpAction = playerInput.actions["Jump"]; // This is a slightly different way that doesn't use the json file
+        moveAction = characterControls.InGame.Move;
+        jumpAction = characterControls.InGame.Jump;
         lightAttackAction = characterControls.InGame.LightAttack;
         heavyAttackAction = characterControls.InGame.HeavyAttack;
         specialAttackAction = characterControls.InGame.SpecialAttack;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveName: Dinky Punch
   moveAnimation: PlaceholderLightAttack
-  damage: 3
+  damage: 10
   chipDamage: 1
   hitStunTime: 0
   blockStunTime: 0
