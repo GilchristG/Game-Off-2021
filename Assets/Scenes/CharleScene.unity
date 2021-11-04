@@ -697,7 +697,7 @@ MonoBehaviour:
     m_ActionName: Controls/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Controls
+  m_DefaultActionMap: InGame
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!212 &1684883122
@@ -783,3 +783,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d3aab4400b25f4d89efb9edf8a2fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffer: 
+  bufferLength: 0.25
+  multiTimer: 0
+  acceptingCommands: 0
+  isPressingButtons: 0

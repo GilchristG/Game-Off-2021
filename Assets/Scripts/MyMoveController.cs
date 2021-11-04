@@ -21,6 +21,9 @@ public class MyMoveController : MonoBehaviour
     public float bufferLength = 0.25f;
     public float multiTimer = 0f;
 
+    public bool acceptingCommands = true;
+    public bool isPressingButtons = false;
+
     private void Start()
     {
         buffer = new List<CommandInputs>();
@@ -44,9 +47,14 @@ public class MyMoveController : MonoBehaviour
     private void Update()
     {
         //Check if the move can even be entered before checking the buffer
+        if (buffer.Count > 0)
+            isPressingButtons = true;
+        else
+            isPressingButtons = false;
 
 
-
+        if (!acceptingCommands)
+            return;
 
         //Check if two or more buttons are pressed
         multiTimer += Time.deltaTime;
@@ -56,12 +64,18 @@ public class MyMoveController : MonoBehaviour
 
             //Get the last 1-3 inputs depending on how we check last movement for moves
 
+            string bufferResult = "";
+
+            foreach(CommandInputs ci in buffer)
+            {
+                bufferResult += ci.ToString();
+            }
+
             buffer.Clear();
         }
 
         
         //Check the state and what move should come next given the input. Otherwise, don't do anything
-
     }
 
     private void Jump(InputAction.CallbackContext context)
@@ -73,23 +87,17 @@ public class MyMoveController : MonoBehaviour
 
     private void LightAttack(InputAction.CallbackContext context)
     {
-        
-
-
+        buffer.Add(CommandInputs.light);
     }
 
     private void HeavyAttack(InputAction.CallbackContext context)
     {
-
-
-
+        buffer.Add(CommandInputs.heavy);
     }
 
     private void SpecialAttack(InputAction.CallbackContext context)
     {
-
-
-
+        buffer.Add(CommandInputs.special);
     }
 
 
