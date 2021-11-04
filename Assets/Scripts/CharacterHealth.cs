@@ -31,9 +31,22 @@ public class CharacterHealth : MonoBehaviour
     public void takeDamage(float dmg, Move moveThatHitMe)
     {
         currentHealth -= dmg;
+
+        if (currentHealth <= 0f)
+        {
+            Destroy(gameObject);
+        }
+        
         healthManager.updateHealthBars(characterNumber, currentHealth);
 
         StartCoroutine(hitStun(moveThatHitMe));
+    }
+
+    //FOR TEST ONLY
+    public void takeDamageButton(float dmg)
+    {
+        currentHealth -= dmg;
+        healthManager.updateHealthBars(characterNumber, currentHealth);
     }
 
     private IEnumerator hitStun(Move moveThatHitMe)

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Test Move Set
   m_EditorClassIdentifier: 
   moveSetName: Test Set
-  lightAttack: {fileID: 11400000, guid: 57778754ad1d1714e971c93767a40ec5, type: 2}
-  heavyAttack: {fileID: 0}
+  lightAttack: {fileID: 11400000, guid: 4c981a74dfc4ff0428339c3c8895f96d, type: 2}
+  heavyAttack: {fileID: 11400000, guid: 57778754ad1d1714e971c93767a40ec5, type: 2}
   chargeAttack: {fileID: 0}
   aerialAttack: {fileID: 0}
   neutralSpecial: {fileID: 0}

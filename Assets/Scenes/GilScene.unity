@@ -1523,7 +1523,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 377822537}
         m_TargetAssemblyTypeName: CharacterHealth, Assembly-CSharp
-        m_MethodName: takeDamage
+        m_MethodName: takeDamageButton
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
