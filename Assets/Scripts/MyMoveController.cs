@@ -52,6 +52,7 @@ public class MyMoveController : MonoBehaviour
         else
             isPressingButtons = false;
 
+        
 
         if (!acceptingCommands)
             return;
@@ -71,11 +72,22 @@ public class MyMoveController : MonoBehaviour
                 bufferResult += ci.ToString();
             }
 
+            Debug.Log(bufferResult);
+
+            if(!bufferResult.Equals(""))
+            {
+                animator.SetTrigger("LightAttack");
+            }
+
             buffer.Clear();
         }
 
-        
+
         //Check the state and what move should come next given the input. Otherwise, don't do anything
+        
+
+
+        //acceptingCommands = false;
     }
 
     private void Jump(InputAction.CallbackContext context)
