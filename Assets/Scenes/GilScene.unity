@@ -236,7 +236,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 129.4, y: -39.600006}
+  m_AnchoredPosition: {x: 160.7, y: -67.5}
   m_SizeDelta: {x: 396.87646, y: 101.5224}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &35063642
@@ -694,6 +694,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   isBlocking: 0
+  currentMove: {fileID: 0}
   buffer: 
   bufferLength: 0.25
   multiTimer: 0
@@ -1536,7 +1537,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -127.399994, y: -38.899994}
+  m_AnchoredPosition: {x: -169, y: -75}
   m_SizeDelta: {x: 396.87646, y: 101.5224}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1002741807
