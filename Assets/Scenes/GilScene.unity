@@ -326,10 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0b786b3f8c9e1a45b14f427d1b73701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterStats: {fileID: 0}
-  jumpForce: 8
-  speed: 3
-  maxSpeed: 3
+  characterStats: {fileID: 11400000, guid: 98857f15f9e3698498eede9a85048d53, type: 2}
   leftFoot: {fileID: 931301560}
   rightFoot: {fileID: 883581369}
   floorMask:

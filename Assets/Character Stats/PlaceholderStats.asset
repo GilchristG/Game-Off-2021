@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f58948bdc65c5fb4da5c61660655095e, type: 3}
-  m_Name: Jab
+  m_Script: {fileID: 11500000, guid: b6239f0aadefa234bbe18fd84b052c67, type: 3}
+  m_Name: PlaceholderStats
   m_EditorClassIdentifier: 
-  moveAnimation: Jab
-  damage: 5
-  moveLength: 20
+  moveSet: {fileID: 11400000, guid: f406c7b004878144583265cf9014e736, type: 2}
+  jumpForce: 8
+  speed: 3
+  maxSpeed: 3

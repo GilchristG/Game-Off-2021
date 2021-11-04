@@ -8,10 +8,6 @@ public class MyCharacterController : MonoBehaviour
 {
     public CharacterStats characterStats; //Configures speeds and the moveset
 
-    public float jumpForce = 3f;
-    public float speed = 1f;
-    public float maxSpeed = 1f;
-
     public Transform leftFoot;
     public Transform rightFoot;
 
@@ -24,6 +20,7 @@ public class MyCharacterController : MonoBehaviour
     private Animator animator;
 
     private CharacterControls characterControls; // This is the generated json file
+    private AnimationController animationController;
 
     private MoveSet moveSet;
     private Move currentMove;
@@ -34,6 +31,10 @@ public class MyCharacterController : MonoBehaviour
     private InputAction lightAttackAction;
     private InputAction heavyAttackAction;
     private InputAction specialAttackAction;
+
+    private float jumpForce;
+    private float speed;
+    private float maxSpeed;
 
     private void Awake()
     {
@@ -51,6 +52,7 @@ public class MyCharacterController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
+        animationController = GetComponentInChildren<AnimationController>();
 
         //Set the Input Actions
         moveAction = characterControls.InGame.Move; // This is one way to set it
