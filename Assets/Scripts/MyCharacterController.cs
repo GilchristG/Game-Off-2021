@@ -148,6 +148,14 @@ public class MyCharacterController : MonoBehaviour
                     acceptingCommands = false;
                     animator.SetTrigger("LightAttack");
                     break;
+                case 0b_0010:
+                    acceptingCommands = false;
+                    animator.SetTrigger("LightAttack");
+                    break;
+                case 0b_0100:
+                    acceptingCommands = false;
+                    animator.SetTrigger("LightAttack");
+                    break;
             }
 
             buffer.Clear();
