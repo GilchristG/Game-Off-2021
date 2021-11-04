@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 // The name has to have "My" on the beginning or Unity complains
 public class MyCharacterController : MonoBehaviour
 {
+    public CharacterStats characterStats; //Configures speeds and the moveset
+
     public float jumpForce = 3f;
     public float speed = 1f;
     public float maxSpeed = 1f;
@@ -15,11 +17,16 @@ public class MyCharacterController : MonoBehaviour
 
     public LayerMask floorMask;
 
+    public bool isBlocking;
+
     private PlayerInput playerInput;
     private Rigidbody2D rb;
     private Animator animator;
 
     private CharacterControls characterControls; // This is the generated json file
+
+    private MoveSet moveSet;
+    private Move currentMove;
 
     //Input Actions
     private InputAction jumpAction;
@@ -30,6 +37,15 @@ public class MyCharacterController : MonoBehaviour
 
     private void Awake()
     {
+        moveSet = characterStats.moveSet;
+        jumpForce = characterStats.jumpForce;
+        speed = characterStats.speed;
+        maxSpeed = characterStats.maxSpeed;
+
+        currentMove = null;
+
+        isBlocking = true;
+
         characterControls = new CharacterControls();
         
         playerInput = GetComponent<PlayerInput>();
