@@ -23,4 +23,35 @@ public class AnimationController : MonoBehaviour
     {
         moveController.acceptingCommands = (trueOrFalse == 0)? false:true;
     }
+
+    public void activateColliders()
+    {
+        GetComponent<BoxCollider2D>().enabled = true;
+    }
+
+    public void deactivateColliders()
+    {
+        GetComponent<BoxCollider2D>().enabled = false;
+    }
+
+    public void clearCurrentMove()
+    {
+        moveController.clearCurrentMove();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<CharacterHealth>() != null)
+        {
+            if (collision.gameObject.GetComponent<MyCharacterController>() != null && 
+                collision.gameObject.GetComponent<MyCharacterController>().isBlocking)
+            {
+                collision.gameObject.GetComponent<CharacterHealth>().takeDamage(moveController.currentMove.chipDamage);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<CharacterHealth>().takeDamage(moveController.currentMove.damage);
+            }
+        }
+    }
 }

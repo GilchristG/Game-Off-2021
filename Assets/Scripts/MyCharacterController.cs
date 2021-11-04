@@ -15,6 +15,8 @@ public class MyCharacterController : MonoBehaviour
 
     public bool isBlocking;
 
+    public Move currentMove;
+
     private PlayerInput playerInput;
     private Rigidbody2D rb;
     private Animator animator;
@@ -23,7 +25,6 @@ public class MyCharacterController : MonoBehaviour
     private AnimationController animationController;
 
     private MoveSet moveSet;
-    private Move currentMove;
 
     //Input Actions
     private InputAction jumpAction;
@@ -32,18 +33,9 @@ public class MyCharacterController : MonoBehaviour
     private InputAction heavyAttackAction;
     private InputAction specialAttackAction;
 
-    private float jumpForce;
-    private float speed;
-    private float maxSpeed;
-
-
-
     private void Awake()
     {
         moveSet = characterStats.moveSet;
-        jumpForce = characterStats.jumpForce;
-        speed = characterStats.speed;
-        maxSpeed = characterStats.maxSpeed;
 
         currentMove = null;
 
@@ -73,7 +65,7 @@ public class MyCharacterController : MonoBehaviour
     private void Jump(InputAction.CallbackContext context)
     {
         if (isGrounded())
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * characterStats.jumpForce, ForceMode2D.Impulse);
     }
 
     private void LightAttack(InputAction.CallbackContext context)
@@ -142,6 +134,7 @@ public class MyCharacterController : MonoBehaviour
             if (!bufferResult.Equals(""))
             {
                 acceptingCommands = false;
+                currentMove = moveSet.lightAttack;
                 animator.SetTrigger("LightAttack");
             }
 
@@ -170,9 +163,9 @@ public class MyCharacterController : MonoBehaviour
         {
             Vector2 inputVector = moveAction.ReadValue<Vector2>();
 
-            if (Mathf.Abs(rb.velocity.x) < maxSpeed)
+            if (Mathf.Abs(rb.velocity.x) < characterStats.maxSpeed)
             {
-                rb.AddForce(new Vector2(inputVector.x, 0) * speed, ForceMode2D.Force);
+                rb.AddForce(new Vector2(inputVector.x, 0) * characterStats.speed, ForceMode2D.Force);
             }
             if (inputVector.Equals(Vector2.zero))
             {
@@ -191,5 +184,10 @@ public class MyCharacterController : MonoBehaviour
     private void OnDisable()
     {
         characterControls.InGame.Disable();
+    }
+
+    public void clearCurrentMove()
+    {
+        currentMove = null;
     }
 }
