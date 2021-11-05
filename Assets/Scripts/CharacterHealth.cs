@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CharacterHealth : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class CharacterHealth : MonoBehaviour
 
     private HealthManager healthManager;
     private MyCharacterController moveController;
+
+    public UnityEvent onDamageTaken;
 
     // Start is called before the first frame update
     void Start()

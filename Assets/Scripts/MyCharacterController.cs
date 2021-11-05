@@ -72,19 +72,16 @@ public class MyCharacterController : MonoBehaviour
 
     private void LightAttack(InputAction.CallbackContext context)
     {
-        //animator.SetTrigger("LightAttack");
         buffer.Add(CommandInputs.light);
     }
 
     private void HeavyAttack(InputAction.CallbackContext context)
     {
-        //animator.SetTrigger("HeavyAttack");
         buffer.Add(CommandInputs.heavy);
     }
 
     private void SpecialAttack(InputAction.CallbackContext context)
     {
-        //animator.SetTrigger("SpecialAttack");
         buffer.Add(CommandInputs.special);
     }
 

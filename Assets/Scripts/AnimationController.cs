@@ -6,6 +6,7 @@ using UnityEngine;
 public class AnimationController : MonoBehaviour
 {
     MyCharacterController moveController;
+    SpecificMoveManager specificMoveManager;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +53,11 @@ public class AnimationController : MonoBehaviour
     public void setSpecialAttack()
     {
         moveController.currentMove = moveController.moveSet.neutralSpecial;
+    }
+
+    public void TriggerSpecialMoveExtras(int number)
+    {
+        specificMoveManager.DoCoolStuff(number);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
