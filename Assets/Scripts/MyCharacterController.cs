@@ -151,15 +151,18 @@ public class MyCharacterController : MonoBehaviour
             {
                 case 0b_0001:
                     acceptingCommands = false;
-                    animator.SetTrigger("LightAttack");
+                    if (!isHitStunned)
+                        animator.SetTrigger("LightAttack");
                     break;
                 case 0b_0010:
                     acceptingCommands = false;
-                    animator.SetTrigger("HeavyAttack");
+                    if (!isHitStunned)
+                        animator.SetTrigger("HeavyAttack");
                     break;
                 case 0b_0100:
                     acceptingCommands = false;
-                    animator.SetTrigger("SpecialAttack");
+                    if (!isHitStunned)
+                        animator.SetTrigger("SpecialAttack");
                     break;
             }
 

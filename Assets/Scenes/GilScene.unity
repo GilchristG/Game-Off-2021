@@ -818,6 +818,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNumber: 1
   currentHealth: 0
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &439561483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1813,6 +1816,7 @@ GameObject:
   - component: {fileID: 1118436512}
   - component: {fileID: 1118436513}
   - component: {fileID: 1118436514}
+  - component: {fileID: 1118436515}
   m_Layer: 0
   m_Name: Graphics
   m_TagString: Untagged
@@ -1945,6 +1949,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.13023469, y: 0.07894728}
   m_EdgeRadius: 0
+--- !u!114 &1118436515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118436509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ff527340e9dd2647ac0ebebb4f90c0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveController: {fileID: 377822534}
+  boostForce: 4
+  boostAngle: 45
+  slamDelay: 1
+  slamForce: 5
 --- !u!1 &1403655219
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,6 +2173,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNumber: 2
   currentHealth: 0
+  onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &1422530993
 Rigidbody2D:
   serializedVersion: 4
