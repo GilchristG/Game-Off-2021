@@ -23,7 +23,7 @@ public class BombardierSpecificManager : SpecificMoveManager
         switch(i)
         {
             case 1:
-                boostSmash();
+                StartCoroutine(boostSmash());
                 break;
         }
     }
@@ -34,8 +34,11 @@ public class BombardierSpecificManager : SpecificMoveManager
         float ycomponent = Mathf.Sin(boostAngle * Mathf.PI / 180) * boostForce;
 
         rb.AddForce(new Vector2(xcomponent, ycomponent), ForceMode2D.Impulse);
+        rb.gravityScale = 1f;
 
         yield return new WaitForSeconds(slamDelay);
+
+        rb.gravityScale = moveController.characterStats.gravityScale;
 
         xcomponent = Mathf.Cos(-boostAngle * Mathf.PI / 180) * slamForce;
         ycomponent = Mathf.Sin(-boostAngle * Mathf.PI / 180) * slamForce;

@@ -9,4 +9,5 @@ public class CharacterStats : ScriptableObject
     public float jumpForce;
     public float speed;
     public float maxSpeed;
+    public float gravityScale;
 }

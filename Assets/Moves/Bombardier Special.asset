@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6239f0aadefa234bbe18fd84b052c67, type: 3}
-  m_Name: PlaceholderStats
+  m_Script: {fileID: 11500000, guid: 1ec7f935276592940a2f958679136448, type: 3}
+  m_Name: Bombardier Special
   m_EditorClassIdentifier: 
-  moveSet: {fileID: 11400000, guid: f406c7b004878144583265cf9014e736, type: 2}
-  jumpForce: 8
-  speed: 3
-  maxSpeed: 3
-  gravityScale: 3
+  moveName: Bombardier Blastoff
+  moveAnimation: 
+  damage: 30
+  chipDamage: 5
+  hitStunTime: 0.2
+  blockStunTime: 0.1

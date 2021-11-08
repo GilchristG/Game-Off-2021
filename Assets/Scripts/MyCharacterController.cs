@@ -50,6 +50,8 @@ public class MyCharacterController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         animationController = GetComponentInChildren<AnimationController>();
 
+        rb.gravityScale = characterStats.gravityScale;
+
         //Set the Input Actions
         moveAction = characterControls.InGame.Move;
         jumpAction = characterControls.InGame.Jump;
@@ -111,8 +113,6 @@ public class MyCharacterController : MonoBehaviour
         {
             isPressingButtons = false;
         }
-
-
 
         if (!acceptingCommands)
         {

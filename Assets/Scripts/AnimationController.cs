@@ -11,6 +11,7 @@ public class AnimationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        specificMoveManager = GetComponent<SpecificMoveManager>();
         moveController = GetComponentInParent<MyCharacterController>();
     }
 
