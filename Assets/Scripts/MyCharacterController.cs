@@ -15,6 +15,7 @@ public class MyCharacterController : MonoBehaviour
 
     public bool isBlocking;
     public bool isHitStunned;
+    public bool overrideJumpAnim;
 
     [HideInInspector]
     public Move currentMove;
@@ -40,8 +41,8 @@ public class MyCharacterController : MonoBehaviour
         moveSet = characterStats.moveSet;
 
         currentMove = null;
-
         isBlocking = true;
+        overrideJumpAnim = false;
 
         characterControls = new CharacterControls();
         
@@ -99,7 +100,10 @@ public class MyCharacterController : MonoBehaviour
 
     private void Update()
     {
-        animator.SetBool("Grounded", isGrounded());
+        if (!overrideJumpAnim)
+            animator.SetBool("Grounded", isGrounded());
+        else
+            animator.SetBool("Grounded", true);
         animator.SetFloat("HorSpeed", rb.velocity.x);
         animator.SetBool("IsStationary", rb.velocity.x == 0 ? true : false);
         lateralMovement(); // For some reason, if this is done in FixedUpdate, input is ignored 99% of the time

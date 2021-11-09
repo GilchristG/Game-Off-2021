@@ -61,6 +61,14 @@ public class AnimationController : MonoBehaviour
         specificMoveManager.DoCoolStuff(number);
     }
 
+    public void setOverrideJump(int number)
+    {
+        if (number == 1)
+            moveController.overrideJumpAnim = true;
+        if (number == 0)
+            moveController.overrideJumpAnim = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<CharacterHealth>() != null)

@@ -66,7 +66,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -619,6 +619,153 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Bombardier-Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9341862e0aeee2c4d95a5a3ad65a06f1
+      internalID: 1190695937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bombardier-Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 1600
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a77797b68d0123945886155242bb0bdd
+      internalID: -2086004065
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bombardier-Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 1664
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb44567c8280b1e49b8b9373eee8a3da
+      internalID: -2077809340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bombardier-Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 1728
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0f196939ef789d49b1add6a4cbf18b7
+      internalID: 1800552545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bombardier-Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c3e693a3f7a0db48b3fb2b89ce1b9f7
+      internalID: 1590999076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bombardier-Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 1856
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11e4677a7cb675f40ad8970525c2fb18
+      internalID: 1537178776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bombardier-Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43872aba3d94a32438fea0801b4de299
+      internalID: 653810393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -636,23 +783,30 @@ TextureImporter:
       Bombardier-Sheet_23: -1203215058
       Bombardier-Sheet_13: 96546572
       Bombardier-Sheet_17: 995530565
+      Bombardier-Sheet_27: 1800552545
       Bombardier-Sheet_10: 286647312
       Bombardier-Sheet_15: 1181886408
       Bombardier-Sheet_4: 1203462247
+      Bombardier-Sheet_29: 1537178776
       Bombardier-Sheet_3: 1462574818
       Bombardier-Sheet_9: 1837173164
+      Bombardier-Sheet_24: 1190695937
+      Bombardier-Sheet_25: -2086004065
       Bombardier-Sheet_1: 1944297880
       Bombardier-Sheet_5: 215737085
       Bombardier-Sheet_6: -2105117938
       Bombardier-Sheet_0: -610575142
       Bombardier-Sheet_11: -662345991
       Bombardier-Sheet_19: -1580451154
+      Bombardier-Sheet_28: 1590999076
       Bombardier-Sheet_21: 1819314401
+      Bombardier-Sheet_26: -2077809340
       Bombardier-Sheet_18: -116014127
       Bombardier-Sheet_16: 2127598008
       Bombardier-Sheet_2: 1953695365
       Bombardier-Sheet_12: -1429762524
       Bombardier-Sheet_14: 1402986235
+      Bombardier-Sheet_30: 653810393
       Bombardier-Sheet_22: -668531525
   spritePackingTag: 
   pSDRemoveMatte: 0
