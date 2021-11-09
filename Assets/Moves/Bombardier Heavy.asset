@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ec7f935276592940a2f958679136448, type: 3}
-  m_Name: Bombardier Special
+  m_Name: Bombardier Heavy
   m_EditorClassIdentifier: 
-  moveName: Bombardier Blastoff
+  moveName: Flame Burst
   moveAnimation: 
-  damage: 20
-  chipDamage: 5
-  hitStunTime: 0.2
+  damage: 30
+  chipDamage: 15
+  hitStunTime: 0.3
   blockStunTime: 0.1

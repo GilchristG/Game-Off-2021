@@ -1781,6 +1781,7 @@ MonoBehaviour:
     m_Bits: 64
   isBlocking: 0
   isHitStunned: 0
+  overrideJumpAnim: 0
   currentMove: {fileID: 0}
   moveSet: {fileID: 0}
   buffer: 
@@ -1992,7 +1993,7 @@ PrefabInstance:
     - target: {fileID: 5331038152099630028, guid: f28641095a4c9b44ebeb6ddfe42c7096,
         type: 3}
       propertyPath: slamForce
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5331038152099630028, guid: f28641095a4c9b44ebeb6ddfe42c7096,
         type: 3}
@@ -2003,6 +2004,26 @@ PrefabInstance:
         type: 3}
       propertyPath: hoverDelay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331038152099630029, guid: f28641095a4c9b44ebeb6ddfe42c7096,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.13023469
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331038152099630029, guid: f28641095a4c9b44ebeb6ddfe42c7096,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.07894728
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331038152099630029, guid: f28641095a4c9b44ebeb6ddfe42c7096,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.23778681
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331038152099630029, guid: f28641095a4c9b44ebeb6ddfe42c7096,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.0054395907
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f28641095a4c9b44ebeb6ddfe42c7096, type: 3}

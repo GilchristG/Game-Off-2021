@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6239f0aadefa234bbe18fd84b052c67, type: 3}
   m_Name: Bombardier Stats
   m_EditorClassIdentifier: 
-  moveSet: {fileID: 11400000, guid: f406c7b004878144583265cf9014e736, type: 2}
+  moveSet: {fileID: 11400000, guid: 66eb6402e2c486c4888faf51e6474ad6, type: 2}
   jumpForce: 8
   speed: 3
   maxSpeed: 3
