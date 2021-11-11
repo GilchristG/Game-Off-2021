@@ -445,6 +445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveController: {fileID: 5331038151359654441}
+  boom: {fileID: 5049341738362061581, guid: d326e5a595a7a744aab2b8cd618cee56, type: 3}
   boostForce: 15
   boostAngle: 60
   slamDelay: 0.3

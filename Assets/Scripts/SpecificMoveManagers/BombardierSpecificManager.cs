@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BombardierSpecificManager : SpecificMoveManager
 {
+    public GameObject boom;
+
     public float boostForce;
     public float boostAngle;
     public float slamDelay;
@@ -30,6 +32,8 @@ public class BombardierSpecificManager : SpecificMoveManager
 
     IEnumerator boostSmash()
     {
+        Instantiate(boom, transform.position, transform.rotation);
+
         float xcomponent = Mathf.Cos(boostAngle * Mathf.PI / 180) * boostForce;
         float ycomponent = Mathf.Sin(boostAngle * Mathf.PI / 180) * boostForce;
 

@@ -71,7 +71,7 @@ public class AnimationController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<CharacterHealth>() != null)
+        if (collision.gameObject.GetComponent<CharacterHealth>() != null && collision.gameObject.GetComponent<CharacterHealth>() != moveController.gameObject.GetComponent<CharacterHealth>())
         {
             if (collision.gameObject.GetComponent<MyCharacterController>() != null && 
                 collision.gameObject.GetComponent<MyCharacterController>().isBlocking)
