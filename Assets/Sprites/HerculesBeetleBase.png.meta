@@ -130,8 +130,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f5cee54269d7724ea0814711e18e5c6
-      internalID: 793549627
+      spriteID: 956ee295ff27e7941a9c7acc1e072dbb
+      internalID: 785467798
       vertices: []
       indices: 
       edges: []
@@ -151,8 +151,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 48f345449bc27764496457dd1088e0c6
-      internalID: -777173480
+      spriteID: 327ed2fc2a412cb4e8f5126c71760bc5
+      internalID: -731100812
       vertices: []
       indices: 
       edges: []
@@ -172,8 +172,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 736a215b8b41f5448ba036e3c78bc2d6
-      internalID: -538199713
+      spriteID: 2fdfee6c3252ef8489eee243efcd91be
+      internalID: 793021591
       vertices: []
       indices: 
       edges: []
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cbae2059fb79c2549aeb7cb993f2d738
-      internalID: 227421855
+      spriteID: 561868b1fbcce5049929090b0ffaf936
+      internalID: 877381347
       vertices: []
       indices: 
       edges: []
@@ -214,8 +214,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5011a5adba1d0cc4493204b508f20e38
-      internalID: -756460290
+      spriteID: 51066536105132b478ad4962abd055e8
+      internalID: 2000478929
       vertices: []
       indices: 
       edges: []
@@ -235,8 +235,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67920bf75c4adc24d81e5e2913310dfb
-      internalID: 928487803
+      spriteID: 80fae4d131a791e4e8dceef3ecc0bc9d
+      internalID: 10217779
       vertices: []
       indices: 
       edges: []
@@ -256,8 +256,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e9ed45a9d7ea9ec43a77b0b9141e258d
-      internalID: 2089771565
+      spriteID: dfdae795f8e83104bac9649ae8d8820d
+      internalID: -995802369
       vertices: []
       indices: 
       edges: []
@@ -277,8 +277,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c9f0d1272a57f747983be8fed1d0cc4
-      internalID: -109850577
+      spriteID: eff0c7a6eac17694a9bd7da0cf71e391
+      internalID: 1600140918
       vertices: []
       indices: 
       edges: []
@@ -298,8 +298,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9164b95c257b94d42870b97422e263fb
-      internalID: -836007369
+      spriteID: 886d52a651223cf458a1429a4cd563a4
+      internalID: -1433124632
       vertices: []
       indices: 
       edges: []
@@ -319,8 +319,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14a4270dc5c6d14499fa52757c434edb
-      internalID: 439789235
+      spriteID: e2ee10c320a6b5a45959c53218cdcc55
+      internalID: -634953572
       vertices: []
       indices: 
       edges: []
@@ -340,8 +340,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4a219b9d6e6ddd046a703606c357be46
-      internalID: -2103519616
+      spriteID: 34ac89d4cd6037443ad95a753285ef11
+      internalID: -751975409
       vertices: []
       indices: 
       edges: []
@@ -361,8 +361,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc066286f73acae4380bfdf7b4a1327d
-      internalID: -1155487460
+      spriteID: d2941d465be92824f86582b0abe1af75
+      internalID: -1239918883
       vertices: []
       indices: 
       edges: []
@@ -382,8 +382,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 397f3eeed3186e143ac69e6fd9489eb1
-      internalID: 1739999344
+      spriteID: dac344dcba5258e49990e2d081f349ac
+      internalID: 1208711455
       vertices: []
       indices: 
       edges: []
@@ -403,8 +403,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92ff2a39b0086c44f838db3f522a26f5
-      internalID: 575472208
+      spriteID: 5b9f573d96b41ff4791f142af5fc1e29
+      internalID: 622594684
       vertices: []
       indices: 
       edges: []
@@ -424,8 +424,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7725e79f6126a04eb691d13ba8e396d
-      internalID: 1760068737
+      spriteID: 6cccebb4d6c03a340867160ac0f87980
+      internalID: -554973225
       vertices: []
       indices: 
       edges: []
@@ -445,8 +445,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 56f364bcaf1326146b4462a82fdd840d
-      internalID: 1969425639
+      spriteID: 4e8d626a0a163c24596412bce772dd61
+      internalID: 1448789635
       vertices: []
       indices: 
       edges: []
@@ -466,8 +466,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0d0ec165d09819340814258a38b7285d
-      internalID: -2127433050
+      spriteID: 16cf16ff74e5f234fbce926f11c4ab7a
+      internalID: 384953448
       vertices: []
       indices: 
       edges: []
@@ -487,8 +487,155 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d09af9c72741a04387fe3b8dc48d05b
-      internalID: 2137124648
+      spriteID: 7de8772cebfe00247b40ff698c39df73
+      internalID: 395095398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HerculesBeetleBase_18
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b960db02d016b64d803a29122e2f80c
+      internalID: 1952877630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HerculesBeetleBase_19
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd2304ca65286aa40915009c5901ccac
+      internalID: -806046072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HerculesBeetleBase_20
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b1ab97bbec3ec74a9b9eb571311a9c9
+      internalID: -529588541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HerculesBeetleBase_21
+      rect:
+        serializedVersion: 2
+        x: 1344
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48a5d90a40191154b96cdee924e58a29
+      internalID: -1009669971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HerculesBeetleBase_22
+      rect:
+        serializedVersion: 2
+        x: 1408
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0caad12f9343e04595d74246d9f8801
+      internalID: -137689863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HerculesBeetleBase_23
+      rect:
+        serializedVersion: 2
+        x: 1472
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bdcd0a6e6e9f4c4ba00587cc2d32b3f
+      internalID: -560619784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HerculesBeetleBase_24
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f59682eea5b6df4693250a841a8fbe9
+      internalID: -968820708
       vertices: []
       indices: 
       edges: []
@@ -504,24 +651,31 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      HerculesBeetleBase_1: -777173480
-      HerculesBeetleBase_3: 227421855
-      HerculesBeetleBase_9: 439789235
-      HerculesBeetleBase_12: 1739999344
-      HerculesBeetleBase_11: -1155487460
-      HerculesBeetleBase_2: -538199713
-      HerculesBeetleBase_15: 1969425639
-      HerculesBeetleBase_6: 2089771565
-      HerculesBeetleBase_4: -756460290
-      HerculesBeetleBase_8: -836007369
-      HerculesBeetleBase_10: -2103519616
-      HerculesBeetleBase_5: 928487803
-      HerculesBeetleBase_13: 575472208
-      HerculesBeetleBase_14: 1760068737
-      HerculesBeetleBase_7: -109850577
-      HerculesBeetleBase_16: -2127433050
-      HerculesBeetleBase_0: 793549627
-      HerculesBeetleBase_17: 2137124648
+      HerculesBeetleBase_1: -731100812
+      HerculesBeetleBase_3: 877381347
+      HerculesBeetleBase_9: -634953572
+      HerculesBeetleBase_24: -968820708
+      HerculesBeetleBase_12: 1208711455
+      HerculesBeetleBase_11: -1239918883
+      HerculesBeetleBase_2: 793021591
+      HerculesBeetleBase_20: -529588541
+      HerculesBeetleBase_15: 1448789635
+      HerculesBeetleBase_21: -1009669971
+      HerculesBeetleBase_18: 1952877630
+      HerculesBeetleBase_22: -137689863
+      HerculesBeetleBase_23: -560619784
+      HerculesBeetleBase_19: -806046072
+      HerculesBeetleBase_6: -995802369
+      HerculesBeetleBase_4: 2000478929
+      HerculesBeetleBase_8: -1433124632
+      HerculesBeetleBase_10: -751975409
+      HerculesBeetleBase_5: 10217779
+      HerculesBeetleBase_13: 622594684
+      HerculesBeetleBase_14: -554973225
+      HerculesBeetleBase_7: 1600140918
+      HerculesBeetleBase_16: 384953448
+      HerculesBeetleBase_0: 785467798
+      HerculesBeetleBase_17: 395095398
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
