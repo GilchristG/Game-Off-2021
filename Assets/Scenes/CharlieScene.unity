@@ -654,7 +654,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.03178455, y: -0.057438135}
+  m_Offset: {x: -0.070002586, y: -0.0056313574}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -665,7 +665,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4904934, y: 0.5216787}
+  m_Size: {x: 0.32233357, y: 0.62529224}
   m_EdgeRadius: 0
 --- !u!114 &377822533
 MonoBehaviour:
@@ -718,7 +718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0b786b3f8c9e1a45b14f427d1b73701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterStats: {fileID: 11400000, guid: 98857f15f9e3698498eede9a85048d53, type: 2}
+  characterStats: {fileID: 11400000, guid: e26c3c0f5689ba749a3cd4e4a7a6a3a4, type: 2}
   leftFoot: {fileID: 931301560}
   rightFoot: {fileID: 883581369}
   floorMask:
@@ -1881,7 +1881,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 1952877630, guid: 3d193c18a7a348540ad797e255b6ae35, type: 3}
+  m_Sprite: {fileID: 785467798, guid: 3d193c18a7a348540ad797e255b6ae35, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1959,12 +1959,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1118436509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6be0d5c7097c49a469987980463d06ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 29f38bfa8adfa1341a95fe435c5eeadd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveController: {fileID: 0}
-  bulletLocation: {fileID: 0}
-  bullet_prefab: {fileID: 0}
+  chargeSpeed: 10
+  herculesAnimator: {fileID: 1118436512}
+  chargeLength: 1.1
 --- !u!1 &1403655219
 GameObject:
   m_ObjectHideFlags: 0

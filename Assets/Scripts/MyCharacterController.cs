@@ -100,6 +100,10 @@ public class MyCharacterController : MonoBehaviour
 
     private void Update()
     {
+
+        animator.SetBool("Stunned", isHitStunned);
+
+
         if (!overrideJumpAnim)
             animator.SetBool("Grounded", isGrounded());
         else
@@ -123,6 +127,9 @@ public class MyCharacterController : MonoBehaviour
             buffer.Clear();
             return;
         }
+
+        //Check here for which direction the player should face
+        
 
         //Check if two or more buttons are pressed
         multiTimer += Time.deltaTime;
