@@ -9,6 +9,8 @@ public class CharacterSelection : MonoBehaviour
 {
     private enum Player { P1, P2 };
 
+    public bool gameHasStarted;
+
     public Image player1Image;
     public Image player2Image;
 
@@ -18,8 +20,10 @@ public class CharacterSelection : MonoBehaviour
     public Sprite bombardier;
     public Sprite hercules;
 
-    private Character currentCharacter1;
-    private Character currentCharacter2;
+    [HideInInspector]
+    public Character currentCharacter1;
+    [HideInInspector]
+    public Character currentCharacter2;
 
     private Player currentPlayer;
 
@@ -34,6 +38,9 @@ public class CharacterSelection : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+        gameHasStarted = false;
+
         menuControls = new MainMenu();
 
         currentCharacter1 = Character.BOMBARDIER;
@@ -148,13 +155,23 @@ public class CharacterSelection : MonoBehaviour
         MyStart(new InputAction.CallbackContext());
     }
 
-    private void OnEnable()
+    public void enableControls()
     {
         menuControls.Menus.Enable();
     }
 
-    private void OnDisable()
+    public void disableControls()
     {
         menuControls.Menus.Disable();
+    }
+
+    private void OnEnable()
+    {
+        enableControls();
+    }
+
+    private void OnDisable()
+    {
+        disableControls();
     }
 }
