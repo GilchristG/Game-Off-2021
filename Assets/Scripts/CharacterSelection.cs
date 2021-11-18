@@ -147,4 +147,14 @@ public class CharacterSelection : MonoBehaviour
     {
         MyStart(new InputAction.CallbackContext());
     }
+
+    private void OnEnable()
+    {
+        menuControls.Menus.Enable();
+    }
+
+    private void OnDisable()
+    {
+        menuControls.Menus.Disable();
+    }
 }
