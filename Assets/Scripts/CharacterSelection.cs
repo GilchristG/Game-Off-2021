@@ -88,7 +88,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void MyStart(InputAction.CallbackContext context)
     {
-        SceneManager.LoadScene("MainScene", LoadSceneMode.Additive);
+        SceneManager.LoadScene("MainScene");
     }
 
     private void Select(InputAction.CallbackContext context)
