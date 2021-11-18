@@ -96,7 +96,7 @@ public class CharacterSelection : MonoBehaviour
         //This is here just in case, technically we don't need to use this for anything
     }
 
-    private void swapHighlight()
+    public void swapHighlight()
     {
         if (highlight1.enabled)
         {
@@ -112,7 +112,7 @@ public class CharacterSelection : MonoBehaviour
         }
     }
 
-    private void cycleCharacterSelection()
+    public void cycleCharacterSelection()
     {
         if (currentPlayer == Player.P1)
         {
@@ -127,7 +127,7 @@ public class CharacterSelection : MonoBehaviour
                 player1Image.sprite = bombardier;
             }
         }
-        else if (currentPlayer == Player.P1)
+        else if (currentPlayer == Player.P2)
         {
 
             if (currentCharacter2 == Character.BOMBARDIER)
