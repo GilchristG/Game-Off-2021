@@ -142,4 +142,9 @@ public class CharacterSelection : MonoBehaviour
             }
         }
     }
+
+    public void StartButton()
+    {
+        MyStart(new InputAction.CallbackContext());
+    }
 }
