@@ -36,6 +36,8 @@ public class MyCharacterController : MonoBehaviour
     private InputAction heavyAttackAction;
     private InputAction specialAttackAction;
 
+    public bool mirrored;
+
     private void Awake()
     {
         moveSet = characterStats.moveSet;
@@ -224,5 +226,19 @@ public class MyCharacterController : MonoBehaviour
     private void OnDisable()
     {
         characterControls.InGame.Disable();
+    }
+
+    public void setMirrored(bool val)
+    {
+        if (val)
+        {
+            mirrored = true;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        }
+        else
+        {
+            mirrored = false;
+            transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        }
     }
 }

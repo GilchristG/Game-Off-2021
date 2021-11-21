@@ -37,7 +37,10 @@ public class BombardierSpecificManager : SpecificMoveManager
         float xcomponent = Mathf.Cos(boostAngle * Mathf.PI / 180) * boostForce;
         float ycomponent = Mathf.Sin(boostAngle * Mathf.PI / 180) * boostForce;
 
-        rb.AddForce(new Vector2(xcomponent, ycomponent), ForceMode2D.Impulse);
+        if (moveController.mirrored)
+            rb.AddForce(new Vector2(-xcomponent, ycomponent), ForceMode2D.Impulse);
+        else
+            rb.AddForce(new Vector2(xcomponent, ycomponent), ForceMode2D.Impulse);
         rb.gravityScale = 1f;
 
         yield return new WaitForSeconds(slamDelay);
@@ -47,7 +50,10 @@ public class BombardierSpecificManager : SpecificMoveManager
         xcomponent = Mathf.Cos(-boostAngle * Mathf.PI / 180) * slamForce;
         ycomponent = Mathf.Sin(-boostAngle * Mathf.PI / 180) * slamForce;
 
-        rb.AddForce(new Vector2(xcomponent, ycomponent), ForceMode2D.Impulse);
+        if (moveController.mirrored)
+            rb.AddForce(new Vector2(-xcomponent, ycomponent), ForceMode2D.Impulse);
+        else
+            rb.AddForce(new Vector2(xcomponent, ycomponent), ForceMode2D.Impulse);
 
         yield return 0;
     }

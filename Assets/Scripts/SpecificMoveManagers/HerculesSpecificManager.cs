@@ -37,7 +37,10 @@ public class HerculesSpecificManager : SpecificMoveManager
         {
             timer += Time.deltaTime;
 
-            rb.AddForce(new Vector2(1,0)*chargeSpeed/*Time.deltaTime*/, ForceMode2D.Force);
+            if (moveController.mirrored)
+                rb.AddForce(new Vector2(-1,0)*chargeSpeed/*Time.deltaTime*/, ForceMode2D.Force);
+            else
+                rb.AddForce(new Vector2(1, 0) * chargeSpeed/*Time.deltaTime*/, ForceMode2D.Force);
 
             yield return new WaitForEndOfFrame();
         }
