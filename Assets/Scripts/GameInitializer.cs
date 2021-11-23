@@ -18,7 +18,6 @@ public class GameInitializer : MonoBehaviour
     void Start()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
-        playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;
         characterSelection = FindObjectOfType<CharacterSelection>();
         characterSelection.gameHasStarted = true;
         characterSelection.disableControls();
@@ -28,38 +27,38 @@ public class GameInitializer : MonoBehaviour
 
     private void spawnPlayers()
     {
-        PlayerInput player1 = null;
-        PlayerInput player2 = null;
+        GameObject player1 = null;
+        GameObject player2 = null;
 
-        switch(characterSelection.currentCharacter1)
+        switch (characterSelection.currentCharacter1)
         {
             case Character.BOMBARDIER:
-                playerInputManager.playerPrefab = bombardier;
-                player1 = PlayerInput.Instantiate(bombardier, controlScheme: characterSelection.player1Controls);
+                player1 = Instantiate(bombardier, player1Spawn.position, player1Spawn.rotation);
                 break;
             case Character.HERCULES:
-                playerInputManager.playerPrefab = hercules;
-                player1 = PlayerInput.Instantiate(hercules, controlScheme: characterSelection.player1Controls);
+                player1 = Instantiate(hercules, player1Spawn.position, player1Spawn.rotation);
                 break;
         }
         switch (characterSelection.currentCharacter2)
         {
             case Character.BOMBARDIER:
-                playerInputManager.playerPrefab = bombardier;
-                player2 = PlayerInput.Instantiate(bombardier, controlScheme: characterSelection.player2Controls);
+                player2 = Instantiate(bombardier, player2Spawn.position, player2Spawn.rotation);
                 break;
             case Character.HERCULES:
-                playerInputManager.playerPrefab = hercules;
-                player2 = PlayerInput.Instantiate(hercules, controlScheme: characterSelection.player2Controls);
+                player2 = Instantiate(hercules, player2Spawn.position, player2Spawn.rotation);
                 break;
         }
 
         if (player1 != null)
-            player1.gameObject.GetComponent<MyCharacterController>().setMirrored(false);
+            player1.GetComponent<MyCharacterController>().setMirrored(false);
         if (player2 != null)
-            player2.gameObject.GetComponent<MyCharacterController>().setMirrored(true);
+            player2.GetComponent<MyCharacterController>().setMirrored(true);
 
-        player1.transform.position = player1Spawn.position;
-        player2.transform.position = player2Spawn.position;
+        player1.GetComponent<MyCharacterController>().playerIndex = 0;
+        player2.GetComponent<MyCharacterController>().playerIndex = 1;
+
+        FindObjectOfType<PlayerInputManager>().JoinPlayer(0);
+        FindObjectOfType<PlayerInputManager>().JoinPlayer(1);
+
     }
 }

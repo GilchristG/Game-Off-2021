@@ -8,6 +8,8 @@ public class MyCharacterController : MonoBehaviour
 {
     public CharacterStats characterStats; //Configures speeds and the moveset
 
+    public int playerIndex;
+
     public Transform leftFoot;
     public Transform rightFoot;
 
