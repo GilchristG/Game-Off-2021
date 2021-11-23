@@ -18,6 +18,7 @@ public class GameInitializer : MonoBehaviour
     void Start()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
+        playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;
         characterSelection = FindObjectOfType<CharacterSelection>();
         characterSelection.gameHasStarted = true;
         characterSelection.disableControls();
