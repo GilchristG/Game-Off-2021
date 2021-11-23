@@ -25,6 +25,9 @@ public class CharacterSelection : MonoBehaviour
     [HideInInspector]
     public Character currentCharacter2;
 
+    public string player1Controls;
+    public string player2Controls;
+
     private Player currentPlayer;
 
     private MainMenu menuControls;

@@ -176,6 +176,8 @@ MonoBehaviour:
   hercules: {fileID: 785467798, guid: 3d193c18a7a348540ad797e255b6ae35, type: 3}
   currentCharacter1: 0
   currentCharacter2: 0
+  player1Controls: Keyboard
+  player2Controls: PS4 Controller
 --- !u!1 &175160537
 GameObject:
   m_ObjectHideFlags: 0

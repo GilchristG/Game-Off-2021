@@ -1784,6 +1784,7 @@ MonoBehaviour:
   overrideJumpAnim: 0
   currentMove: {fileID: 0}
   moveSet: {fileID: 0}
+  mirrored: 0
   buffer: 
   bufferLength: 0.25
   multiTimer: 0
@@ -1984,6 +1985,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331038151359654442, guid: f28641095a4c9b44ebeb6ddfe42c7096,
+        type: 3}
+      propertyPath: m_DefaultControlScheme
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331038151359654442, guid: f28641095a4c9b44ebeb6ddfe42c7096,
+        type: 3}
+      propertyPath: m_NeverAutoSwitchControlSchemes
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5331038151359654445, guid: f28641095a4c9b44ebeb6ddfe42c7096,
         type: 3}
