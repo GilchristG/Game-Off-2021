@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//DO NOT USE THIS AS THE BASIS FOR THE GAME SYSTEMS. TESTING ONLY
+
 public class BasicMoveTester : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -66,7 +68,8 @@ public class BasicMoveTester : MonoBehaviour
 
         if (Input.GetKey(KeyCode.C))
         {
-            pressedButton = 3;
+            anim.SetTrigger("Hit");
+            anim.ResetTrigger("1");
         }
 
         ProcessControls(moveDirection);
