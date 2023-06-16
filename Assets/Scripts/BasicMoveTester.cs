@@ -11,39 +11,39 @@ public class BasicMoveTester : MonoBehaviour
     Vector3 moveDirection;
     Animator anim;
 
-    bool crouched = false;
-    bool blocking = false;
-
     Rigidbody2D rb;
 
     [SerializeField] float speed = 50f;
 
-    [SerializeField] int pressedButton = 0;
+    InputFrame processingFrame;
+    int currentDirection;
 
     void Start()
     {
+
         rb = GetComponent<Rigidbody2D>();
 
         anim = GetComponentInChildren<Animator>();
-        moveDirection = new Vector3(0, 0, 0);
     }
 
 
+    public CharacterInput characterInput = new CharacterInput();
 
-    // Update is called once per frame
+
     void Update()
     {
-        pressedButton = 0;
+        processingFrame = new InputFrame();
+
         moveDirection = new Vector3(0, 0, 0);
 
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            moveDirection = new Vector3(1, 0, 0);
+            moveDirection = new Vector3(-1, 0, 0);
         }
 
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            moveDirection = new Vector3(-1, 0, 0);
+            moveDirection = new Vector3(1, 0, 0);
         }
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
@@ -58,53 +58,96 @@ public class BasicMoveTester : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Z))
         {
-            pressedButton = 1;
+            processingFrame.inputs[1] = 1;
         }
 
         if (Input.GetKey(KeyCode.X))
         {
-            pressedButton = 2;
+            processingFrame.inputs[2] = 1;
         }
 
         if (Input.GetKey(KeyCode.C))
         {
-            anim.SetTrigger("Hit");
-            anim.ResetTrigger("1");
+            processingFrame.inputs[3] = 1;
         }
 
-        ProcessControls(moveDirection);
+        //No direction input default
+        currentDirection = 5;
+
+        if (moveDirection.y == 0)
+        {
+            if (moveDirection.x == 1)
+            {
+                currentDirection = 6;
+            }
+            else if (moveDirection.x == -1)
+            {
+                currentDirection = 4;
+            }
+        }
+        else if (moveDirection.y == -1)
+        {
+            if (moveDirection.x == 1)
+            {
+                currentDirection = 3;
+            }
+            else if (moveDirection.x == -1)
+            {
+                currentDirection = 1;
+            }
+            else
+            {
+                currentDirection = 2;
+            }
+        }
+        else if (moveDirection.y == 1)
+        {
+            if (moveDirection.x == 1)
+            {
+                currentDirection = 9;
+            }
+            else if (moveDirection.x == -1)
+            {
+                currentDirection = 7;
+            }
+            else
+            {
+                currentDirection = 8;
+            }
+        }
+
+
+        InputFrame currentFrame = new InputFrame();
+
+        currentFrame.inputs[0] = currentDirection;
+        currentFrame.inputs[1] = processingFrame.inputs[1];
+        currentFrame.inputs[2] = processingFrame.inputs[2];
+        currentFrame.inputs[3] = processingFrame.inputs[3];
+
+        characterInput.PushIntoBuffer(currentFrame);
+        CheckForMoves();
     }
 
-    void ProcessControls(Vector3 controlDirection)
+    int[] qcf = new int[] { 2, 3, 6 };
+
+    int[] right = new int[] {6};
+
+
+    //What we would want to do is have an extensive tree for checking move chains. Check from more complicated to less complicated. 
+    //If a move is detected, push into a queue and at the end of frame check if it can be activated (early input buffer, is the player in block or hit stun, etc)
+    //otherwise chuck it from the queue and continue to next frame
+    public void CheckForMoves()
     {
-        if(controlDirection.y > 0)
+        if (characterInput.GetCurrentFrame().inputs[1] == 1)
         {
-            //Jump
+            if(characterInput.CheckSequence(qcf,16))
+            {
+                anim.SetTrigger("Hit");
+            }
+            else if (characterInput.CheckSequence(right, 16))
+            {
+                anim.SetTrigger("1");
+            }
         }
-        else if(controlDirection.y < 0)
-        {
-            //Crouch
-            crouched = true;
-        }
-        else
-        {
-            crouched = false;
-        }
-
-        anim.SetBool("Crouch", crouched);
-
-        anim.SetTrigger(pressedButton.ToString("0"));
-
-        if(!crouched && (controlDirection.x > 0 || controlDirection.x < 0))
-        {
-            rb.AddForce(Vector2.left * controlDirection.x * speed * Time.deltaTime);
-        }
-
-        //make this dependent on opponent direction
-        if(controlDirection.x < 0)
-        {
-            blocking = true;
-        }
-
     }
 }
