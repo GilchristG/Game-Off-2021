@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//DO NOT USE THIS AS THE BASIS FOR THE GAME SYSTEMS. TESTING ONLY
-
+//Potentially use this as basis for character controllers
 public class BasicMoveTester : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -22,13 +21,19 @@ public class BasicMoveTester : MonoBehaviour
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
 
+    private void Awake()
+    {
+        characterInput.SetupBV(GetComponent<BufferVisualizer>());
+        characterInput.training = true;
+    }
+
     void Start()
     {
         processingFrame = new InputFrame();
 
         rb = GetComponent<Rigidbody2D>();
 
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -126,7 +131,7 @@ public class BasicMoveTester : MonoBehaviour
 
             characterInput.PushIntoBuffer(currentFrame);
             CheckForMoves();
-            //ProcessMoves();
+            ProcessMoves();
 
             //Reset the inputs
             processingFrame = new InputFrame();
@@ -157,13 +162,13 @@ public class BasicMoveTester : MonoBehaviour
 
             if (characterInput.CheckSequence(qcf,16))
             {
-                anim.SetTrigger("Hit");
-                //moveQueue.Enqueue(new Move(2, "Hit"));
+                //anim.SetTrigger("Hit");
+                moveQueue.Enqueue(new Move(1, "Hit"));
             }
             else if (characterInput.CheckSequence(neutral, 16))
             {
-                anim.SetTrigger("1");
-                //moveQueue.Enqueue(new Move(2, "1"));
+                //anim.SetTrigger("1");
+                moveQueue.Enqueue(new Move(0.2f, "1"));
             }
         }
     }
@@ -183,7 +188,6 @@ public class BasicMoveTester : MonoBehaviour
             {
                 elapsedMoveTime -= current.totalDuration;
                 moveQueue.Dequeue();
-
                 Debug.Log(current.moveTrigger + " was current move");
             }
         }

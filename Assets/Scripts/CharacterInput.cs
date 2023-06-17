@@ -10,6 +10,15 @@ public class CharacterInput
 
     [SerializeField] int CurrentTick = 0;
 
+    public bool training = false;
+
+    BufferVisualizer bv;
+
+    public void SetupBV(BufferVisualizer bufferV)
+    {
+        bv = bufferV;
+    }
+
     //maxDuration must not be bigger than the bufferSize;
     public bool CheckSequence(int[] sequence, int maxDuration)
     {
@@ -38,6 +47,11 @@ public class CharacterInput
         }
 
         buffer[CurrentTick] = inputs;
+
+        if(training)
+        {
+            bv.DisplayBuffer(inputs);
+        }
     }
 
     public InputFrame GetCurrentFrame()
