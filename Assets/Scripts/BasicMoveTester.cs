@@ -148,6 +148,9 @@ public class BasicMoveTester : MonoBehaviour
 
     int[] neutral = new int[] {5};
 
+    public MoveData testMove1;
+    public MoveData testMove2;
+
     //What we would want to do is have an extensive tree for checking move chains. Check from more complicated to less complicated. 
     //If a move is detected, push into a queue and at the end of frame check if it can be activated (early input buffer, is the player in block or hit stun, etc)
     //otherwise chuck it from the queue and continue to next frame
@@ -166,40 +169,112 @@ public class BasicMoveTester : MonoBehaviour
             if (characterInput.CheckSequence(qcf,16))
             {
                 //anim.SetTrigger("Hit");
-                moveQueue.Enqueue(new Move(8, "Hit"));
+                moveQueue.Enqueue(testMove1.CreateMove());
             }
             else if (characterInput.CheckSequence(neutral, 16))
             {
                 //anim.SetTrigger("1");
-                moveQueue.Enqueue(new Move(8, "1"));
+                moveQueue.Enqueue(testMove2.CreateMove());
             }
         }
     }
 
-    //tracked in frames
+    //NOTE: THIS KEEPS TRACK OF FRAMES. REMEMBER THAT
     public int elapsedMoveTime = 0;
-    Move currentMove;
+
+    public int windupFrameTimer = 0;
+    public int activeFrameTimer = 0;
+    public int recoveryFrameTimer = 0;
+    public int totalMoveFrameTime = 0;
+
+    public bool processingMove = false;
+    public Move currentMove = null;
     public Queue<Move> moveQueue = new Queue<Move>();
 
     public void ProcessMoves()
     {
         Debug.Log("Number in Queue: " + moveQueue.Count);
 
-
-        //Handles the list of moves currently processing
+        //This is put here in case the queue empties in previous loop
         if (moveQueue.Count > 0)
         {
-            Debug.Log("Move trigger: "+moveQueue.Peek().moveTrigger);
-
-            //THIS KEEPS TRACK OF FRAMES. REMEMBER THAT
-            elapsedMoveTime += 1;
-            Move current = moveQueue.Peek();
-            if (elapsedMoveTime > current.totalDuration)
+            //Can potnetially put cancelling info here
+            if (!processingMove)
             {
-                elapsedMoveTime -= current.totalDuration;
-                moveQueue.Dequeue();
+                StartMove(moveQueue.Dequeue());
+            }
+        }
+
+
+        //Handles the list of moves currently processing
+        if (processingMove && currentMove != null)
+        {
+            elapsedMoveTime += 1;
+
+
+            Debug.Log("Current move " + currentMove.animationName);
+
+            switch (currentMove.moveState)
+            {
+                case MoveState.Windup:
+                    if(windupFrameTimer <= 0)
+                    {
+                        windupFrameTimer = 0;
+                        activeFrameTimer = currentMove.activeTime;
+                        currentMove.moveState = MoveState.Active;
+                    }
+                    windupFrameTimer--;
+
+                    break;
+                case MoveState.Active:
+                    if(activeFrameTimer <= 0)
+                    {
+                        activeFrameTimer = 0;
+                        recoveryFrameTimer = currentMove.basicRecovery;
+                        currentMove.moveState = MoveState.Recovery;
+                    }
+                    else
+                    {
+                        //Add hurtbox activations stuff here
+                    }
+                    activeFrameTimer--;
+
+                    break;
+                case MoveState.Recovery:
+                    if (recoveryFrameTimer <= 0)
+                    {
+                        //Clear out the currentMove
+                        Debug.Log(currentMove.animationName + " total frame time: " + elapsedMoveTime);
+                        recoveryFrameTimer = 0;
+                        elapsedMoveTime = 0;
+                        currentMove = null;
+                        processingMove = false;
+                    }
+                    recoveryFrameTimer--;
+
+                    break;
+            }
+
+            //Emergency abandon
+            /*if(elapsedMoveTime > totalMoveFrameTime)
+            {
+                Debug.Log(currentMove.animationName + " total frame time: " + elapsedMoveTime);
+                windupFrameTimer = 0;
+                activeFrameTimer = 0;
+                recoveryFrameTimer = 0;
+                elapsedMoveTime = 0;
                 currentMove = null;
-                Debug.Log(current.moveTrigger + " was current move");
+                processingMove = false;
+            }*/
+
+
+            //Get the next move in the queue for chaining purposes
+            if (moveQueue.Count > 0)
+            {
+                if(currentMove != null && (currentMove.moveState != MoveState.Recovery || recoveryFrameTimer > currentMove.bufferWindow))
+                {
+                    moveQueue.Dequeue();
+                }
             }
         }
         else
@@ -208,22 +283,19 @@ public class BasicMoveTester : MonoBehaviour
 
             //Process non-move actions like walking, crouching, etc here
         }
-
-        //This is put here in case the queue empties in previous loop
-        if (moveQueue.Count > 0)
-        {
-            if (currentMove != null)
-                return;
-            StartMove(moveQueue.Peek());
-        }
     }
 
     public void StartMove(Move newMove)
     {
+        processingMove = true;
         currentMove = newMove;
+        currentMove.moveState = MoveState.Windup;
+        windupFrameTimer = currentMove.windupTime;
 
-        //Do all the processing for the move here
-        anim.SetTrigger(currentMove.moveTrigger);
+        totalMoveFrameTime = currentMove.windupTime + currentMove.activeTime + currentMove.basicRecovery;
+
+        //Do all the intial processing for the move here
+        anim.SetTrigger(currentMove.animationName);
     }
 
     public void OnContact()

@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 [System.Serializable]
 public class Move
 {
-    //public MoveData moveData;
-    public int totalDuration;
-    public string moveTrigger;
+    public MoveState moveState;
+    public string animationName;
+    public float damage;
+    public int windupTime;
+    public int activeTime;
+    public int basicRecovery;
+    public int bufferWindow;
 
-    public Move()
+    public Move(string anim, float dmg, int windup, int active, int recovery, int buffer)
     {
-        totalDuration = 0;
-        moveTrigger = "";
-    }
-
-    public Move(int td, string trigger)
-    {
-        totalDuration = td;
-        moveTrigger = trigger;
+        moveState = MoveState.Waiting;
+        animationName = anim;
+        damage = dmg;
+        windupTime = windup;
+        activeTime = active;
+        basicRecovery = recovery;
+        bufferWindow = buffer;
     }
 }
