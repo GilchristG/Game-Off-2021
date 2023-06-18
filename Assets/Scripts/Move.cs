@@ -6,7 +6,7 @@ using UnityEngine;
 public class Move
 {
     //public MoveData moveData;
-    public float totalDuration;
+    public int totalDuration;
     public string moveTrigger;
 
     public Move()
@@ -15,7 +15,7 @@ public class Move
         moveTrigger = "";
     }
 
-    public Move(float td, string trigger)
+    public Move(int td, string trigger)
     {
         totalDuration = td;
         moveTrigger = trigger;

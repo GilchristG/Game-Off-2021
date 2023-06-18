@@ -5,7 +5,7 @@ using UnityEngine;
 //Potentially use this as basis for character controllers
 public class BasicMoveTester : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public FighterState currentState;
 
     Vector3 moveDirection;
     Animator anim;
@@ -20,9 +20,11 @@ public class BasicMoveTester : MonoBehaviour
 
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
+    
 
     private void Awake()
     {
+        currentState = FighterState.Neutral;
         characterInput.SetupBV(GetComponent<BufferVisualizer>());
         characterInput.training = true;
     }
@@ -36,6 +38,7 @@ public class BasicMoveTester : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
+    //Change this to reieve the input frame from a central synchronizer
     void Update()
     {
         moveDirection = new Vector3(0, 0, 0);
@@ -130,7 +133,7 @@ public class BasicMoveTester : MonoBehaviour
             currentFrame.inputs[3] = processingFrame.inputs[3];
 
             characterInput.PushIntoBuffer(currentFrame);
-            CheckForMoves();
+            CheckInput();
             ProcessMoves();
 
             //Reset the inputs
@@ -148,7 +151,7 @@ public class BasicMoveTester : MonoBehaviour
     //What we would want to do is have an extensive tree for checking move chains. Check from more complicated to less complicated. 
     //If a move is detected, push into a queue and at the end of frame check if it can be activated (early input buffer, is the player in block or hit stun, etc)
     //otherwise chuck it from the queue and continue to next frame
-    public void CheckForMoves()
+    public void CheckInput()
     {
 
         if (characterInput.CheckSequence(qcf, 16))
@@ -163,37 +166,84 @@ public class BasicMoveTester : MonoBehaviour
             if (characterInput.CheckSequence(qcf,16))
             {
                 //anim.SetTrigger("Hit");
-                moveQueue.Enqueue(new Move(1, "Hit"));
+                moveQueue.Enqueue(new Move(8, "Hit"));
             }
             else if (characterInput.CheckSequence(neutral, 16))
             {
                 //anim.SetTrigger("1");
-                moveQueue.Enqueue(new Move(0.2f, "1"));
+                moveQueue.Enqueue(new Move(8, "1"));
             }
         }
     }
 
-    double elapsedMoveTime = 0;
+    //tracked in frames
+    public int elapsedMoveTime = 0;
     Move currentMove;
     public Queue<Move> moveQueue = new Queue<Move>();
 
     public void ProcessMoves()
     {
+        Debug.Log("Number in Queue: " + moveQueue.Count);
+
+
         //Handles the list of moves currently processing
-        if(moveQueue.Count > 0)
+        if (moveQueue.Count > 0)
         {
-            elapsedMoveTime += Time.deltaTime;
+            Debug.Log("Move trigger: "+moveQueue.Peek().moveTrigger);
+
+            //THIS KEEPS TRACK OF FRAMES. REMEMBER THAT
+            elapsedMoveTime += 1;
             Move current = moveQueue.Peek();
             if (elapsedMoveTime > current.totalDuration)
             {
                 elapsedMoveTime -= current.totalDuration;
                 moveQueue.Dequeue();
+                currentMove = null;
                 Debug.Log(current.moveTrigger + " was current move");
             }
         }
         else
         {
             elapsedMoveTime = 0;
+
+            //Process non-move actions like walking, crouching, etc here
         }
+
+        //This is put here in case the queue empties in previous loop
+        if (moveQueue.Count > 0)
+        {
+            if (currentMove != null)
+                return;
+            StartMove(moveQueue.Peek());
+        }
+    }
+
+    public void StartMove(Move newMove)
+    {
+        currentMove = newMove;
+
+        //Do all the processing for the move here
+        anim.SetTrigger(currentMove.moveTrigger);
+    }
+
+    public void OnContact()
+    {
+        if (currentState == FighterState.Neutral || currentState == FighterState.Hit || currentState == FighterState.Attacking)
+        {
+            //Process normal hit. Can add punishment for being in an attack later
+
+            currentState = FighterState.Hit;
+
+            //Send player into hit stun
+        }
+        else if (currentState == FighterState.Blocking)
+        {
+            //Send player into block stun
+        }
+        else
+        {
+            //Player is invincible. They are uneffected
+        }
+
     }
 }
