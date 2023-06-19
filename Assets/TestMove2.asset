@@ -16,7 +16,9 @@ MonoBehaviour:
   attackbuttons: 00000000
   animationName: 1
   damage: 0
-  windupTime: 9
+  windupTime: 4
   activeTime: 7
   basicRecovery: 9
   bufferWindow: 5
+  hitStunTime: 0
+  blockStunTime: 0

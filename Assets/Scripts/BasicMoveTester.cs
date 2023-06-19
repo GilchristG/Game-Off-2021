@@ -367,7 +367,7 @@ public class BasicMoveTester : MonoBehaviour
         //Get opponent position and check if left or right
         //facingRight = true;
 
-        if ((currentState != FighterState.Attacking || currentState != FighterState.Hit) && !IsStunned())
+        if (currentStance != FighterStance.Airborne && (currentState != FighterState.Attacking || currentState != FighterState.Hit) && !IsStunned())
         {
             if (facingRight)
             {
@@ -408,6 +408,7 @@ public class BasicMoveTester : MonoBehaviour
                 if (moveDirection.y > 0)
                 {
                     currentStance = FighterStance.Airborne;
+                    anim.SetBool("Airborne", true);
                 }
                 else if (moveDirection.y < 0)
                 {
@@ -424,6 +425,7 @@ public class BasicMoveTester : MonoBehaviour
                 }
                 else if(moveDirection.y > 0)
                 {
+                    anim.SetBool("Airborne", true);
                     currentStance = FighterStance.Airborne;
                     rb.velocity = moveDirection * speed;
                 }
@@ -447,6 +449,7 @@ public class BasicMoveTester : MonoBehaviour
         if(collision.gameObject.tag == "Floor")
         {
             currentStance = FighterStance.Standing;
+            anim.SetBool("Airborne", false);
         }
     }
 }
