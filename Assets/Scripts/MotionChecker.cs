@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class MotionChecker
 {
-    public CharacterInput inputSequence;
+    //TODO: ADD DPs
 
     int[] fc_R = new int[] {6,3,2,1,4,7,8,9,6};
     int[] hc_R = new int[] {6,3,2,1,4,6};
@@ -23,7 +23,7 @@ public class MotionChecker
     int[] neutral = new int[] { 5 };
     int[] down = new int[] {2};
 
-    public MotionType CheckForSingleMostComplicated(CharacterInput input, bool facingRight)
+    public MotionType CheckForSingleMostComplicated(CharacterInput inputSequence, bool facingRight)
     {
         if (facingRight)
         {
@@ -91,7 +91,7 @@ public class MotionChecker
         return MotionType.Neutral;
     }
 
-    public List<MotionType> CheckForAllApplicable(CharacterInput input, bool facingRight)
+    public List<MotionType> CheckForAllApplicable(CharacterInput inputSequence, bool facingRight)
     {
         List<MotionType> moves = new List<MotionType>();
 

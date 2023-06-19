@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 //Potentially use this as basis for character controllers
 public class BasicMoveTester : MonoBehaviour
@@ -142,8 +143,10 @@ public class BasicMoveTester : MonoBehaviour
         }
     }
 
-    public MotionChecker motionChecker;
+    public MotionChecker motionChecker = new MotionChecker();
     public MoveSet moveSet;
+
+    public List<MoveData> subSection = new List<MoveData>();
 
     //What we would want to do is have an extensive tree for checking move chains. Check from more complicated to less complicated. 
     //If a move is detected, push into a queue and at the end of frame check if it can be activated (early input buffer, is the player in block or hit stun, etc)
@@ -155,14 +158,40 @@ public class BasicMoveTester : MonoBehaviour
     {
         InputFrame currentFrame = characterInput.GetCurrentFrame();
 
-        List<MotionType> movesDetected = motionChecker.CheckForAllApplicable(characterInput,facingRight);
+        //This properly detects the most complicated moves first
+        List<MotionType> movesDetected = motionChecker.CheckForAllApplicable(characterInput, facingRight);
 
-        foreach(MoveData md in moveSet.moves)
+        if (currentFrame.inputs[1] == 1 || currentFrame.inputs[2] == 1 || currentFrame.inputs[3] == 1)
         {
 
+            foreach (MoveData md in moveSet.moves)
+            {
+                if (movesDetected.Contains(md.motionSequence))
+                {
+                    subSection.Add(md);
+                }
+            }
 
+            //TODO: Make sure all potential moves are shown
 
+            //Sorts the moves by motion complexity so more complex actions will activate first if possible
+            IComparer<MoveData> ms = new MoveSorter();
+            subSection.Sort(ms);
+
+            foreach (MoveData md in subSection)
+            {
+                //TODO: Add checks for multiple buttons
+                if (currentFrame.inputs[(int)md.attackbuttons[0] + 1] == 1)
+                {
+                    moveQueue.Enqueue(md.CreateMove());
+                }
+            }
+
+            Debug.LogError("Pause for checking buffer");
         }
+
+        subSection.Clear();
+        movesDetected.Clear();
     }
 
     //NOTE: THIS KEEPS TRACK OF FRAMES. REMEMBER THAT

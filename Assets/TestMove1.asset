@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
   m_Name: TestMove1
   m_EditorClassIdentifier: 
+  motionSequence: 5
+  attackbuttons: 00000000
   animationName: Hit
   damage: 0
   windupTime: 12

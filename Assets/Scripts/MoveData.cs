@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Move",menuName = "Character Assets/MoveData", order = 0)]
+[System.Serializable]
 public class MoveData : ScriptableObject
 {
     [Tooltip("Motion sequence needed from P1 position")]

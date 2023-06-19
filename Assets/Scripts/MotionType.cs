@@ -1,10 +1,10 @@
 public enum MotionType
 {
+    Neutral,
     Towards,
     Away,
     Down,
     Up,
-    Neutral,
     QCF,
     QCB,
     HCF,
