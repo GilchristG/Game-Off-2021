@@ -11,6 +11,8 @@ public class MotionChecker
 
     int[] towards_R = new int[] { 6 };
     int[] away_R = new int[] { 4 };
+    int[] downBack_R = new int[] { 1 };
+    int[] downTowards_R = new int[] { 3 };
 
     int[] fc_L = new int[] { 4,1,2,3,6,9,8,7,4 };
     int[] hc_L = new int[] { 4,1,2,3,6,4};
@@ -19,6 +21,8 @@ public class MotionChecker
 
     int[] towards_L = new int[] { 4 };
     int[] away_L = new int[] { 6 };
+    int[] downBack_L = new int[] {3};
+    int[] downTowards_L = new int[] {1};
 
     int[] neutral = new int[] { 5 };
     int[] down = new int[] {2};
@@ -117,13 +121,13 @@ public class MotionChecker
             {
                 moves.Add(MotionType.Towards);
             }
+            if (inputSequence.CheckSequence(down, 8) || inputSequence.CheckSequence(downBack_R, 8) || inputSequence.CheckSequence(downTowards_R, 8))
+            {
+                moves.Add(MotionType.Down);
+            }
             if (inputSequence.CheckSequence(away_R, 8))
             {
                 moves.Add(MotionType.Away);
-            }
-            if (inputSequence.CheckSequence(down, 8))
-            {
-                moves.Add(MotionType.Down);
             }
         }
         else
@@ -148,13 +152,13 @@ public class MotionChecker
             {
                 moves.Add(MotionType.Towards);
             }
+            if (inputSequence.CheckSequence(down, 8) || inputSequence.CheckSequence(downBack_L, 8) || inputSequence.CheckSequence(downTowards_L, 8))
+            {
+                moves.Add(MotionType.Down);
+            }
             if (inputSequence.CheckSequence(away_L, 8))
             {
                 moves.Add(MotionType.Away);
-            }
-            if (inputSequence.CheckSequence(down, 8))
-            {
-                moves.Add(MotionType.Down);
             }
         }
 

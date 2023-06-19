@@ -653,7 +653,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &377822532
 BoxCollider2D:
@@ -765,7 +765,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  speed: 10
+  currentStance: 0
+  speed: 5
+  jumpMultiplier: 3
   characterInput:
     buffer:
     - inputs: 00000000000000000000000000000000
@@ -833,11 +835,13 @@ MonoBehaviour:
   frameDuration: 0.016
   nextFrameTime: 0
   moveSet: {fileID: 11400000, guid: df29befacc22ce24b9218467572ce5c0, type: 2}
+  subSection: []
   elapsedMoveTime: 0
   windupFrameTimer: 0
   activeFrameTimer: 0
   recoveryFrameTimer: 0
   totalMoveFrameTime: 0
+  stunTimer: 0
   processingMove: 0
   currentMove:
     moveState: 0
@@ -847,6 +851,8 @@ MonoBehaviour:
     activeTime: 0
     basicRecovery: 0
     bufferWindow: 0
+    hitStunTime: 0
+    blockStunTime: 0
 --- !u!95 &377822538
 Animator:
   serializedVersion: 4

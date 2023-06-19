@@ -20,24 +20,20 @@ public class MoveData : ScriptableObject
     [Tooltip("The last number of frames during recovery that will let you queue up a new move")]
     [SerializeField] int bufferWindow;
 
+    [SerializeField] int hitStunTime;
+    [SerializeField] int blockStunTime;
+
     //NOTE: Don't forget to put these values in frames (about 16ms each)
     //Unused at the moment
     float recoveryTimeHit;
     float recoveryTimeMiss;
     float recoveryTimeBlocked;
-    float hitStunTime;
-    float blockStunTime;
     Vector2 knockbackDir;
     float knockbackForce;
 
     public Move CreateMove()
     {
-        Move newMove = new Move(animationName, damage, windupTime, activeTime, basicRecovery, bufferWindow);
+        Move newMove = new Move(animationName, damage, windupTime, activeTime, basicRecovery, bufferWindow, hitStunTime, blockStunTime);
         return newMove;
-    }
-
-    public void CheckButtons(int[] data)
-    {
-
     }
 }

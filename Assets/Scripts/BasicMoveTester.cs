@@ -7,6 +7,7 @@ using System.Linq;
 public class BasicMoveTester : MonoBehaviour
 {
     public FighterState currentState;
+    public FighterStance currentStance;
 
     Vector3 moveDirection;
     Animator anim;
@@ -14,6 +15,7 @@ public class BasicMoveTester : MonoBehaviour
     Rigidbody2D rb;
 
     [SerializeField] float speed = 50f;
+    [SerializeField] float jumpMultiplier = 1.5f;
 
     public CharacterInput characterInput = new CharacterInput();
     InputFrame processingFrame;
@@ -21,7 +23,7 @@ public class BasicMoveTester : MonoBehaviour
 
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
-    
+
 
     private void Awake()
     {
@@ -134,8 +136,11 @@ public class BasicMoveTester : MonoBehaviour
             currentFrame.inputs[3] = processingFrame.inputs[3];
 
             characterInput.PushIntoBuffer(currentFrame);
+
             CheckInput();
             ProcessMoves();
+            ProcessFighterState();
+            ProcessFighterMovement();
 
             //Reset the inputs
             processingFrame = new InputFrame();
@@ -154,7 +159,7 @@ public class BasicMoveTester : MonoBehaviour
 
     bool facingRight = true;
 
-    public void CheckInput()
+    void CheckInput()
     {
         InputFrame currentFrame = characterInput.GetCurrentFrame();
 
@@ -201,12 +206,13 @@ public class BasicMoveTester : MonoBehaviour
     public int activeFrameTimer = 0;
     public int recoveryFrameTimer = 0;
     public int totalMoveFrameTime = 0;
+    public int stunTimer = 0;
 
     public bool processingMove = false;
     public Move currentMove = null;
     public Queue<Move> moveQueue = new Queue<Move>();
 
-    public void ProcessMoves()
+    void ProcessMoves()
     {
         Debug.Log("Number in Queue: " + moveQueue.Count);
 
@@ -214,7 +220,7 @@ public class BasicMoveTester : MonoBehaviour
         if (moveQueue.Count > 0)
         {
             //Can potnetially put cancelling info here
-            if (!processingMove)
+            if (!processingMove && !IsStunned())
             {
                 StartMove(moveQueue.Dequeue());
             }
@@ -232,7 +238,7 @@ public class BasicMoveTester : MonoBehaviour
             switch (currentMove.moveState)
             {
                 case MoveState.Windup:
-                    if(windupFrameTimer <= 0)
+                    if (windupFrameTimer <= 0)
                     {
                         windupFrameTimer = 0;
                         activeFrameTimer = currentMove.activeTime;
@@ -242,7 +248,7 @@ public class BasicMoveTester : MonoBehaviour
 
                     break;
                 case MoveState.Active:
-                    if(activeFrameTimer <= 0)
+                    if (activeFrameTimer <= 0)
                     {
                         activeFrameTimer = 0;
                         recoveryFrameTimer = currentMove.basicRecovery;
@@ -260,12 +266,7 @@ public class BasicMoveTester : MonoBehaviour
                     {
                         //Clear out the currentMove
                         Debug.Log(currentMove.animationName + " total frame time: " + elapsedMoveTime);
-                        windupFrameTimer = 0;
-                        activeFrameTimer = 0;
-                        recoveryFrameTimer = 0;
-                        elapsedMoveTime = 0;
-                        currentMove = null;
-                        processingMove = false;
+                        EndMove();
                     }
                     recoveryFrameTimer--;
 
@@ -276,7 +277,7 @@ public class BasicMoveTester : MonoBehaviour
             if (moveQueue.Count > 0)
             {
                 //This should allow for some stupid buffer windows if needed
-                if(currentMove != null && ((totalMoveFrameTime - elapsedMoveTime) < currentMove.bufferWindow))
+                if (currentMove != null && ((totalMoveFrameTime - elapsedMoveTime) < currentMove.bufferWindow))
                 {
                     moveQueue.Dequeue();
                 }
@@ -290,9 +291,11 @@ public class BasicMoveTester : MonoBehaviour
         }
     }
 
-    public void StartMove(Move newMove)
+    void StartMove(Move newMove)
     {
         processingMove = true;
+        currentState = FighterState.Attacking;
+
         currentMove = newMove;
         currentMove.moveState = MoveState.Windup;
         windupFrameTimer = currentMove.windupTime;
@@ -303,24 +306,150 @@ public class BasicMoveTester : MonoBehaviour
         anim.SetTrigger(currentMove.animationName);
     }
 
-    public void OnContact()
+    void EndMove()
+    {
+        currentState = FighterState.Neutral;
+
+        windupFrameTimer = 0;
+        activeFrameTimer = 0;
+        recoveryFrameTimer = 0;
+        elapsedMoveTime = 0;
+        currentMove = null;
+        processingMove = false;
+    }
+
+    void OnHit()
+    {
+        currentState = FighterState.Hit;
+
+        EndMove();
+        //Force animation into hit stun
+        anim.SetTrigger("Hit");
+
+
+    }
+
+    public void OnContact(Move hittingMove)
     {
         if (currentState == FighterState.Neutral || currentState == FighterState.Hit || currentState == FighterState.Attacking)
         {
             //Process normal hit. Can add punishment for being in an attack later
-
-            currentState = FighterState.Hit;
-
             //Send player into hit stun
+            OnHit();
+
+            stunTimer = hittingMove.hitStunTime;
         }
         else if (currentState == FighterState.Blocking)
         {
             //Send player into block stun
+            stunTimer = hittingMove.blockStunTime;
         }
         else
         {
             //Player is invincible. They are uneffected
         }
 
+    }
+
+    void ProcessFighterState()
+    {
+        InputFrame currentFrame = characterInput.GetCurrentFrame();
+
+        stunTimer--;
+
+        if (stunTimer <= 0)
+        {
+            //Let the player get out of a stun into blocking. If holding appropriate buttons, player can block immediately
+            currentState = FighterState.Blocking;
+        }
+
+
+        //Get opponent position and check if left or right
+        //facingRight = true;
+
+        if ((currentState != FighterState.Attacking || currentState != FighterState.Hit) && !IsStunned())
+        {
+            if (facingRight)
+            {
+                if (currentFrame.inputs[0] == 4 || currentFrame.inputs[0] == 1)
+                {
+                    currentState = FighterState.Blocking;
+                }
+                else
+                {
+                    currentState = FighterState.Neutral;
+                }
+            }
+            else
+            {
+                if (currentFrame.inputs[0] == 6 || currentFrame.inputs[0] == 3)
+                {
+                    currentState = FighterState.Blocking;
+                }
+                else
+                {
+                    currentState = FighterState.Neutral;
+                }
+            }
+        }
+
+        
+    }
+
+    void ProcessFighterMovement()
+    {
+        InputFrame currentFrame = characterInput.GetCurrentFrame();
+
+
+        //Might want to make sub states for each one. Force blocking
+        if ((currentState != FighterState.Attacking && currentState != FighterState.Hit) && !IsStunned())
+        {
+            if(currentStance != FighterStance.Crouching && currentStance != FighterStance.Airborne)
+            {
+                if (moveDirection.y > 0)
+                {
+                    currentStance = FighterStance.Airborne;
+                }
+                else if (moveDirection.y < 0)
+                {
+                    currentStance = FighterStance.Crouching;
+                }
+                moveDirection.y *= jumpMultiplier;
+                rb.velocity = moveDirection * speed;
+            }
+            else if(currentStance == FighterStance.Crouching)
+            {
+                if(moveDirection.y == 0)
+                {
+                    currentStance = FighterStance.Standing;
+                }
+                else if(moveDirection.y > 0)
+                {
+                    currentStance = FighterStance.Airborne;
+                    rb.velocity = moveDirection * speed;
+                }
+                
+            }
+        }
+
+        
+    }
+
+    bool IsStunned()
+    {
+        if (stunTimer > 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Floor")
+        {
+            currentStance = FighterStance.Standing;
+        }
     }
 }
