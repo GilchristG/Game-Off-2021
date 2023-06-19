@@ -142,40 +142,26 @@ public class BasicMoveTester : MonoBehaviour
         }
     }
 
-    int[] qcf = new int[] { 2, 3, 6 };
-
-    int[] right = new int[] {6};
-
-    int[] neutral = new int[] {5};
-
-    public MoveData testMove1;
-    public MoveData testMove2;
+    public MotionChecker motionChecker;
+    public MoveSet moveSet;
 
     //What we would want to do is have an extensive tree for checking move chains. Check from more complicated to less complicated. 
     //If a move is detected, push into a queue and at the end of frame check if it can be activated (early input buffer, is the player in block or hit stun, etc)
     //otherwise chuck it from the queue and continue to next frame
+
+    bool facingRight = true;
+
     public void CheckInput()
     {
+        InputFrame currentFrame = characterInput.GetCurrentFrame();
 
-        if (characterInput.CheckSequence(qcf, 16))
+        List<MotionType> movesDetected = motionChecker.CheckForAllApplicable(characterInput,facingRight);
+
+        foreach(MoveData md in moveSet.moves)
         {
-            Debug.Log("Found qcf");
-        }
 
-        if (characterInput.GetCurrentFrame().inputs[1] == 1)
-        {
-            Debug.Log("Punch button detected");
 
-            if (characterInput.CheckSequence(qcf,16))
-            {
-                //anim.SetTrigger("Hit");
-                moveQueue.Enqueue(testMove1.CreateMove());
-            }
-            else if (characterInput.CheckSequence(neutral, 16))
-            {
-                //anim.SetTrigger("1");
-                moveQueue.Enqueue(testMove2.CreateMove());
-            }
+
         }
     }
 
@@ -245,6 +231,8 @@ public class BasicMoveTester : MonoBehaviour
                     {
                         //Clear out the currentMove
                         Debug.Log(currentMove.animationName + " total frame time: " + elapsedMoveTime);
+                        windupFrameTimer = 0;
+                        activeFrameTimer = 0;
                         recoveryFrameTimer = 0;
                         elapsedMoveTime = 0;
                         currentMove = null;
@@ -255,23 +243,11 @@ public class BasicMoveTester : MonoBehaviour
                     break;
             }
 
-            //Emergency abandon
-            /*if(elapsedMoveTime > totalMoveFrameTime)
-            {
-                Debug.Log(currentMove.animationName + " total frame time: " + elapsedMoveTime);
-                windupFrameTimer = 0;
-                activeFrameTimer = 0;
-                recoveryFrameTimer = 0;
-                elapsedMoveTime = 0;
-                currentMove = null;
-                processingMove = false;
-            }*/
-
-
             //Get the next move in the queue for chaining purposes
             if (moveQueue.Count > 0)
             {
-                if(currentMove != null && (currentMove.moveState != MoveState.Recovery || recoveryFrameTimer > currentMove.bufferWindow))
+                //This should allow for some stupid buffer windows if needed
+                if(currentMove != null && ((totalMoveFrameTime - elapsedMoveTime) < currentMove.bufferWindow))
                 {
                     moveQueue.Dequeue();
                 }

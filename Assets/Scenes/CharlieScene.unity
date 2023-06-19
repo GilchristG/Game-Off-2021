@@ -832,8 +832,7 @@ MonoBehaviour:
     training: 0
   frameDuration: 0.016
   nextFrameTime: 0
-  testMove1: {fileID: 11400000, guid: f920bd561bd6a244e9499efa6ee841af, type: 2}
-  testMove2: {fileID: 11400000, guid: 47e838036466fb24b92df43fe561c004, type: 2}
+  moveSet: {fileID: 11400000, guid: df29befacc22ce24b9218467572ce5c0, type: 2}
   elapsedMoveTime: 0
   windupFrameTimer: 0
   activeFrameTimer: 0

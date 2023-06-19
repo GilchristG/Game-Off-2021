@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Move",menuName = "Chracter Assets/MoveData", order = 0)]
+[CreateAssetMenu(fileName = "New Move",menuName = "Character Assets/MoveData", order = 0)]
 public class MoveData : ScriptableObject
 {
+    [Tooltip("Motion sequence needed from P1 position")]
+    public MotionType motionSequence;
+    [Tooltip("Buttons needed at the same time")]
+    public Button[] attackbuttons;
+
     [SerializeField] string animationName;
 
     [SerializeField] float damage;
@@ -28,5 +33,10 @@ public class MoveData : ScriptableObject
     {
         Move newMove = new Move(animationName, damage, windupTime, activeTime, basicRecovery, bufferWindow);
         return newMove;
+    }
+
+    public void CheckButtons(int[] data)
+    {
+
     }
 }
