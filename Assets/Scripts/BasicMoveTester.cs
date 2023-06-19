@@ -192,7 +192,7 @@ public class BasicMoveTester : MonoBehaviour
                 }
             }
 
-            Debug.LogError("Pause for checking buffer");
+            //Debug.LogError("Pause for checking buffer");
         }
 
         subSection.Clear();
@@ -400,7 +400,6 @@ public class BasicMoveTester : MonoBehaviour
     {
         InputFrame currentFrame = characterInput.GetCurrentFrame();
 
-
         //Might want to make sub states for each one. Force blocking
         if ((currentState != FighterState.Attacking && currentState != FighterState.Hit) && !IsStunned())
         {
@@ -431,8 +430,6 @@ public class BasicMoveTester : MonoBehaviour
                 
             }
         }
-
-        
     }
 
     bool IsStunned()
