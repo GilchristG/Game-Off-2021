@@ -1,11 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using UnityEngine.Events;
+using System;
 
 //Potentially use this as basis for character controllers
 public class BasicMoveTester : MonoBehaviour
 {
+    //Character events
+    //Transform hitLocation for spawning effects, Int damage to determine effect size
+    public Action<Vector3, int> onPlayerHit;
+    public Action<int> onPlayerHealthLoss;
+    public Action onPlayerKnockedOut;
+    public Action<Move> onPlayerMoveStart;
+    public Action onPlayerMoveFinished;
+
+
+    public int playerHealth = 100;
+
     public FighterState currentState;
     public FighterStance currentStance;
 
@@ -24,12 +36,25 @@ public class BasicMoveTester : MonoBehaviour
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
 
+    [SerializeField] bool touchingOpponent = false;
+
+    HitboxManager hitboxManager;
+    HurtboxManager hurtboxManager;
+
+    
 
     private void Awake()
     {
+
+
+
         currentState = FighterState.Neutral;
         characterInput.SetupBV(GetComponent<BufferVisualizer>());
         characterInput.training = true;
+        hitboxManager = GetComponentInChildren<HitboxManager>();
+        hitboxManager.SetParent(this);
+        hurtboxManager = GetComponentInChildren<HurtboxManager>();
+        hurtboxManager.SetSelfHitbox(hitboxManager);
     }
 
     void Start()
@@ -162,6 +187,9 @@ public class BasicMoveTester : MonoBehaviour
 
     void CheckInput()
     {
+        if (moveSet == null)
+            return;
+
         InputFrame currentFrame = characterInput.GetCurrentFrame();
 
         //This properly detects the most complicated moves first
@@ -215,7 +243,7 @@ public class BasicMoveTester : MonoBehaviour
 
     void ProcessMoves()
     {
-        Debug.Log("Number in Queue: " + moveQueue.Count);
+        //Debug.Log("Number in Queue: " + moveQueue.Count);
 
         //This is put here in case the queue empties in previous loop
         if (moveQueue.Count > 0)
@@ -234,7 +262,7 @@ public class BasicMoveTester : MonoBehaviour
             elapsedMoveTime += 1;
 
 
-            Debug.Log("Current move " + currentMove.animationName);
+            //Debug.Log("Current move " + currentMove.animationName);
 
             switch (currentMove.moveState)
             {
@@ -244,6 +272,7 @@ public class BasicMoveTester : MonoBehaviour
                         windupFrameTimer = 0;
                         activeFrameTimer = currentMove.activeTime;
                         currentMove.moveState = MoveState.Active;
+                        hurtboxManager.ActivateHurtbox(currentMove);
                     }
                     windupFrameTimer--;
 
@@ -254,6 +283,7 @@ public class BasicMoveTester : MonoBehaviour
                         activeFrameTimer = 0;
                         recoveryFrameTimer = currentMove.basicRecovery;
                         currentMove.moveState = MoveState.Recovery;
+                        hurtboxManager.DeactivateHurtbox();
                     }
                     else
                     {
@@ -298,10 +328,13 @@ public class BasicMoveTester : MonoBehaviour
         currentState = FighterState.Attacking;
 
         currentMove = newMove;
+        onPlayerMoveStart?.Invoke(currentMove);
         currentMove.moveState = MoveState.Windup;
         windupFrameTimer = currentMove.windupTime;
 
         totalMoveFrameTime = currentMove.windupTime + currentMove.activeTime + currentMove.basicRecovery;
+
+        //hurtboxManager.ActivateHurtbox(currentMove);
 
         //Do all the intial processing for the move here
         anim.SetTrigger(currentMove.animationName);
@@ -309,8 +342,12 @@ public class BasicMoveTester : MonoBehaviour
 
     void EndMove()
     {
-        currentState = FighterState.Neutral;
+        //Might change this to blocking so the player can immediately block out of a move recovery
+        if(currentState != FighterState.Hit || currentState != FighterState.Blocking)
+            currentState = FighterState.Neutral;
 
+        onPlayerMoveFinished?.Invoke();
+        hurtboxManager.DeactivateHurtbox();
         windupFrameTimer = 0;
         activeFrameTimer = 0;
         recoveryFrameTimer = 0;
@@ -319,29 +356,49 @@ public class BasicMoveTester : MonoBehaviour
         processingMove = false;
     }
 
-    void OnHit()
+    void OnHit(Move hittingMove)
     {
+        playerHealth -= hittingMove.damage;
+        onPlayerHealthLoss?.Invoke(hittingMove.damage);
+
+        if(playerHealth <= 0)
+        {
+            onPlayerKnockedOut?.Invoke();
+        }
+
+        stunTimer = hittingMove.hitStunTime;
+
         currentState = FighterState.Hit;
         //Stop all player momentum. 
-        //NOTE: Potentially add a little back force here
+        //TODO: Add the knockback forces here
         rb.velocity = new Vector2(0, 0);
-        EndMove();
+        //EndMove();
     }
 
-    public void OnContact(Move hittingMove)
+    public void OnContact(Move hittingMove, Vector3 hitLocation)
     {
         if (currentState == FighterState.Neutral || currentState == FighterState.Hit || currentState == FighterState.Attacking)
         {
             //Process normal hit. Can add punishment for being in an attack later
             //Send player into hit stun
-            OnHit();
+            OnHit(hittingMove);
 
             stunTimer = hittingMove.hitStunTime;
+
+            if (hitLocation != null)
+            {
+                onPlayerHit?.Invoke(hitLocation, hittingMove.damage);
+            }
         }
         else if (currentState == FighterState.Blocking)
         {
             //Send player into block stun
             stunTimer = hittingMove.blockStunTime;
+
+            if(hitLocation!=null)
+            {
+                onPlayerHit?.Invoke(hitLocation, 0);
+            }
         }
         else
         {
@@ -357,20 +414,21 @@ public class BasicMoveTester : MonoBehaviour
         if (stunTimer > 0)
         {
             stunTimer--;
+            if (stunTimer <= 0)
+            {
+                stunTimer = 0;
+                //Let the player get out of a stun into blocking. If holding appropriate buttons, player can block immediately
+                currentState = FighterState.Blocking;
+            }
         }
 
-        if (stunTimer <= 0)
-        {
-            stunTimer = 0;
-            //Let the player get out of a stun into blocking. If holding appropriate buttons, player can block immediately
-            currentState = FighterState.Blocking;
-        }
+        
 
 
         //Get opponent position and check if left or right
         //facingRight = true;
 
-        if (currentStance != FighterStance.Airborne && (currentState != FighterState.Attacking || currentState != FighterState.Hit) && !IsStunned())
+        if (currentStance != FighterStance.Airborne && !(currentState == FighterState.Attacking || currentState == FighterState.Hit) && !IsStunned())
         {
             if (facingRight)
             {
@@ -402,7 +460,7 @@ public class BasicMoveTester : MonoBehaviour
         InputFrame currentFrame = characterInput.GetCurrentFrame();
 
         //Might want to make sub states for each one. Force blocking
-        if ((currentState != FighterState.Attacking && currentState != FighterState.Hit) && !IsStunned())
+        if (!(currentState == FighterState.Attacking || currentState == FighterState.Hit) && !IsStunned())
         {
             if(currentStance != FighterStance.Crouching && currentStance != FighterStance.Airborne)
             {
@@ -431,19 +489,34 @@ public class BasicMoveTester : MonoBehaviour
                 
             }
         }
+
+        if(touchingOpponent)
+        {
+            //Add a slight back force when touching the opponent.
+            //adjustVelocity = (player.position - opponent.position);
+            //adjustVelocity.y = 0;
+            //rb.velocity += adjustVelocity;
+
+            //Make sure to account for being airborne.
+        }
+
     }
 
     void ProcessAnimations()
     {
-        if (currentState == FighterState.Hit && stunTimer > 0)
+        anim.SetInteger("StunTimer", stunTimer);
+
+        if (currentState == FighterState.Hit && IsStunned())
         {
-            anim.SetInteger("StunTimer",stunTimer);
             anim.SetTrigger("Hit");
         }
-        else if (currentState == FighterState.Blocking && stunTimer > 0)
+        else if (currentState == FighterState.Blocking && IsStunned())
         {
-            anim.SetInteger("StunTimer", stunTimer);
             anim.SetTrigger("Block");
+        }
+        else if(currentState == FighterState.Attacking)
+        {
+            anim.SetFloat("VelTowards", 0);
         }
         else
         {
@@ -470,6 +543,19 @@ public class BasicMoveTester : MonoBehaviour
         {
             currentStance = FighterStance.Standing;
             anim.SetBool("Airborne", false);
+        }
+
+        if(collision.gameObject.tag == "Player")
+        {
+            touchingOpponent = true;
+        }
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            touchingOpponent = false;
         }
     }
 }

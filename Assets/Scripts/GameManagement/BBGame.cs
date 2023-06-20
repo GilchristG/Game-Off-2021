@@ -13,6 +13,7 @@ public static class BBConstrants
 
 
     //THESE WERE LEFT HERE FROM THE EXAMPLE CODE. I NEED TO CHANGE THESE TO FIT OUR GAME
+    //Use the bitwise opperations to help with making input packets smaller
     public const int INPUT_THRUST = (1 << 0);
     public const int INPUT_BREAK = (1 << 1);
     public const int INPUT_ROTATE_LEFT = (1 << 2);

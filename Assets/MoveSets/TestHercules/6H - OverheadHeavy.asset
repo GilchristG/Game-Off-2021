@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
-  m_Name: TestMove2
+  m_Name: 6H - OverheadHeavy
   m_EditorClassIdentifier: 
-  motionSequence: 0
-  attackbuttons: 00000000
-  animationName: 1
-  damage: 0
-  windupTime: 4
-  activeTime: 7
-  basicRecovery: 9
-  bufferWindow: 5
+  motionSequence: 1
+  attackbuttons: 02000000
+  animationName: HeavyOverhead
+  damage: 15
+  windupTime: 0
+  activeTime: 0
+  basicRecovery: 0
+  bufferWindow: 0
   hitStunTime: 0
   blockStunTime: 0

@@ -9,9 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ac938711f28a744b8aae371d0c3b44c, type: 3}
-  m_Name: TestMoveSet
+  m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
+  m_Name: 4L - Jab
   m_EditorClassIdentifier: 
-  moves:
-  - {fileID: 11400000, guid: f920bd561bd6a244e9499efa6ee841af, type: 2}
-  - {fileID: 11400000, guid: 47e838036466fb24b92df43fe561c004, type: 2}
+  motionSequence: 2
+  attackbuttons: 00000000
+  animationName: 1
+  damage: 5
+  windupTime: 4
+  activeTime: 7
+  basicRecovery: 9
+  bufferWindow: 5
+  hitStunTime: 8
+  blockStunTime: 6

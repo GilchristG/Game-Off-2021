@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
-  m_Name: TestMove1
+  m_Name: 5L-Jab
   m_EditorClassIdentifier: 
-  motionSequence: 5
+  motionSequence: 0
   attackbuttons: 00000000
-  animationName: Hit
-  damage: 0
-  windupTime: 12
-  activeTime: 10
-  basicRecovery: 12
+  animationName: 1
+  damage: 5
+  windupTime: 4
+  activeTime: 7
+  basicRecovery: 9
   bufferWindow: 5
+  hitStunTime: 8
+  blockStunTime: 6

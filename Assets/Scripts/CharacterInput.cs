@@ -50,7 +50,7 @@ public class CharacterInput
 
         if(training)
         {
-            bv.DisplayBuffer(inputs);
+            bv?.DisplayBuffer(inputs);
         }
     }
 

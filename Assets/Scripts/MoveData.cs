@@ -13,7 +13,7 @@ public class MoveData : ScriptableObject
 
     [SerializeField] string animationName;
 
-    [SerializeField] float damage;
+    [SerializeField] int damage;
     [SerializeField] int windupTime;
     [SerializeField] int activeTime;
     [SerializeField] int basicRecovery;
