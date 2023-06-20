@@ -387,7 +387,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.7003393
+  orthographic size: 6.9012556
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1484,7 +1484,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.07887474, y: -0.0339977}
+  m_Offset: {x: -0.09865177, y: -0.033997715}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1495,7 +1495,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.25477064, y: 0.58386815}
+  m_Size: {x: 0.21521658, y: 0.58386815}
   m_EdgeRadius: 0
 --- !u!1 &723913410
 GameObject:

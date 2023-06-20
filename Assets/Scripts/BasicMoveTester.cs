@@ -141,6 +141,7 @@ public class BasicMoveTester : MonoBehaviour
             ProcessMoves();
             ProcessFighterState();
             ProcessFighterMovement();
+            ProcessAnimations();
 
             //Reset the inputs
             processingFrame = new InputFrame();
@@ -321,12 +322,10 @@ public class BasicMoveTester : MonoBehaviour
     void OnHit()
     {
         currentState = FighterState.Hit;
-
+        //Stop all player momentum. 
+        //NOTE: Potentially add a little back force here
+        rb.velocity = new Vector2(0, 0);
         EndMove();
-        //Force animation into hit stun
-        anim.SetTrigger("Hit");
-
-
     }
 
     public void OnContact(Move hittingMove)
@@ -355,10 +354,14 @@ public class BasicMoveTester : MonoBehaviour
     {
         InputFrame currentFrame = characterInput.GetCurrentFrame();
 
-        stunTimer--;
+        if (stunTimer > 0)
+        {
+            stunTimer--;
+        }
 
         if (stunTimer <= 0)
         {
+            stunTimer = 0;
             //Let the player get out of a stun into blocking. If holding appropriate buttons, player can block immediately
             currentState = FighterState.Blocking;
         }
@@ -392,8 +395,6 @@ public class BasicMoveTester : MonoBehaviour
                 }
             }
         }
-
-        
     }
 
     void ProcessFighterMovement()
@@ -408,7 +409,6 @@ public class BasicMoveTester : MonoBehaviour
                 if (moveDirection.y > 0)
                 {
                     currentStance = FighterStance.Airborne;
-                    anim.SetBool("Airborne", true);
                 }
                 else if (moveDirection.y < 0)
                 {
@@ -425,7 +425,6 @@ public class BasicMoveTester : MonoBehaviour
                 }
                 else if(moveDirection.y > 0)
                 {
-                    anim.SetBool("Airborne", true);
                     currentStance = FighterStance.Airborne;
                     rb.velocity = moveDirection * speed;
                 }
@@ -433,6 +432,27 @@ public class BasicMoveTester : MonoBehaviour
             }
         }
     }
+
+    void ProcessAnimations()
+    {
+        if (currentState == FighterState.Hit && stunTimer > 0)
+        {
+            anim.SetInteger("StunTimer",stunTimer);
+            anim.SetTrigger("Hit");
+        }
+        else if (currentState == FighterState.Blocking && stunTimer > 0)
+        {
+            anim.SetInteger("StunTimer", stunTimer);
+            anim.SetTrigger("Block");
+        }
+        else
+        {
+            anim.SetBool("Airborne", currentStance == FighterStance.Airborne);
+            anim.SetBool("Crouch", currentStance == FighterStance.Crouching);
+            anim.SetFloat("VelTowards", rb.velocity.x);
+        }
+    }
+
 
     bool IsStunned()
     {
