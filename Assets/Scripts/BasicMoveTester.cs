@@ -26,16 +26,16 @@ public class BasicMoveTester : MonoBehaviour
 
     Rigidbody2D rb;
 
-    [SerializeField] float speed = 50f;
-    [SerializeField] float jumpMultiplier = 1.5f;
+    [SerializeField] float speed = 5f;
+    [SerializeField] float jumpMultiplier = 3f;
 
     public CharacterInput characterInput = new CharacterInput();
-    InputFrame processingFrame;
     int currentDirection;
 
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
 
+    public Transform opponentTransform;
     [SerializeField] bool touchingOpponent = false;
 
     HitboxManager hitboxManager;
@@ -45,9 +45,6 @@ public class BasicMoveTester : MonoBehaviour
 
     private void Awake()
     {
-
-
-
         currentState = FighterState.Neutral;
         characterInput.SetupBV(GetComponent<BufferVisualizer>());
         characterInput.training = true;
@@ -59,52 +56,15 @@ public class BasicMoveTester : MonoBehaviour
 
     void Start()
     {
-        processingFrame = new InputFrame();
-
         rb = GetComponent<Rigidbody2D>();
 
         anim = GetComponent<Animator>();
     }
 
     //Change this to reieve the input frame from a central synchronizer
-    void Update()
+    public void FrameUpdate(Vector3 movDir, int[] attackButtons)
     {
-        moveDirection = new Vector3(0, 0, 0);
-
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-        {
-            moveDirection = new Vector3(-1, 0, 0);
-        }
-
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-        {
-            moveDirection = new Vector3(1, 0, 0);
-        }
-
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
-        {
-            moveDirection += new Vector3(0, 1, 0);
-        }
-
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
-        {
-            moveDirection += new Vector3(0, -1, 0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            processingFrame.inputs[1] = 1;
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            processingFrame.inputs[2] = 1;
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            processingFrame.inputs[3] = 1;
-        }
+        moveDirection = movDir;
 
         //No direction input default
         currentDirection = 5;
@@ -151,27 +111,22 @@ public class BasicMoveTester : MonoBehaviour
             }
         }
 
-        if (nextFrameTime < Time.time)
-        {
-            InputFrame currentFrame = new InputFrame();
+        InputFrame currentFrame = new InputFrame();
 
-            currentFrame.inputs[0] = currentDirection;
-            currentFrame.inputs[1] = processingFrame.inputs[1];
-            currentFrame.inputs[2] = processingFrame.inputs[2];
-            currentFrame.inputs[3] = processingFrame.inputs[3];
+        currentFrame.inputs[0] = currentDirection;
+        currentFrame.inputs[1] = attackButtons[0];
+        currentFrame.inputs[2] = attackButtons[1];
+        currentFrame.inputs[3] = attackButtons[2];
 
-            characterInput.PushIntoBuffer(currentFrame);
+        characterInput.PushIntoBuffer(currentFrame);
 
-            CheckInput();
-            ProcessMoves();
-            ProcessFighterState();
-            ProcessFighterMovement();
-            ProcessAnimations();
+        CheckInput();
+        ProcessMoves();
+        ProcessFighterState();
+        ProcessFighterMovement();
+        ProcessAnimations();
 
-            //Reset the inputs
-            processingFrame = new InputFrame();
-            nextFrameTime = Time.time + frameDuration;
-        }
+        //Reset the inputs
     }
 
     public MotionChecker motionChecker = new MotionChecker();
@@ -183,7 +138,8 @@ public class BasicMoveTester : MonoBehaviour
     //If a move is detected, push into a queue and at the end of frame check if it can be activated (early input buffer, is the player in block or hit stun, etc)
     //otherwise chuck it from the queue and continue to next frame
 
-    bool facingRight = true;
+    [SerializeField] bool facingRight = true;
+    bool previousState = true;
 
     void CheckInput()
     {
@@ -422,14 +378,28 @@ public class BasicMoveTester : MonoBehaviour
             }
         }
 
-        
+
 
 
         //Get opponent position and check if left or right
-        //facingRight = true;
+        if ((opponentTransform.position - transform.position).x > 0)
+        {
+            facingRight = true;
+        }
+        else
+        {
+            facingRight = false;
+        }
+
 
         if (currentStance != FighterStance.Airborne && !(currentState == FighterState.Attacking || currentState == FighterState.Hit) && !IsStunned())
         {
+            if (previousState != facingRight)
+            {
+                previousState = facingRight;
+                gameObject.transform.localScale = new Vector3(facingRight?5:-5, 5, 1f);
+            }
+
             if (facingRight)
             {
                 if (currentFrame.inputs[0] == 4 || currentFrame.inputs[0] == 1)
@@ -453,12 +423,12 @@ public class BasicMoveTester : MonoBehaviour
                 }
             }
         }
+
+        
     }
 
     void ProcessFighterMovement()
     {
-        InputFrame currentFrame = characterInput.GetCurrentFrame();
-
         //Might want to make sub states for each one. Force blocking
         if (!(currentState == FighterState.Attacking || currentState == FighterState.Hit) && !IsStunned())
         {
@@ -493,9 +463,12 @@ public class BasicMoveTester : MonoBehaviour
         if(touchingOpponent)
         {
             //Add a slight back force when touching the opponent.
-            //adjustVelocity = (player.position - opponent.position);
-            //adjustVelocity.y = 0;
-            //rb.velocity += adjustVelocity;
+            Vector2 adjustVelocity = (opponentTransform.position - transform.position) * 0.2f;
+            adjustVelocity.y = 0;
+
+            
+
+            rb.velocity += adjustVelocity;
 
             //Make sure to account for being airborne.
         }

@@ -14,24 +14,34 @@ public static class BBConstrants
 
     //THESE WERE LEFT HERE FROM THE EXAMPLE CODE. I NEED TO CHANGE THESE TO FIT OUR GAME
     //Use the bitwise opperations to help with making input packets smaller
-    public const int INPUT_THRUST = (1 << 0);
-    public const int INPUT_BREAK = (1 << 1);
-    public const int INPUT_ROTATE_LEFT = (1 << 2);
-    public const int INPUT_ROTATE_RIGHT = (1 << 3);
-    public const int INPUT_FIRE = (1 << 4);
-    public const int INPUT_BOMB = (1 << 5);
-    public const int MAX_BULLETS = 30;
+    public const int INPUT_DIRECTION_UP = (1 << 0); //0000 0000 0000 0001
+    public const int INPUT_DIRECTION_DOWN = (1 << 1); //0000 0000 0000 0010
+    public const int INPUT_DIRECTION_LEFT = (1 << 2); //Etc
+    public const int INPUT_DIRECTION_RIGHT = (1 << 3);
+    public const int INPUT_LIGHT = (1 << 4);
+    public const int INPUT_MEDIUM = (1 << 5);
+    public const int INPUT_HEAVY = (1 << 6);
+    public const int INPUT_SPECIAL = (1 << 7);
+    //There is still the last byte of info we can use
+
+
+
 
     public const float PI = 3.1415926f;
     public const int STARTING_HEALTH = 100;
+    public const int STARTING_STATE = 0;
+    public const int STARTING_STANCE = 0;
+
+    public const float DEFAULT_FIGHTER_SPEED = 5f;
+    public const float DEFAULT_FIGHTER_JUMP_MULTI = 3f;
+
+    //I DON'T THINK WE'LL NEED THIS
     public const float ROTATE_INCREMENT = 3f;
-    public const float SHIP_RADIUS = 15f;
-    public const float SHIP_THRUST = 0.06f;
-    public const float SHIP_MAX_THRUST = 4.0f;
-    public const float SHIP_BREAK_SPEED = 0.6f;
     public const float BULLET_SPEED = 5f;
     public const int BULLET_COOLDOWN = 8;
     public const int BULLET_DAMAGE = 10;
+
+    public const int MAX_BULLETS = 30;
 }
 
 
@@ -41,6 +51,14 @@ public class Fighter
     public Vector2 position;
     public Vector2 velocity;
     public int health;
+    public int state;
+    public int stance;
+    public int move;
+    public int moveFrame;
+
+    public CharacterInput fighterInput = new CharacterInput();
+
+    //Leaving this here as a reminder we might want projectiles
     //public Bullet[] bullets = new Bullet[MAX_BULLETS];
 
     public void Serialize(BinaryWriter bw)
@@ -50,6 +68,9 @@ public class Fighter
         bw.Write(velocity.x);
         bw.Write(velocity.y);
         bw.Write(health);
+        bw.Write(state);
+        bw.Write(stance);
+        bw.Write(move);
         /*for (int i = 0; i < MAX_BULLETS; ++i)
         {
             bullets[i].Serialize(bw);
@@ -63,6 +84,9 @@ public class Fighter
         velocity.x = br.ReadSingle();
         velocity.y = br.ReadSingle();
         health = br.ReadInt32();
+        state = br.ReadInt32();
+        stance = br.ReadInt32();
+        move = br.ReadInt32();
         /*for (int i = 0; i < MAX_BULLETS; ++i)
         {
             bullets[i].Deserialize(br);
@@ -76,6 +100,9 @@ public class Fighter
         hashCode = hashCode * -1521134295 + position.GetHashCode();
         hashCode = hashCode * -1521134295 + velocity.GetHashCode();
         hashCode = hashCode * -1521134295 + health.GetHashCode();
+        hashCode = hashCode * -1521134295 + state.GetHashCode();
+        hashCode = hashCode * -1521134295 + stance.GetHashCode();
+        hashCode = hashCode * -1521134295 + move.GetHashCode();
         return hashCode;
     }
 
@@ -90,7 +117,7 @@ public struct BBGame : IGame
 
     public Fighter[] _fighters;
 
-    public static Rect _bounds = new Rect(0, 0, 640, 480);
+    public static Rect _bounds = new Rect(-14, -2, 28, 30);
 
     public void Serialize(BinaryWriter bw)
     {
@@ -157,78 +184,160 @@ public struct BBGame : IGame
      * Initialize our game state.
      */
 
+    //TODO: Update the player initialization
     public BBGame(int num_players)
     {
         var w = _bounds.xMax - _bounds.xMin;
         var h = _bounds.yMax - _bounds.yMin;
-        var r = h / 4;
+        var r = w / 2;
         Framenumber = 0;
         _fighters = new Fighter[num_players];
         for (int i = 0; i < _fighters.Length; i++)
         {
             _fighters[i] = new Fighter();
-            int heading = i * 360 / num_players;
-            float cost, sint, theta;
 
-            theta = (float)heading * PI / 180;
-            cost = Mathf.Cos(theta);
-            sint = Mathf.Sin(theta);
 
-            _fighters[i].position.x = (w / 2) + r * cost;
-            _fighters[i].position.y = (h / 2) + r * sint;
+            _fighters[i].position.x = _bounds.x + (w / 4) + (r * i);
+            _fighters[i].position.y = _bounds.y + 1.45f;
             _fighters[i].health = STARTING_HEALTH;
+            _fighters[i].velocity = new Vector2(0, 0);
+            _fighters[i].state = STARTING_STATE;
+            _fighters[i].stance = STARTING_STANCE;
         }
     }
 
-    public void GetFigherAI(int i, out float heading, out float thrust, out int fire)
+    //TODO: Make a prediction here
+    public void GetFigherAI(int i, out int moveDirection, out bool light, out bool medium, out bool heavy, out bool special)
     {
-        //Get an AI to take over for a player if they disconnect
-        heading = 0;// (_fighters[i].heading + 5) % 360;
-        thrust = 0;
-        fire = 0;
+        //Get an AI to take over for a player for frames you don't have/disconnect. PREDICT THEIR ACTIONS HERE
+        moveDirection = 0;// (_fighters[i].heading + 5) % 360;
+        //thrust = 0;
+        light = false;
+        medium = false;
+        heavy = false;
+        special = false;
     }
 
-    public void ParseShipInputs(long inputs, int i, out float heading, out float thrust, out int fire)
+    public void ParseShipInputs(long inputs, int i, out int numDirection, out bool light, out bool medium, out bool heavy, out bool special)
     {
         var fighter = _fighters[i];
 
-        GGPORunner.LogGame($"parsing ship {i} inputs: {inputs}.");
+        GGPORunner.LogGame($"parsing fighter {i} inputs: {inputs}.");
 
-        //TODO: Parse the barebones inputs into proper inputs for local fighers here
+        Vector2 moveDirection = new Vector2(0, 0);
 
+        if ((inputs & INPUT_DIRECTION_UP) != 0)
+        {
+            //heading = (fighter.heading - ROTATE_INCREMENT) % 360;
+            moveDirection += new Vector2(0, 1);
+        }
+        else if ((inputs & INPUT_DIRECTION_DOWN) != 0)
+        {
+            moveDirection += new Vector2(0, -1);
+        }
+        else if ((inputs & INPUT_DIRECTION_LEFT) != 0)
+        {
+            moveDirection = new Vector2(-1, 0);
+        }
+        else if ((inputs & INPUT_DIRECTION_RIGHT) != 0)
+        {
+            moveDirection = new Vector2(1, 0);
+        }
+
+        //No direction input default
+        numDirection = 5;
+
+        if (moveDirection.y == 0)
+        {
+            if (moveDirection.x == 1)
+            {
+                numDirection = 6;
+            }
+            else if (moveDirection.x == -1)
+            {
+                numDirection = 4;
+            }
+        }
+        else if (moveDirection.y == -1)
+        {
+            if (moveDirection.x == 1)
+            {
+                numDirection = 3;
+            }
+            else if (moveDirection.x == -1)
+            {
+                numDirection = 1;
+            }
+            else
+            {
+                numDirection = 2;
+            }
+        }
+        else if (moveDirection.y == 1)
+        {
+            if (moveDirection.x == 1)
+            {
+                numDirection = 9;
+            }
+            else if (moveDirection.x == -1)
+            {
+                numDirection = 7;
+            }
+            else
+            {
+                numDirection = 8;
+            }
+        }
+
+
+        light = false;
+        medium = false;
+        heavy = false;
+        special = false;
+
+
+        if ((inputs & INPUT_LIGHT) != 0)
+        {
+            light = true;
+        }
+        else if ((inputs & INPUT_MEDIUM) != 0)
+        {
+            medium = true;
+        }
+        else if((inputs & INPUT_HEAVY) != 0)
+        {
+            heavy = true;
+        }
+        else if ((inputs & INPUT_SPECIAL) != 0)
+        {
+            special = true;
+        }
         
-        /*if ((inputs & INPUT_ROTATE_RIGHT) != 0)
-        {
-            heading = (fighter.heading - ROTATE_INCREMENT) % 360;
-        }
-        else if ((inputs & INPUT_ROTATE_LEFT) != 0)
-        {
-            heading = (fighter.heading + ROTATE_INCREMENT + 360) % 360;
-        }
-        else
-        {
-            heading = fighter.heading;
-        }*/
+        //L = 1
+        //M = 5
+        //H = 10
+        //S = 20
 
-        heading = 0;
-
-        if ((inputs & INPUT_THRUST) != 0)
-        {
-            thrust = SHIP_THRUST;
-        }
-        else if ((inputs & INPUT_BREAK) != 0)
-        {
-            thrust = -SHIP_THRUST;
-        }
-        else
-        {
-            thrust = 0;
-        }
-        fire = (int)(inputs & INPUT_FIRE);
+        //L M = 4
+        //L H = 11
+        //L S = 21
         
+        //M H = 15
+        //M S = 25
+ 
+        //H S = 30
+
+        //L M H = 16
+        //L H S = 31
+        //M H S = 35
+        //L M S = 26
+        
+        //L M H S = 36
+
     }
 
-    public void ProcessFighter(int index, float heading, float thrust, int fire)
+    //TODO: Make fighters update as needed
+    public void ProcessFighter(int index, int numDirection, bool light, bool medium, bool heavy, bool special)
     {
         var fighter = _fighters[index];
 
@@ -236,51 +345,33 @@ public struct BBGame : IGame
 
         //TODO: Process local fighters here. Just send info to the prefab fighters
 
+        //TODO: Adjust frame inputs for special button
+        //fighter.fighterInput.PushIntoBuffer(new InputFrame(numDirection, light ? 1 : 0, medium ? 1 : 0, heavy ? 1 : 0));//, special ? 1 : 0));
 
-        /*if (fighter.cooldown == 0)
+
+        if(numDirection == 6)
         {
-            if (fire != 0)
-            {
-                GGPORunner.LogGame("firing bullet.");
-                for (int i = 0; i < ship.bullets.Length; i++)
-                {
-                    float dx = Mathf.Cos(DegToRad(ship.heading));
-                    float dy = Mathf.Sin(DegToRad(ship.heading));
-                    if (!ship.bullets[i].active)
-                    {
-                        ship.bullets[i].active = true;
-                        ship.bullets[i].position.x = ship.position.x + (ship.radius * dx);
-                        ship.bullets[i].position.y = ship.position.y + (ship.radius * dy);
-                        ship.bullets[i].velocity.x = ship.velocity.x + (BULLET_SPEED * dx);
-                        ship.bullets[i].velocity.y = ship.velocity.y + (BULLET_SPEED * dy);
-                        ship.cooldown = BULLET_COOLDOWN;
-                        break;
-                    }
-                }
-            }
-        }*/
-
-        if (thrust != 0)
-        {
-            float dx = thrust * Mathf.Cos(DegToRad(heading));
-            float dy = thrust * Mathf.Sin(DegToRad(heading));
-
-            fighter.velocity.x += dx;
-            fighter.velocity.y += dy;
-            float mag = Mathf.Sqrt(fighter.velocity.x * fighter.velocity.x +
-                             fighter.velocity.y * fighter.velocity.y);
-            if (mag > SHIP_MAX_THRUST)
-            {
-                fighter.velocity.x = (fighter.velocity.x * SHIP_MAX_THRUST) / mag;
-                fighter.velocity.y = (fighter.velocity.y * SHIP_MAX_THRUST) / mag;
-            }
+            fighter.velocity = new Vector2(DEFAULT_FIGHTER_SPEED, 0);
         }
-        GGPORunner.LogGame($"new ship velocity: (dx:{fighter.velocity.x} dy:{fighter.velocity.y}).");
+        else if(numDirection == 4)
+        {
+            fighter.velocity = new Vector2(-DEFAULT_FIGHTER_SPEED, 0);
+        }
+        else
+        {
+            fighter.velocity = new Vector2(0, 0);
+        }
+
+        //USE THIS TO LOG EVENTS
+        //GGPORunner.LogGame("firing bullet.");
+
+        GGPORunner.LogGame($"new fighter velocity: (dx:{fighter.velocity.x} dy:{fighter.velocity.y}).");
 
         fighter.position.x += fighter.velocity.x;
         fighter.position.y += fighter.velocity.y;
-        GGPORunner.LogGame($"new ship position: (dx:{fighter.position.x} dy:{fighter.position.y}).");
+        GGPORunner.LogGame($"new fighter position: (dx:{fighter.position.x} dy:{fighter.position.y}).");
 
+        //NOTE: Notice how the bullet collisions are done here
         /* OLD BULLET STUFF FROM SAMPLE GAME
         for (int i = 0; i < fighter.bullets.Length; i++)
         {
@@ -319,13 +410,17 @@ public struct BBGame : IGame
         string fp = "";
         fp += "GameState object.\n";
         fp += string.Format("  bounds: {0},{1} x {2},{3}.\n", _bounds.xMin, _bounds.yMin, _bounds.xMax, _bounds.yMax);
-        fp += string.Format("  num_ships: {0}.\n", _fighters.Length);
+        fp += string.Format("  num_fighters: {0}.\n", _fighters.Length);
         for (int i = 0; i < _fighters.Length; i++)
         {
             var fighter = _fighters[i];
-            fp += string.Format("  ship {0} position:  %.4f, %.4f\n", i, fighter.position.x, fighter.position.y);
-            fp += string.Format("  ship {0} velocity:  %.4f, %.4f\n", i, fighter.velocity.x, fighter.velocity.y);
-            fp += string.Format("  ship {0} health:    %d.\n", i, fighter.health);
+            fp += string.Format("  fighter {0} position:  %.4f, %.4f\n", i, fighter.position.x, fighter.position.y);
+            fp += string.Format("  fighter {0} velocity:  %.4f, %.4f\n", i, fighter.velocity.x, fighter.velocity.y);
+            fp += string.Format("  fighter {0} health:    %d.\n", i, fighter.health);
+            fp += string.Format("  fighter {0} state:    %d.\n", i, (FighterState)fighter.state);
+            fp += string.Format("  fighter {0} stance:    %d.\n", i, (FighterStance)fighter.stance);
+            fp += string.Format("  fighter {0} move:    %d.\n", i, fighter.move);
+            fp += string.Format("  fighter {0} moveFrame:    %d.\n", i, fighter.moveFrame);
         }
         File.WriteAllText(filename, fp);
     }
@@ -335,18 +430,18 @@ public struct BBGame : IGame
         Framenumber++;
         for (int i = 0; i < _fighters.Length; i++)
         {
-            float thrust, heading;
-            int fire;
+            int moveDirection;
+            bool l,m,h,s;
 
             if ((disconnect_flags & (1 << i)) != 0)
             {
-                GetFigherAI(i, out heading, out thrust, out fire);
+                GetFigherAI(i, out moveDirection, out l, out m, out h, out s);
             }
             else
             {
-                ParseShipInputs(inputs[i], i, out heading, out thrust, out fire);
+                ParseShipInputs(inputs[i], i, out moveDirection, out l,out m,out h,out s);
             }
-            ProcessFighter(i, heading, thrust, fire);
+            ProcessFighter(i, moveDirection, l,m,h,s);
 
             /* This was the between bullet cooldown
             if (_fighters[i].cooldown != 0)
@@ -356,7 +451,7 @@ public struct BBGame : IGame
         }
     }
 
-    //TODO: Fix this up for our game's needs
+    //TODO: Update this for the new unity input system too
     public long ReadInputs(int id)
     {
         long input = 0;
@@ -365,54 +460,70 @@ public struct BBGame : IGame
         {
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.UpArrow))
             {
-                input |= INPUT_THRUST;
+                input |= INPUT_DIRECTION_UP;
             }
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.DownArrow))
             {
-                input |= INPUT_BREAK;
+                input |= INPUT_DIRECTION_DOWN;
             }
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.LeftArrow))
             {
-                input |= INPUT_ROTATE_LEFT;
+                input |= INPUT_DIRECTION_LEFT;
             }
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightArrow))
             {
-                input |= INPUT_ROTATE_RIGHT;
+                input |= INPUT_DIRECTION_RIGHT;
             }
-            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightControl))
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Keypad5))
             {
-                input |= INPUT_FIRE;
+                input |= INPUT_LIGHT;
             }
-            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightShift))
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Keypad6))
             {
-                input |= INPUT_BOMB;
+                input |= INPUT_SPECIAL;
+            }
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Keypad2))
+            {
+                input |= INPUT_MEDIUM;
+            }
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Keypad3))
+            {
+                input |= INPUT_HEAVY;
             }
         }
         else if (id == 1)
         {
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.W))
             {
-                input |= INPUT_THRUST;
+                input |= INPUT_DIRECTION_UP;
             }
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.S))
             {
-                input |= INPUT_BREAK;
+                input |= INPUT_DIRECTION_DOWN;
             }
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.A))
             {
-                input |= INPUT_ROTATE_LEFT;
+                input |= INPUT_DIRECTION_LEFT;
             }
             if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.D))
             {
-                input |= INPUT_ROTATE_RIGHT;
+                input |= INPUT_DIRECTION_RIGHT;
             }
-            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.F))
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.Y))
             {
-                input |= INPUT_FIRE;
+                input |= INPUT_LIGHT;
             }
-            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.G))
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.U))
             {
-                input |= INPUT_BOMB;
+                input |= INPUT_SPECIAL;
+            }
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.H))
+            {
+                input |= INPUT_MEDIUM;
+            }
+            if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.J))
+            {
+                input |= INPUT_HEAVY;
             }
         }
 
