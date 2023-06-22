@@ -502,7 +502,6 @@ public class Fighter
                 }
                 moveDirection.y *= jumpMultiplier;
                 customRb.velocity = moveDirection * speed;
-                addingVel = true;
             }
             else if (currentStance == FighterStance.Crouching)
             {
@@ -514,7 +513,6 @@ public class Fighter
                 {
                     currentStance = FighterStance.Airborne;
                     customRb.velocity = moveDirection * speed;
-                    addingVel = true;
                 }
 
             }
@@ -528,7 +526,6 @@ public class Fighter
 
 
             velocity += adjustVelocity;
-            addingVel = true;
             //Make sure to account for being airborne.
         }
 
@@ -537,9 +534,9 @@ public class Fighter
             customRb.isGrounded = false;
         }
 
+        customRb.ProcessTick(0.016f);
         velocity = customRb.velocity;
         position = customRb.position;
-        customRb.ProcessTick(0.016f);
     }
 
     bool IsStunned()

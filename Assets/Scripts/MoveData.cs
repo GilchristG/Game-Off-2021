@@ -22,18 +22,18 @@ public class MoveData : ScriptableObject
 
     [SerializeField] int hitStunTime;
     [SerializeField] int blockStunTime;
+    [SerializeField] float knockbackForce;
+    [SerializeField] float launchForce;
 
     //NOTE: Don't forget to put these values in frames (about 16ms each)
     //Unused at the moment
     float recoveryTimeHit;
     float recoveryTimeMiss;
     float recoveryTimeBlocked;
-    Vector2 knockbackDir;
-    float knockbackForce;
 
     public Move CreateMove()
     {
-        Move newMove = new Move(animationName, damage, windupTime, activeTime, basicRecovery, bufferWindow, hitStunTime, blockStunTime);
+        Move newMove = new Move(animationName, damage, windupTime, activeTime, basicRecovery, bufferWindow, hitStunTime, blockStunTime, knockbackForce, launchForce);
         return newMove;
     }
 }

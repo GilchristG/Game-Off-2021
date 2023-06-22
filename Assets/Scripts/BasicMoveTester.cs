@@ -327,7 +327,12 @@ public class BasicMoveTester : MonoBehaviour
         currentState = FighterState.Hit;
         //Stop all player momentum. 
         //TODO: Add the knockback forces here
-        rb.velocity = new Vector2(0, 0);
+
+
+        Vector2 newForce = new Vector2(hittingMove.knockbackForce, hittingMove.launchForce);
+        newForce.x = newForce.x * (facingRight ? -1f : 1f);
+
+        rb.velocity = newForce;
         //EndMove();
     }
 
@@ -374,7 +379,14 @@ public class BasicMoveTester : MonoBehaviour
             {
                 stunTimer = 0;
                 //Let the player get out of a stun into blocking. If holding appropriate buttons, player can block immediately
-                currentState = FighterState.Blocking;
+                if (currentStance == FighterStance.Airborne)
+                {
+                    currentState = FighterState.Neutral;
+                }
+                else
+                {
+                    currentState = FighterState.Blocking;
+                }
             }
         }
 
@@ -512,7 +524,6 @@ public class BasicMoveTester : MonoBehaviour
         if(collision.gameObject.tag == "Floor")
         {
             currentStance = FighterStance.Standing;
-            anim.SetBool("Airborne", false);
         }
 
         if(collision.gameObject.tag == "Player")
@@ -526,6 +537,11 @@ public class BasicMoveTester : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             touchingOpponent = false;
+        }
+
+        if (collision.gameObject.tag == "Floor")
+        {
+            currentStance = FighterStance.Airborne;
         }
     }
 }

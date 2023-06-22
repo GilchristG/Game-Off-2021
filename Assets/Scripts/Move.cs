@@ -10,8 +10,10 @@ public class Move
     public int bufferWindow;
     public int hitStunTime;
     public int blockStunTime;
+    public float knockbackForce;
+    public float launchForce;
 
-    public Move(string anim, int dmg, int windup, int active, int recovery, int buffer, int hitStun, int blockStun)
+    public Move(string anim, int dmg, int windup, int active, int recovery, int buffer, int hitStun, int blockStun, float kf, float lf)
     {
         moveState = MoveState.Waiting;
         animationName = anim;
@@ -22,5 +24,7 @@ public class Move
         bufferWindow = buffer;
         hitStunTime = hitStun;
         blockStunTime = blockStun;
+        knockbackForce = kf;
+        launchForce = lf;
     }
 }

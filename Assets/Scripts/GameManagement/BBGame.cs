@@ -263,39 +263,6 @@ public struct BBGame : IGame
         //fighter.position.x += fighter.velocity.x;
         //fighter.position.y += fighter.velocity.y;
         GGPORunner.LogGame($"new fighter position: (dx:{fighter.position.x} dy:{fighter.position.y}).");
-
-        //NOTE: Notice how the bullet collisions are done here
-        /* OLD BULLET STUFF FROM SAMPLE GAME
-        for (int i = 0; i < fighter.bullets.Length; i++)
-        {
-            if (fighter.bullets[i].active)
-            {
-                fighter.bullets[i].position.x += fighter.bullets[i].velocity.x;
-                fighter.bullets[i].position.y += fighter.bullets[i].velocity.y;
-                if (fighter.bullets[i].position.x < _bounds.xMin ||
-                    fighter.bullets[i].position.y < _bounds.yMin ||
-                    fighter.bullets[i].position.x > _bounds.xMax ||
-                    fighter.bullets[i].position.y > _bounds.yMax)
-                {
-                    ship.bullets[i].active = false;
-                }
-                else
-                {
-                    for (int j = 0; j < _ships.Length; j++)
-                    {
-                        var other = _ships[j];
-                        if (Distance(ship.bullets[i].position, other.position) < other.radius)
-                        {
-                            ship.score++;
-                            other.health -= BULLET_DAMAGE;
-                            ship.bullets[i].active = false;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        */
     }
 
     public void LogInfo(string filename)

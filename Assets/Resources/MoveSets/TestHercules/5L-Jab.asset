@@ -22,3 +22,5 @@ MonoBehaviour:
   bufferWindow: 5
   hitStunTime: 8
   blockStunTime: 6
+  knockbackForce: 2
+  launchForce: 0

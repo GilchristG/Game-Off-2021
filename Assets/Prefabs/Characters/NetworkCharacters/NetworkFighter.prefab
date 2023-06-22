@@ -355,7 +355,6 @@ MonoBehaviour:
   txtStatus: {fileID: 7721691843105214237}
   imgProgress: {fileID: 2061085771528511811}
   anim: {fileID: 7160545985521712185}
-  rb: {fileID: 0}
   health: 0
   move: 0
   moveFrame: 0
