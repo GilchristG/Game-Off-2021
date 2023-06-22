@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SharedGame;
 using System;
+using Cinemachine;
 
 public class BBGameView : MonoBehaviour, IGameView
 {
@@ -14,11 +15,11 @@ public class BBGameView : MonoBehaviour, IGameView
 
     private void ResetView(BBGame gs)
     {
-        var shipGss = gs._fighters;
-        fighterViews = new BBFighterView[shipGss.Length];
+        var fighterGss = gs._fighters;
+        fighterViews = new BBFighterView[fighterGss.Length];
         //bulletLists = new Transform[shipGss.Length][];
 
-        for (int i = 0; i < shipGss.Length; ++i)
+        for (int i = 0; i < fighterGss.Length; ++i)
         {
             fighterViews[i] = Instantiate(fighterPrefab, transform);
             //bulletLists[i] = new Transform[shipGss[i].bullets.Length];
@@ -26,6 +27,8 @@ public class BBGameView : MonoBehaviour, IGameView
             {
                 bulletLists[i][j] = Instantiate(bulletPrefab, transform);
             }*/
+
+
         }
     }
 

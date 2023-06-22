@@ -1,12 +1,70 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
-using UnityEngine.Events;
+using Unity.Collections;
+using System.Collections.Generic;
+using SharedGame;
 using System;
 
-//Potentially use this as basis for character controllers
-public class BasicMoveTester : MonoBehaviour
+[Serializable]
+public class Fighter
 {
+    public Vector2 position;
+    public Vector2 velocity;
+    public int health;
+    public int state;
+    public int stance;
+    public int move;
+
+    public CharacterInput fighterInput = new CharacterInput();
+
+    //Leaving this here as a reminder we might want projectiles
+    //public Bullet[] bullets = new Bullet[MAX_BULLETS];
+
+    public void Serialize(BinaryWriter bw)
+    {
+        bw.Write(position.x);
+        bw.Write(position.y);
+        bw.Write(velocity.x);
+        bw.Write(velocity.y);
+        bw.Write(health);
+        bw.Write(state);
+        bw.Write(stance);
+        bw.Write(move);
+        /*for (int i = 0; i < MAX_BULLETS; ++i)
+        {
+            bullets[i].Serialize(bw);
+        }*/
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        position.x = br.ReadSingle();
+        position.y = br.ReadSingle();
+        velocity.x = br.ReadSingle();
+        velocity.y = br.ReadSingle();
+        health = br.ReadInt32();
+        state = br.ReadInt32();
+        stance = br.ReadInt32();
+        move = br.ReadInt32();
+        /*for (int i = 0; i < MAX_BULLETS; ++i)
+        {
+            bullets[i].Deserialize(br);
+        }*/
+    }
+
+    // @LOOK Not hashing bullets.
+    public override int GetHashCode()
+    {
+        int hashCode = 1858597544;
+        hashCode = hashCode * -1521134295 + position.GetHashCode();
+        hashCode = hashCode * -1521134295 + velocity.GetHashCode();
+        hashCode = hashCode * -1521134295 + health.GetHashCode();
+        hashCode = hashCode * -1521134295 + state.GetHashCode();
+        hashCode = hashCode * -1521134295 + stance.GetHashCode();
+        hashCode = hashCode * -1521134295 + move.GetHashCode();
+        return hashCode;
+    }
+
     //Character events
     //Transform hitLocation for spawning effects, Int damage to determine effect size
     public Action<Vector3, int> onPlayerHit;
@@ -22,9 +80,10 @@ public class BasicMoveTester : MonoBehaviour
     public FighterStance currentStance;
 
     Vector3 moveDirection;
-    Animator anim;
+    public bool addingVel;
 
-    Rigidbody2D rb;
+    //Rigidbody2D rb;
+    Custom2DRigidbody customRb;
 
     [SerializeField] float speed = 5f;
     [SerializeField] float jumpMultiplier = 3f;
@@ -35,35 +94,37 @@ public class BasicMoveTester : MonoBehaviour
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
 
-    public Transform opponentTransform;
+    public Fighter opponent;
     [SerializeField] bool touchingOpponent = false;
 
     HitboxManager hitboxManager;
     HurtboxManager hurtboxManager;
 
-    
 
-    private void Awake()
+
+    public Fighter()
     {
+        customRb = new Custom2DRigidbody();
         currentState = FighterState.Neutral;
-        characterInput.SetupBV(GetComponent<BufferVisualizer>());
-        characterInput.training = true;
-        hitboxManager = GetComponentInChildren<HitboxManager>();
+        //characterInput.SetupBV(GetComponent<BufferVisualizer>());
+        characterInput.training = false;
+        /*hitboxManager = GetComponentInChildren<HitboxManager>();
         hitboxManager.SetParent(this);
         hurtboxManager = GetComponentInChildren<HurtboxManager>();
-        hurtboxManager.SetSelfHitbox(hitboxManager);
+        hurtboxManager.SetSelfHitbox(hitboxManager);*/
+        //anim = GetComponent<Animator>();
     }
 
-    void Start()
+    //This works to load from resources
+    public void Initialize()
     {
-        rb = GetComponent<Rigidbody2D>();
-
-        anim = GetComponent<Animator>();
+        moveSet = (MoveSet)Resources.Load("MoveSets/TestHercules/TestMoveSet");
     }
 
     //Change this to reieve the input frame from a central synchronizer
-    public void FrameUpdate(Vector3 movDir, int[] attackButtons)
+    public void FrameUpdate(Vector2 movDir, bool[] attackButtons)
     {
+        //No direction input default
         moveDirection = movDir;
 
         //No direction input default
@@ -114,9 +175,9 @@ public class BasicMoveTester : MonoBehaviour
         InputFrame currentFrame = new InputFrame();
 
         currentFrame.inputs[0] = currentDirection;
-        currentFrame.inputs[1] = attackButtons[0];
-        currentFrame.inputs[2] = attackButtons[1];
-        currentFrame.inputs[3] = attackButtons[2];
+        currentFrame.inputs[1] = attackButtons[0] ? 1 : 0;
+        currentFrame.inputs[2] = attackButtons[1] ? 1 : 0;
+        currentFrame.inputs[3] = attackButtons[2] ? 1 : 0;
 
         characterInput.PushIntoBuffer(currentFrame);
 
@@ -124,7 +185,6 @@ public class BasicMoveTester : MonoBehaviour
         ProcessMoves();
         ProcessFighterState();
         ProcessFighterMovement();
-        ProcessAnimations();
 
         //Reset the inputs
     }
@@ -138,7 +198,7 @@ public class BasicMoveTester : MonoBehaviour
     //If a move is detected, push into a queue and at the end of frame check if it can be activated (early input buffer, is the player in block or hit stun, etc)
     //otherwise chuck it from the queue and continue to next frame
 
-    [SerializeField] bool facingRight = true;
+    public bool facingRight = true;
     bool previousState = true;
 
     void CheckInput()
@@ -228,7 +288,7 @@ public class BasicMoveTester : MonoBehaviour
                         windupFrameTimer = 0;
                         activeFrameTimer = currentMove.activeTime;
                         currentMove.moveState = MoveState.Active;
-                        hurtboxManager.ActivateHurtbox(currentMove);
+                        //hurtboxManager.ActivateHurtbox(currentMove);
                     }
                     windupFrameTimer--;
 
@@ -239,7 +299,7 @@ public class BasicMoveTester : MonoBehaviour
                         activeFrameTimer = 0;
                         recoveryFrameTimer = currentMove.basicRecovery;
                         currentMove.moveState = MoveState.Recovery;
-                        hurtboxManager.DeactivateHurtbox();
+                        //hurtboxManager.DeactivateHurtbox();
                     }
                     else
                     {
@@ -293,17 +353,17 @@ public class BasicMoveTester : MonoBehaviour
         //hurtboxManager.ActivateHurtbox(currentMove);
 
         //Do all the intial processing for the move here
-        anim.SetTrigger(currentMove.animationName);
+        //anim.SetTrigger(currentMove.animationName);
     }
 
     void EndMove()
     {
         //Might change this to blocking so the player can immediately block out of a move recovery
-        if(currentState != FighterState.Hit || currentState != FighterState.Blocking)
+        if (currentState != FighterState.Hit || currentState != FighterState.Blocking)
             currentState = FighterState.Neutral;
 
         onPlayerMoveFinished?.Invoke();
-        hurtboxManager.DeactivateHurtbox();
+        //hurtboxManager.DeactivateHurtbox();
         windupFrameTimer = 0;
         activeFrameTimer = 0;
         recoveryFrameTimer = 0;
@@ -317,7 +377,7 @@ public class BasicMoveTester : MonoBehaviour
         playerHealth -= hittingMove.damage;
         onPlayerHealthLoss?.Invoke(hittingMove.damage);
 
-        if(playerHealth <= 0)
+        if (playerHealth <= 0)
         {
             onPlayerKnockedOut?.Invoke();
         }
@@ -327,7 +387,7 @@ public class BasicMoveTester : MonoBehaviour
         currentState = FighterState.Hit;
         //Stop all player momentum. 
         //TODO: Add the knockback forces here
-        rb.velocity = new Vector2(0, 0);
+        customRb.velocity = new Vector2(0, 0);
         //EndMove();
     }
 
@@ -351,7 +411,7 @@ public class BasicMoveTester : MonoBehaviour
             //Send player into block stun
             stunTimer = hittingMove.blockStunTime;
 
-            if(hitLocation!=null)
+            if (hitLocation != null)
             {
                 onPlayerHit?.Invoke(hitLocation, 0);
             }
@@ -379,7 +439,7 @@ public class BasicMoveTester : MonoBehaviour
         }
 
         //Get opponent position and check if left or right
-        if ((opponentTransform.position - transform.position).x > 0)
+        if ((opponent.position - position).x > 0)
         {
             facingRight = true;
         }
@@ -394,7 +454,7 @@ public class BasicMoveTester : MonoBehaviour
             if (previousState != facingRight)
             {
                 previousState = facingRight;
-                gameObject.transform.localScale = new Vector3(facingRight?5:-5, 5, 1f);
+                //gameObject.transform.localScale = new Vector3(facingRight ? 5 : -5, 5, 1f);
             }
 
             if (facingRight)
@@ -421,7 +481,8 @@ public class BasicMoveTester : MonoBehaviour
             }
         }
 
-        
+        state = (int)currentState;
+        stance = (int)currentStance;
     }
 
     void ProcessFighterMovement()
@@ -429,7 +490,7 @@ public class BasicMoveTester : MonoBehaviour
         //Might want to make sub states for each one. Force blocking
         if (!(currentState == FighterState.Attacking || currentState == FighterState.Hit) && !IsStunned())
         {
-            if(currentStance != FighterStance.Crouching && currentStance != FighterStance.Airborne)
+            if (currentStance != FighterStance.Crouching && currentStance != FighterStance.Airborne)
             {
                 if (moveDirection.y > 0)
                 {
@@ -440,62 +501,46 @@ public class BasicMoveTester : MonoBehaviour
                     currentStance = FighterStance.Crouching;
                 }
                 moveDirection.y *= jumpMultiplier;
-                rb.velocity = moveDirection * speed;
+                customRb.velocity = moveDirection * speed;
+                addingVel = true;
             }
-            else if(currentStance == FighterStance.Crouching)
+            else if (currentStance == FighterStance.Crouching)
             {
-                if(moveDirection.y == 0)
+                if (moveDirection.y == 0)
                 {
                     currentStance = FighterStance.Standing;
                 }
-                else if(moveDirection.y > 0)
+                else if (moveDirection.y > 0)
                 {
                     currentStance = FighterStance.Airborne;
-                    rb.velocity = moveDirection * speed;
+                    customRb.velocity = moveDirection * speed;
+                    addingVel = true;
                 }
-                
+
             }
         }
 
-        if(touchingOpponent)
+        if (touchingOpponent)
         {
             //Add a slight back force when touching the opponent.
-            Vector2 adjustVelocity = (opponentTransform.position - transform.position) * 0.2f;
+            Vector2 adjustVelocity = (opponent.position - position) * 0.2f;
             adjustVelocity.y = 0;
 
-            
 
-            rb.velocity += adjustVelocity;
-
+            velocity += adjustVelocity;
+            addingVel = true;
             //Make sure to account for being airborne.
         }
 
+        if(currentStance == FighterStance.Airborne)
+        {
+            customRb.isGrounded = false;
+        }
+
+        velocity = customRb.velocity;
+        position = customRb.position;
+        customRb.ProcessTick(0.016f);
     }
-
-    void ProcessAnimations()
-    {
-        anim.SetInteger("StunTimer", stunTimer);
-
-        if (currentState == FighterState.Hit && IsStunned())
-        {
-            anim.SetTrigger("Hit");
-        }
-        else if (currentState == FighterState.Blocking && IsStunned())
-        {
-            anim.SetTrigger("Block");
-        }
-        else if(currentState == FighterState.Attacking)
-        {
-            anim.SetFloat("VelTowards", 0);
-        }
-        else
-        {
-            anim.SetBool("Airborne", currentStance == FighterStance.Airborne);
-            anim.SetBool("Crouch", currentStance == FighterStance.Crouching);
-            anim.SetFloat("VelTowards", rb.velocity.x);
-        }
-    }
-
 
     bool IsStunned()
     {
@@ -507,25 +552,36 @@ public class BasicMoveTester : MonoBehaviour
         return false;
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.tag == "Floor")
-        {
-            currentStance = FighterStance.Standing;
-            anim.SetBool("Airborne", false);
-        }
+}
 
-        if(collision.gameObject.tag == "Player")
+public class Custom2DRigidbody
+{
+    public Vector2 position;
+    public Vector2 velocity;
+    public float friction = 1f;
+    public float gravity = 9f;
+    public float mass = 3f;
+
+    public bool isGrounded = true;
+
+    public Custom2DRigidbody()
+    {
+        position = new Vector2(0, 0);
+        velocity = new Vector2(0, 0);
+    }
+
+    public void ProcessTick(float timeDelta)
+    {
+        position += velocity * timeDelta;
+
+        if(isGrounded)
         {
-            touchingOpponent = true;
+            velocity.x -= (friction * mass * gravity * timeDelta)* Math.Sign(velocity.x);
+        }
+        else
+        {
+            velocity.y -= ((mass * gravity) * timeDelta);
         }
     }
 
-    public void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            touchingOpponent = false;
-        }
-    }
 }

@@ -10,26 +10,36 @@ public class BBFighterView : MonoBehaviour
     public Text txtStatus;
     public Image imgProgress;
     public Animator anim;
-    public Rigidbody2D rb;
     public int health;
-    public int move;
+    public string move;
     public int moveFrame;
 
     [SerializeField] FighterState state;
     [SerializeField] FighterStance stance;
-    
+
     //public Transform model;
     //Add reference to fighter here
 
+    Fighter fighter;
+
     public void Populate(Fighter fighterG, PlayerConnectionInfo info)
     {
+        fighter = fighterG;
         transform.position = fighterG.position;
-        rb.velocity = fighterG.velocity;
         health = fighterG.health;
-        state = (FighterState)fighterG.state;
-        stance = (FighterStance)fighterG.stance;
-        move = fighterG.move;
-        moveFrame = fighterG.moveFrame;
+        state = fighterG.currentState;
+        stance = fighterG.currentStance;
+        move = fighterG.currentMove?.animationName;
+        moveFrame = fighterG.elapsedMoveTime;
+
+        if (fighterG.facingRight)
+        {
+            transform.localScale = new Vector3(5f, 5f, 1f);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-5f, 5f, 1f);
+        }
 
         //Put fighter reference animation stuff here it seems
         //Might have to put the fighter logic within the game code and just have the player update animation on a PER fighter basis
@@ -77,5 +87,18 @@ public class BBFighterView : MonoBehaviour
         {
             txtStatus.gameObject.SetActive(false);
         }
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Floor")
+        {
+            fighter.currentStance = FighterStance.Standing;
+        }
+    }
+
+    public void OnCollisionExit2D(Collision2D collision)
+    {
+
     }
 }

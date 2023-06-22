@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 using Unity.Collections;
+using System.Collections.Generic;
 using SharedGame;
 using System;
 
@@ -24,9 +25,6 @@ public static class BBConstrants
     public const int INPUT_SPECIAL = (1 << 7);
     //There is still the last byte of info we can use
 
-
-
-
     public const float PI = 3.1415926f;
     public const int STARTING_HEALTH = 100;
     public const int STARTING_STATE = 0;
@@ -43,71 +41,6 @@ public static class BBConstrants
 
     public const int MAX_BULLETS = 30;
 }
-
-
-[Serializable]
-public class Fighter
-{
-    public Vector2 position;
-    public Vector2 velocity;
-    public int health;
-    public int state;
-    public int stance;
-    public int move;
-    public int moveFrame;
-
-    public CharacterInput fighterInput = new CharacterInput();
-
-    //Leaving this here as a reminder we might want projectiles
-    //public Bullet[] bullets = new Bullet[MAX_BULLETS];
-
-    public void Serialize(BinaryWriter bw)
-    {
-        bw.Write(position.x);
-        bw.Write(position.y);
-        bw.Write(velocity.x);
-        bw.Write(velocity.y);
-        bw.Write(health);
-        bw.Write(state);
-        bw.Write(stance);
-        bw.Write(move);
-        /*for (int i = 0; i < MAX_BULLETS; ++i)
-        {
-            bullets[i].Serialize(bw);
-        }*/
-    }
-
-    public void Deserialize(BinaryReader br)
-    {
-        position.x = br.ReadSingle();
-        position.y = br.ReadSingle();
-        velocity.x = br.ReadSingle();
-        velocity.y = br.ReadSingle();
-        health = br.ReadInt32();
-        state = br.ReadInt32();
-        stance = br.ReadInt32();
-        move = br.ReadInt32();
-        /*for (int i = 0; i < MAX_BULLETS; ++i)
-        {
-            bullets[i].Deserialize(br);
-        }*/
-    }
-
-    // @LOOK Not hashing bullets.
-    public override int GetHashCode()
-    {
-        int hashCode = 1858597544;
-        hashCode = hashCode * -1521134295 + position.GetHashCode();
-        hashCode = hashCode * -1521134295 + velocity.GetHashCode();
-        hashCode = hashCode * -1521134295 + health.GetHashCode();
-        hashCode = hashCode * -1521134295 + state.GetHashCode();
-        hashCode = hashCode * -1521134295 + stance.GetHashCode();
-        hashCode = hashCode * -1521134295 + move.GetHashCode();
-        return hashCode;
-    }
-
-}
-
 
 public struct BBGame : IGame
 {
@@ -195,22 +128,26 @@ public struct BBGame : IGame
         for (int i = 0; i < _fighters.Length; i++)
         {
             _fighters[i] = new Fighter();
-
-
             _fighters[i].position.x = _bounds.x + (w / 4) + (r * i);
             _fighters[i].position.y = _bounds.y + 1.45f;
             _fighters[i].health = STARTING_HEALTH;
             _fighters[i].velocity = new Vector2(0, 0);
             _fighters[i].state = STARTING_STATE;
             _fighters[i].stance = STARTING_STANCE;
+
+            //TODO: We probably need to specify the fighter here
+            _fighters[i].Initialize();
         }
+
+        _fighters[0].opponent = _fighters[1];
+        _fighters[1].opponent = _fighters[0];
     }
 
     //TODO: Make a prediction here
-    public void GetFigherAI(int i, out int moveDirection, out bool light, out bool medium, out bool heavy, out bool special)
+    public void GetFigherAI(int i, out Vector2 moveDireciton, out bool light, out bool medium, out bool heavy, out bool special)
     {
         //Get an AI to take over for a player for frames you don't have/disconnect. PREDICT THEIR ACTIONS HERE
-        moveDirection = 0;// (_fighters[i].heading + 5) % 360;
+        moveDireciton = new Vector2(0,0);// (_fighters[i].heading + 5) % 360;
         //thrust = 0;
         light = false;
         medium = false;
@@ -218,13 +155,13 @@ public struct BBGame : IGame
         special = false;
     }
 
-    public void ParseShipInputs(long inputs, int i, out int numDirection, out bool light, out bool medium, out bool heavy, out bool special)
+    public void ParseShipInputs(long inputs, int i, out Vector2 moveDirection, out bool light, out bool medium, out bool heavy, out bool special)
     {
         var fighter = _fighters[i];
 
         GGPORunner.LogGame($"parsing fighter {i} inputs: {inputs}.");
 
-        Vector2 moveDirection = new Vector2(0, 0);
+        moveDirection = new Vector2(0, 0);
 
         if ((inputs & INPUT_DIRECTION_UP) != 0)
         {
@@ -242,51 +179,6 @@ public struct BBGame : IGame
         else if ((inputs & INPUT_DIRECTION_RIGHT) != 0)
         {
             moveDirection = new Vector2(1, 0);
-        }
-
-        //No direction input default
-        numDirection = 5;
-
-        if (moveDirection.y == 0)
-        {
-            if (moveDirection.x == 1)
-            {
-                numDirection = 6;
-            }
-            else if (moveDirection.x == -1)
-            {
-                numDirection = 4;
-            }
-        }
-        else if (moveDirection.y == -1)
-        {
-            if (moveDirection.x == 1)
-            {
-                numDirection = 3;
-            }
-            else if (moveDirection.x == -1)
-            {
-                numDirection = 1;
-            }
-            else
-            {
-                numDirection = 2;
-            }
-        }
-        else if (moveDirection.y == 1)
-        {
-            if (moveDirection.x == 1)
-            {
-                numDirection = 9;
-            }
-            else if (moveDirection.x == -1)
-            {
-                numDirection = 7;
-            }
-            else
-            {
-                numDirection = 8;
-            }
         }
 
 
@@ -337,7 +229,7 @@ public struct BBGame : IGame
     }
 
     //TODO: Make fighters update as needed
-    public void ProcessFighter(int index, int numDirection, bool light, bool medium, bool heavy, bool special)
+    public void ProcessFighter(int index, Vector2 moveDirection, bool light, bool medium, bool heavy, bool special)
     {
         var fighter = _fighters[index];
 
@@ -346,10 +238,11 @@ public struct BBGame : IGame
         //TODO: Process local fighters here. Just send info to the prefab fighters
 
         //TODO: Adjust frame inputs for special button
-        //fighter.fighterInput.PushIntoBuffer(new InputFrame(numDirection, light ? 1 : 0, medium ? 1 : 0, heavy ? 1 : 0));//, special ? 1 : 0));
+        bool[] attacks = new bool[4] {light,medium,heavy,special};
 
+        fighter.FrameUpdate(moveDirection, attacks);
 
-        if(numDirection == 6)
+        /*if(numDirection == 6)
         {
             fighter.velocity = new Vector2(DEFAULT_FIGHTER_SPEED, 0);
         }
@@ -360,15 +253,15 @@ public struct BBGame : IGame
         else
         {
             fighter.velocity = new Vector2(0, 0);
-        }
+        }*/
 
         //USE THIS TO LOG EVENTS
         //GGPORunner.LogGame("firing bullet.");
 
         GGPORunner.LogGame($"new fighter velocity: (dx:{fighter.velocity.x} dy:{fighter.velocity.y}).");
 
-        fighter.position.x += fighter.velocity.x;
-        fighter.position.y += fighter.velocity.y;
+        //fighter.position.x += fighter.velocity.x;
+        //fighter.position.y += fighter.velocity.y;
         GGPORunner.LogGame($"new fighter position: (dx:{fighter.position.x} dy:{fighter.position.y}).");
 
         //NOTE: Notice how the bullet collisions are done here
@@ -420,7 +313,7 @@ public struct BBGame : IGame
             fp += string.Format("  fighter {0} state:    %d.\n", i, (FighterState)fighter.state);
             fp += string.Format("  fighter {0} stance:    %d.\n", i, (FighterStance)fighter.stance);
             fp += string.Format("  fighter {0} move:    %d.\n", i, fighter.move);
-            fp += string.Format("  fighter {0} moveFrame:    %d.\n", i, fighter.moveFrame);
+            fp += string.Format("  fighter {0} moveFrame:    %d.\n", i, fighter.elapsedMoveTime);
         }
         File.WriteAllText(filename, fp);
     }
@@ -430,7 +323,7 @@ public struct BBGame : IGame
         Framenumber++;
         for (int i = 0; i < _fighters.Length; i++)
         {
-            int moveDirection;
+            Vector2 moveDirection = new Vector2(0,0);
             bool l,m,h,s;
 
             if ((disconnect_flags & (1 << i)) != 0)

@@ -14,6 +14,11 @@ public class CharacterInput
 
     BufferVisualizer bv;
 
+    public CharacterInput()
+    {
+        buffer = new InputFrame[60];
+    }
+
     public void SetupBV(BufferVisualizer bufferV)
     {
         bv = bufferV;
