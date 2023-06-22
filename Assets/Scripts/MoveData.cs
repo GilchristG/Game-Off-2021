@@ -11,7 +11,9 @@ public class MoveData : ScriptableObject
     [Tooltip("Buttons needed at the same time")]
     public Button[] attackbuttons;
 
+    [Tooltip("Animation trigger name for use in animator")]
     [SerializeField] string animationName;
+    [Tooltip("Animation clip for direct use")]
     [SerializeField] AnimationClip animationClip;
 
     [SerializeField] int damage;
