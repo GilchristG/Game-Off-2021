@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 2555957071419133722}
   - component: {fileID: 2555957071419133721}
   - component: {fileID: 2555957071419133720}
+  - component: {fileID: 9215269493542017713}
   m_Layer: 7
   m_Name: OfflineFighter
   m_TagString: Untagged
@@ -316,6 +317,8 @@ MonoBehaviour:
     bufferWindow: 0
     hitStunTime: 0
     blockStunTime: 0
+    knockbackForce: 0
+    launchForce: 0
 --- !u!95 &2555957071419133721
 Animator:
   serializedVersion: 4
@@ -351,6 +354,18 @@ MonoBehaviour:
   entryPF: {fileID: 7764633890305346198, guid: 331e64e3849e1a742b4815fa42704892, type: 3}
   parentToSpawnOn: {fileID: 0}
   maxEntiresShown: 22
+--- !u!114 &9215269493542017713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2555957071419133713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cb5f83a4b0db2042a4c15f137674425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2555957071596869561
 GameObject:
   m_ObjectHideFlags: 0

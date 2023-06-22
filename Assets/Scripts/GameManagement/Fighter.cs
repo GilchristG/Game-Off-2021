@@ -399,8 +399,6 @@ public class Fighter
             //Send player into hit stun
             OnHit(hittingMove);
 
-            stunTimer = hittingMove.hitStunTime;
-
             if (hitLocation != null)
             {
                 onPlayerHit?.Invoke(hitLocation, hittingMove.damage);

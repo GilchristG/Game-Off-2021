@@ -12,16 +12,24 @@ public class MoveData : ScriptableObject
     public Button[] attackbuttons;
 
     [SerializeField] string animationName;
+    [SerializeField] AnimationClip animationClip;
 
     [SerializeField] int damage;
     [SerializeField] int windupTime;
     [SerializeField] int activeTime;
+
+    [Tooltip("The amount of time the attacker must recover for after attacking")]
     [SerializeField] int basicRecovery;
+
+    
     [Tooltip("The last number of frames during recovery that will let you queue up a new move")]
     [SerializeField] int bufferWindow;
 
+    [Tooltip("The amount of frames the opponent must be in hit stun for before gaining control")]
     [SerializeField] int hitStunTime;
+    [Tooltip("The amount of frames the opponent must block for before gaining control")]
     [SerializeField] int blockStunTime;
+
     [SerializeField] float knockbackForce;
     [SerializeField] float launchForce;
 
@@ -35,5 +43,51 @@ public class MoveData : ScriptableObject
     {
         Move newMove = new Move(animationName, damage, windupTime, activeTime, basicRecovery, bufferWindow, hitStunTime, blockStunTime, knockbackForce, launchForce);
         return newMove;
+    }
+
+    public void CheckAnimationFrames()
+    {
+        int allEvents = animationClip.events.Length;
+
+        int totalFrames = Mathf.RoundToInt(animationClip.length * animationClip.frameRate);
+
+        int windup = 0;
+        int active = 0;
+        int recovery = 0;
+
+        int activeFrameStart = 0;
+        int recoveryStart = 0;
+
+        for (int i = 0; i < allEvents; i++)
+        {
+            if(animationClip.events[i].functionName == "Active")
+            {
+                activeFrameStart = Mathf.RoundToInt(animationClip.events[i].time * animationClip.frameRate);
+                windup = activeFrameStart - 1;
+            }
+            else if (animationClip.events[i].functionName == "Recovery")
+            {
+                recoveryStart = Mathf.RoundToInt(animationClip.events[i].time * animationClip.frameRate);
+                active = recoveryStart - activeFrameStart;
+                recovery = totalFrames - recoveryStart;
+            }
+        }
+
+        if(windup > 0)
+        {
+            windupTime = windup;
+        }
+
+        if(active > 0)
+        {
+            activeTime = active;
+        }
+
+        if(recovery > 0)
+        {
+            basicRecovery = recovery;
+        }
+
+
     }
 }

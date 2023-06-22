@@ -15,6 +15,7 @@ MonoBehaviour:
   motionSequence: 2
   attackbuttons: 00000000
   animationName: 1
+  animationClip: {fileID: 7400000, guid: 1c575808dd891254ab9fea1a29347b3c, type: 2}
   damage: 5
   windupTime: 4
   activeTime: 7
