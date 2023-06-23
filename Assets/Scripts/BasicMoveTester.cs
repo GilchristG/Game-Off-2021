@@ -508,6 +508,16 @@ public class BasicMoveTester : MonoBehaviour
         }
     }
 
+    public void AddForceX(float forceX)
+    {
+        rb.velocity = new Vector2(forceX, rb.velocity.y);
+    }
+
+    public void AddForceY(float forceY)
+    {
+        rb.velocity = new Vector2(rb.velocity.x, forceY);
+    }
+
 
     bool IsStunned()
     {

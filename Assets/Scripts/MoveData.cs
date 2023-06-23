@@ -37,6 +37,7 @@ public class MoveData : ScriptableObject
 
     //NOTE: Don't forget to put these values in frames (about 16ms each)
     //Unused at the moment
+    //BasicRecovery could be the whiff and/or block values with a better on hit value
     float recoveryTimeHit;
     float recoveryTimeMiss;
     float recoveryTimeBlocked;
