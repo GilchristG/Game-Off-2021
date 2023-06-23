@@ -38,6 +38,8 @@ public class OfflineBBGame : MonoBehaviour
     {
         InputFrame inputFrame = new InputFrame();
 
+        moveDirection_P1 = new Vector3(0, 0, 0);
+
         if (Input.GetKey(KeyCode.A))
         {
             moveDirection_P1 = new Vector3(-1, 0, 0);
@@ -78,6 +80,8 @@ public class OfflineBBGame : MonoBehaviour
             attackButtons_P1[3] = 1;
         }
 
+
+        moveDirection_P2 = new Vector3(0, 0, 0);
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {

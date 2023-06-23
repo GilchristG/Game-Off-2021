@@ -151,12 +151,13 @@ public class BasicMoveTester : MonoBehaviour
         //This properly detects the most complicated moves first
         List<MotionType> movesDetected = motionChecker.CheckForAllApplicable(characterInput, facingRight);
 
+        //May have to remove this if we add character specific dashes
         if (currentFrame.inputs[1] == 1 || currentFrame.inputs[2] == 1 || currentFrame.inputs[3] == 1)
         {
 
             foreach (MoveData md in moveSet.moves)
             {
-                if (movesDetected.Contains(md.motionSequence))
+                if (movesDetected.Contains(md.motionSequence) && (currentStance == md.neededStance ))
                 {
                     subSection.Add(md);
                 }

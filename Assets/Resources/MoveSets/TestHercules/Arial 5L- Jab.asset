@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
+  m_Name: Arial 5L- Jab
+  m_EditorClassIdentifier: 
+  motionSequence: 0
+  attackbuttons: 00000000
+  neededStance: 2
+  animationName: 1
+  animationClip: {fileID: 7400000, guid: 1c575808dd891254ab9fea1a29347b3c, type: 2}
+  damage: 5
+  windupTime: 4
+  activeTime: 7
+  basicRecovery: 9
+  bufferWindow: 5
+  hitStunTime: 8
+  blockStunTime: 6
+  knockbackForce: 2
+  launchForce: 0
