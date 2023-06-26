@@ -18,7 +18,17 @@ public class OfflineBBGame : MonoBehaviour
     Vector3 moveDirection_P2 = new Vector3(0, 0, 0);
     int[] attackButtons_P2 = new int[4];
 
+    [SerializeField] bool matchRunning = false;
+
     private void Awake()
+    {
+        if (matchRunning)
+        {
+            InitializeCamera();
+        }
+    }
+
+    public void InitializeCamera()
     {
         cameraTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
         if (cameraTargetGroup != null)
@@ -34,8 +44,19 @@ public class OfflineBBGame : MonoBehaviour
         }
     }
 
+    public void InitializeMatch(EnumCharacter p1, EnumCharacter p2)
+    {
+
+
+
+    }
+
+
     private void Update()
     {
+        if (!matchRunning)
+            return;
+
         InputFrame inputFrame = new InputFrame();
 
         moveDirection_P1 = new Vector3(0, 0, 0);
