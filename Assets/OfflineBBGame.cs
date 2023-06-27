@@ -8,6 +8,7 @@ public class OfflineBBGame : MonoBehaviour
     public BasicMoveTester fighter1;
     public BasicMoveTester fighter2;
     public CinemachineTargetGroup cameraTargetGroup;
+    public GameModeCharacterList characterList;
 
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
@@ -46,9 +47,24 @@ public class OfflineBBGame : MonoBehaviour
 
     public void InitializeMatch(EnumCharacter p1, EnumCharacter p2)
     {
+        foreach(CharacterPref cPref in characterList.charactersForMode)
+        {
+            if(p1 == cPref.characterType)
+            {
+                fighter1 = Instantiate(cPref.character_pf).GetComponent<BasicMoveTester>();
+            }
+            if(p2 == cPref.characterType)
+            {
+                fighter2 = Instantiate(cPref.character_pf).GetComponent<BasicMoveTester>();
+            }
 
+            if(fighter1 != null && fighter2 != null)
+            {
+                break;
+            }
+        }
 
-
+        InitializeCamera();
     }
 
 

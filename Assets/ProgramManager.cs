@@ -21,4 +21,19 @@ public class ProgramManager : MonoBehaviour
         p2Character = character;
     }
 
+    /*
+    public void LoadLocalMatch()
+    {
+        //Spawn in loadscreen
+        //Deload menus
+        //Load new scene
+        //InitializeMatch
+        FindObjectOfType<OfflineBBGame>().InitializeMatch(p1Character, p2Character);
+        //Remove loadscreen
+        //Start music, intro animations, etc
+        //Start match
+        //Wait for match end or quit to menu
+    }
+
+    */
 }
