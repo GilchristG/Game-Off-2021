@@ -8,6 +8,7 @@ public class GameModeCharacterList : ScriptableObject
     public List<CharacterPref> charactersForMode;
 }
 
+[System.Serializable]
 public struct CharacterPref
 {
     public EnumCharacter characterType;

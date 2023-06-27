@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f8946c2b572bf44aafcfb28329f4292, type: 3}
+  m_Name: OfflineVersus
+  m_EditorClassIdentifier: 
+  charactersForMode:
+  - characterType: 0
+    character_pf: {fileID: 2827295610796182434, guid: 4af38fee9453c574a8b57f3f0d0dd48d,
+      type: 3}
+  - characterType: 1
+    character_pf: {fileID: 2555957071419133713, guid: 847945fbea0f31443991ccd94ba80fdb,
+      type: 3}
