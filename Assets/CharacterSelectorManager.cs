@@ -81,6 +81,7 @@ public class CharacterSelectorManager : MonoBehaviour
         if(p1Selected && p2Selected)
         {
             //Attempt to start match
+
         }
     }
 
