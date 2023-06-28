@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
-  m_Name: 4L - Jab
+  m_Name: 5M - CrossPunch
   m_EditorClassIdentifier: 
-  motionSequence: 2
-  attackbuttons: 00000000
-  animationName: 1
-  animationClip: {fileID: 7400000, guid: 1c575808dd891254ab9fea1a29347b3c, type: 2}
-  damage: 5
-  windupTime: 4
-  activeTime: 7
-  basicRecovery: 9
+  motionSequence: 0
+  attackbuttons: 01000000
+  neededStance: 0
+  animationName: 2
+  animationClip: {fileID: 7400000, guid: 7dd78b31303066243babe5073d15540e, type: 2}
+  damage: 8
+  windupTime: 7
+  activeTime: 4
+  basicRecovery: 7
   bufferWindow: 5
   hitStunTime: 8
   blockStunTime: 6
-  knockbackForce: 2
+  knockbackForce: 3
   launchForce: 0

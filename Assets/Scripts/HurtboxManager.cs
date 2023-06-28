@@ -6,6 +6,9 @@ public class HurtboxManager : MonoBehaviour
 {
     Move currentMove;
     bool hurtBoxActive = false;
+
+    //This doesn't take into account multi hit moves
+    bool alreadyHit = false;
     HitboxManager ourHitbox;
 
     public void SetSelfHitbox(HitboxManager hbm)
@@ -17,6 +20,7 @@ public class HurtboxManager : MonoBehaviour
     {
         currentMove = activeMove;
         hurtBoxActive = true;
+        alreadyHit = false;
     }
 
     public void DeactivateHurtbox()
@@ -26,12 +30,25 @@ public class HurtboxManager : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hurtBoxActive)
+        if (!hurtBoxActive || alreadyHit)
             return;
 
         if(collision.TryGetComponent<HitboxManager>(out HitboxManager hitbox) && hitbox != ourHitbox)
         {
+            alreadyHit = true;
             hitbox.ProcessHit(currentMove,collision.ClosestPoint(transform.position));
+        }
+    }
+
+    public void OnTriggerStay2D(Collider2D collision)
+    {
+        if (!hurtBoxActive || alreadyHit)
+            return;
+
+        if (collision.TryGetComponent<HitboxManager>(out HitboxManager hitbox) && hitbox != ourHitbox)
+        {
+            alreadyHit = true;
+            hitbox.ProcessHit(currentMove, collision.ClosestPoint(transform.position));
         }
     }
 }

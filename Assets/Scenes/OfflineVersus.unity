@@ -389,10 +389,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fighter1: {fileID: 1686496008}
   fighter2: {fileID: 2016646827}
-  cameraTargetGroup: {fileID: 0}
+  cameraTargetGroup: {fileID: 1814278781}
+  characterList: {fileID: 11400000, guid: 96dabbbbc63ff8041bf888f998ac5fb2, type: 2}
   frameDuration: 0.016
   nextFrameTime: 0
-  matchRunning: 0
+  matchRunning: 1
 --- !u!4 &467376290
 Transform:
   m_ObjectHideFlags: 0
@@ -1771,6 +1772,11 @@ PrefabInstance:
       propertyPath: parentToSpawnOn
       value: 
       objectReference: {fileID: 2000775251}
+    - target: {fileID: 2555957071419133721, guid: 847945fbea0f31443991ccd94ba80fdb,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ce23cc1cc0a6cc644a841e4726ff9e7a, type: 2}
     - target: {fileID: 2555957071419133723, guid: 847945fbea0f31443991ccd94ba80fdb,
         type: 3}
       propertyPath: m_RootOrder

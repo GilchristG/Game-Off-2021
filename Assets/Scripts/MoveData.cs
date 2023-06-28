@@ -68,7 +68,7 @@ public class MoveData : ScriptableObject
             if(animationClip.events[i].functionName == "Active")
             {
                 activeFrameStart = Mathf.RoundToInt(animationClip.events[i].time * animationClip.frameRate);
-                windup = activeFrameStart - 1;
+                windup = activeFrameStart;
             }
             else if (animationClip.events[i].functionName == "Recovery")
             {

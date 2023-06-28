@@ -20,10 +20,15 @@ public class CharacterSelectorManager : MonoBehaviour
     public GameObject p2PointerGrapic;
 
     ProgramManager programManager;
+    ModeLauncher modeLauncher;
+    MainMenuManager mainMenu;
 
     private void OnEnable()
     {
         programManager = FindObjectOfType<ProgramManager>();
+        mainMenu = FindObjectOfType<MainMenuManager>();
+
+        modeLauncher = GetComponent<ModeLauncher>();
     }
 
     public void Process(int player, Vector2Int direction)
@@ -39,7 +44,7 @@ public class CharacterSelectorManager : MonoBehaviour
         switch (player)
         {
             case 1:
-            p1Selection = gridInfo.GetPanelAt(direction, ref p1Element);
+                p1Selection = gridInfo.GetPanelAt(direction, ref p1Element);
                 break;
             case 2:
                 p2Selection = gridInfo.GetPanelAt(direction, ref p2Element);
@@ -47,17 +52,22 @@ public class CharacterSelectorManager : MonoBehaviour
         }
     }
 
-    public void Move(/*Input */)
-    {
-        Vector2Int newDirection = new Vector2Int(0, 0);
-        //Get player input and send to process
-
-        Process(0, newDirection);
-    }
-
-    public void Select(/*Input*/)
+    public void OnMove()
     {
         int player = 1;
+
+        //Vector2 newInput = input.Get<Vector2>();
+
+        Vector2Int newDirection = new Vector2Int(0, 0); //new Vector2Int(Mathf.RoundToInt(newInput.x), Mathf.RoundToInt(newInput.y));
+        //Get player input and send to process
+
+        Process(player, newDirection);
+    }
+
+    public void OnConfirm()
+    {
+        int player = 1;
+
 
         //Check which player did it
         switch (player)
@@ -81,11 +91,11 @@ public class CharacterSelectorManager : MonoBehaviour
         if(p1Selected && p2Selected)
         {
             //Attempt to start match
-
+            modeLauncher.LaunchMode();
         }
     }
 
-    public void Back()
+    public void OnBack()
     {
         int player = 1;
 
@@ -99,6 +109,7 @@ public class CharacterSelectorManager : MonoBehaviour
                 else
                 {
                     //Go back a menu or selection
+                    mainMenu.ToMainMenu((int)MainMenuManager.MenuScreens.LocalPlay);
                 }
                 break;
             case 2:
@@ -115,5 +126,4 @@ public class CharacterSelectorManager : MonoBehaviour
 
 
     }
-
 }

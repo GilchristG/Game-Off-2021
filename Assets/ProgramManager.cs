@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class ProgramManager : MonoBehaviour
 {
@@ -11,12 +12,43 @@ public class ProgramManager : MonoBehaviour
     public EnumCharacter p1Character;
     public EnumCharacter p2Character;
 
+    public enum GameState
+    {
+        Menu,
+        Loading,
+        InGame
+    }
+
+    private GameState _GameState;
+
     void Awake()
     {
+
+
         if(SceneManager.sceneCount == 1)
         {
             SceneManager.LoadScene("MainMenu");
+            _GameState = GameState.Menu;
         }
+    }
+
+    public void OnPlayerJoined(PlayerInput newPlayer)
+    {
+        //I think this will set it to UI vs Fight bindings
+
+        if(_GameState == GameState.Menu)
+        {
+            newPlayer.currentActionMap.ChangeBinding(1);
+        }
+        else
+        {
+            newPlayer.currentActionMap.ChangeBinding(0);
+        }
+    }
+
+    public void OnPlayerLeft(PlayerInput leftPlayer)
+    {
+        
     }
 
 

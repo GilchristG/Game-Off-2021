@@ -154,12 +154,18 @@ public class BasicMoveTester : MonoBehaviour
         //May have to remove this if we add character specific dashes
         if (currentFrame.inputs[1] == 1 || currentFrame.inputs[2] == 1 || currentFrame.inputs[3] == 1)
         {
+            MoveData neutral = null;
 
             foreach (MoveData md in moveSet.moves)
             {
                 if (movesDetected.Contains(md.motionSequence) && (currentStance == md.neededStance ))
                 {
                     subSection.Add(md);
+                }
+
+                if(md.motionSequence == MotionType.Neutral && currentFrame.inputs[(int)md.attackbuttons[0] + 1] == 1)
+                {
+                    neutral = md;
                 }
             }
 
@@ -169,13 +175,21 @@ public class BasicMoveTester : MonoBehaviour
             IComparer<MoveData> ms = new MoveSorter();
             subSection.Sort(ms);
 
+            bool foundMove = false;
+
             foreach (MoveData md in subSection)
             {
                 //TODO: Add checks for multiple buttons
                 if (currentFrame.inputs[(int)md.attackbuttons[0] + 1] == 1)
                 {
                     moveQueue.Enqueue(md.CreateMove());
+                    foundMove = true;
                 }
+            }
+
+            if(!foundMove && neutral != null)
+            {
+                moveQueue.Enqueue(neutral.CreateMove());
             }
 
             //Debug.LogError("Pause for checking buffer");
