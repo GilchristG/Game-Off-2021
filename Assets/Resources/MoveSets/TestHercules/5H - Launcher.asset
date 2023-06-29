@@ -10,15 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
-  m_Name: 6H - OverheadHeavy
+  m_Name: 5H - Launcher
   m_EditorClassIdentifier: 
-  motionSequence: 1
+  motionSequence: 0
   attackbuttons: 02000000
-  animationName: HeavyOverhead
-  damage: 15
-  windupTime: 0
-  activeTime: 0
-  basicRecovery: 0
-  bufferWindow: 0
-  hitStunTime: 0
-  blockStunTime: 0
+  neededStance: 0
+  animationName: 3
+  animationClip: {fileID: 7400000, guid: 2e80408e9ab2d0640b208a83fb9949f5, type: 2}
+  damage: 18
+  windupTime: 9
+  activeTime: 6
+  basicRecovery: 13
+  bufferWindow: 7
+  hitStunTime: 18
+  blockStunTime: 10
+  knockbackForce: 4
+  launchForce: 12
