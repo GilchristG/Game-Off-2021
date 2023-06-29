@@ -163,7 +163,7 @@ public class BasicMoveTester : MonoBehaviour
                     subSection.Add(md);
                 }
 
-                if(md.motionSequence == MotionType.Neutral && currentFrame.inputs[(int)md.attackbuttons[0] + 1] == 1)
+                if(md.motionSequence == MotionType.Neutral && currentFrame.inputs[(int)md.attackbuttons[0] + 1] == 1 && currentStance == md.neededStance)
                 {
                     neutral = md;
                 }

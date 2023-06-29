@@ -1772,11 +1772,6 @@ PrefabInstance:
       propertyPath: parentToSpawnOn
       value: 
       objectReference: {fileID: 2000775251}
-    - target: {fileID: 2555957071419133721, guid: 847945fbea0f31443991ccd94ba80fdb,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: ce23cc1cc0a6cc644a841e4726ff9e7a, type: 2}
     - target: {fileID: 2555957071419133723, guid: 847945fbea0f31443991ccd94ba80fdb,
         type: 3}
       propertyPath: m_RootOrder
