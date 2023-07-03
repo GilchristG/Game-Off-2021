@@ -2394,6 +2394,7 @@ GameObject:
   - component: {fileID: 1494514001}
   - component: {fileID: 1494514005}
   - component: {fileID: 1494514007}
+  - component: {fileID: 1494514008}
   m_Layer: 5
   m_Name: LocalCanvas
   m_TagString: Untagged
@@ -2499,8 +2500,11 @@ MonoBehaviour:
   gridInfo: {fileID: 945370018}
   p1CharacterAvatar: {fileID: 1598624285}
   p2CharacterAvatar: {fileID: 978489031}
+  p1Selection: {fileID: 2119032316}
+  p1Element: 0
+  p2Selection: {fileID: 1022699305}
   p1PointerGraphic: {fileID: 974265080}
-  p2PointerGrapic: {fileID: 1113823378}
+  p2PointerGraphic: {fileID: 1113823378}
 --- !u!114 &1494514007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2513,6 +2517,109 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d11bf83b2d90f684c8b63b13f98c1a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1494514008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494514000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f6a0049a6baab4d43bfeed7e5dafc2ad,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 79897eb6-e538-4b2e-8f95-f0f91011790b
+    m_ActionName: Fight/Walk[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9298d6c8-64d9-4bb8-b8f7-a83cbd135f03
+    m_ActionName: Fight/LightAttack[/Keyboard/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f9bc94fd-d8c1-4ca3-ac6f-0f4a8217f761
+    m_ActionName: Fight/MidAttack[/Keyboard/h]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e812d90d-5538-4b55-82a5-7303853182dd
+    m_ActionName: Fight/HeavyAttack[/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 02b0d3a2-63d3-416b-8339-61fb71f63d1c
+    m_ActionName: Fight/Special[/Keyboard/u]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 267f4d31-dcb8-4e56-a308-7f9e75c64059
+    m_ActionName: Fight/Dash[/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1494514005}
+        m_TargetAssemblyTypeName: CharacterSelectorManager, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7d60b0b9-1be1-4d86-9d06-ec55f4ead70f
+    m_ActionName: UI/Move[/Keyboard/w,/Keyboard/a,/Keyboard/s,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1494514005}
+        m_TargetAssemblyTypeName: CharacterSelectorManager, Assembly-CSharp
+        m_MethodName: OnConfirm
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 612202af-56b7-44bd-b179-01b287770b4a
+    m_ActionName: UI/Confirm[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1494514005}
+        m_TargetAssemblyTypeName: CharacterSelectorManager, Assembly-CSharp
+        m_MethodName: OnBack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8a01f70c-21e5-4d5c-a273-b891700dfd2d
+    m_ActionName: UI/Back[/Keyboard/backspace]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1514997455
 GameObject:
   m_ObjectHideFlags: 0

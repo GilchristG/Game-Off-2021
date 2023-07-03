@@ -12,6 +12,8 @@ public class ProgramManager : MonoBehaviour
     public EnumCharacter p1Character;
     public EnumCharacter p2Character;
 
+    bool isLoading = false;
+
     public enum GameState
     {
         Menu,
@@ -65,7 +67,11 @@ public class ProgramManager : MonoBehaviour
     
     public void LoadLocalMatch()
     {
-        StartCoroutine(LoadLocalVersus());
+        if (!isLoading)
+        {
+            isLoading = true;
+            StartCoroutine(LoadLocalVersus());
+        }
     }
 
     IEnumerator LoadLocalVersus()
@@ -96,5 +102,7 @@ public class ProgramManager : MonoBehaviour
         //Start music, intro animations, etc
         //Start match
         //Wait for match end or quit to menu
+
+        isLoading = false;
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterSelectorManager : MonoBehaviour
 {
@@ -9,15 +10,15 @@ public class CharacterSelectorManager : MonoBehaviour
     public GameObject p1CharacterAvatar;
     public GameObject p2CharacterAvatar;
 
-    CharacterPanel p1Selection;
-    int p1Element = 0;
+    [SerializeField] CharacterPanel p1Selection;
+    [SerializeField] int p1Element = 0;
     bool p1Selected = false;
-    CharacterPanel p2Selection;
+    [SerializeField] CharacterPanel p2Selection;
     int p2Element = 1;
     bool p2Selected = false;
 
     public GameObject p1PointerGraphic;
-    public GameObject p2PointerGrapic;
+    public GameObject p2PointerGraphic;
 
     ProgramManager programManager;
     ModeLauncher modeLauncher;
@@ -45,28 +46,36 @@ public class CharacterSelectorManager : MonoBehaviour
         {
             case 1:
                 p1Selection = gridInfo.GetPanelAt(direction, ref p1Element);
+                p1PointerGraphic.transform.parent = p1Selection.transform;
+                p1PointerGraphic.transform.SetPositionAndRotation(p1Selection.transform.position, p1Selection.transform.rotation);
                 break;
             case 2:
                 p2Selection = gridInfo.GetPanelAt(direction, ref p2Element);
+                p2PointerGraphic.transform.parent = p2Selection.transform;
+                p2PointerGraphic.transform.SetPositionAndRotation(p2Selection.transform.position, p2Selection.transform.rotation);
                 break;
         }
     }
 
-    public void OnMove()
+    public void OnMove(InputAction.CallbackContext context)
     {
         int player = 1;
 
-        //Vector2 newInput = input.Get<Vector2>();
+        Vector2 newInput = context.ReadValue<Vector2>();
 
-        Vector2Int newDirection = new Vector2Int(0, 0); //new Vector2Int(Mathf.RoundToInt(newInput.x), Mathf.RoundToInt(newInput.y));
+        Vector2Int newDirection = new Vector2Int((int)newInput.x, (int)newInput.y); //new Vector2Int(Mathf.RoundToInt(newInput.x), Mathf.RoundToInt(newInput.y));
         //Get player input and send to process
 
         Process(player, newDirection);
     }
 
-    public void OnConfirm()
+    public void OnConfirm(InputAction.CallbackContext context)
     {
         int player = 1;
+
+        //Testing that auto confirms p2 character due to holding down a button sends multiple commands
+        //if (p1Selected)
+            //player = 2;
 
 
         //Check which player did it
@@ -95,7 +104,7 @@ public class CharacterSelectorManager : MonoBehaviour
         }
     }
 
-    public void OnBack()
+    public void OnBack(InputAction.CallbackContext context)
     {
         int player = 1;
 

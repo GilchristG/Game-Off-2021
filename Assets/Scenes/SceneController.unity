@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadScreenCanvas: {fileID: 1417571853}
-  loadScreen_pf: {fileID: 5868924262360040983, guid: 5e9a6911c8017d642b767bc86700f2b5,
+  loadScreen_pf: {fileID: 4781107973510766283, guid: 0a8d857688bf0ea44a46981d0d721c7e,
     type: 3}
   p1Character: 0
   p2Character: 0
@@ -243,7 +243,6 @@ GameObject:
   - component: {fileID: 1417571856}
   - component: {fileID: 1417571855}
   - component: {fileID: 1417571854}
-  - component: {fileID: 1417571858}
   - component: {fileID: 1417571859}
   m_Layer: 5
   m_Name: PersistentCanvas
@@ -311,7 +310,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1417571857
 RectTransform:
@@ -333,26 +332,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!95 &1417571858
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417571853}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 19701a004f2e40143bd87d5bdb390505, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1417571859
 MonoBehaviour:
   m_ObjectHideFlags: 0

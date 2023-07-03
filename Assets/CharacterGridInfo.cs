@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-//NOTE: This might be a bit unreliable if the number of elements is uneven. There might be a built in automatic solution
 public class CharacterGridInfo : MonoBehaviour
 {
     public int rowLength = 4;
