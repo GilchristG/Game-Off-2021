@@ -24,12 +24,54 @@ public class CharacterSelectorManager : MonoBehaviour
     ModeLauncher modeLauncher;
     MainMenuManager mainMenu;
 
+    InputAction p1Move;
+    InputAction p1Confirm;
+    InputAction p1Back;
+
+    InputAction p2Move;
+    InputAction p2Confirm;
+    InputAction p2Back;
+
     private void OnEnable()
     {
         programManager = FindObjectOfType<ProgramManager>();
+
+        if (programManager.p1Input != null)
+        {
+            p1Move = programManager.p1Input.actions["Move"];
+            p1Confirm = programManager.p1Input.actions["Confirm"];
+            p1Back = programManager.p1Input.actions["Back"];
+
+            p1Move.performed += OnMove;
+            p1Confirm.performed += OnConfirm;
+            p1Back.performed += OnBack;
+        }
+
+        if (programManager.p2Input != null)
+        {
+            p2Move = programManager.p2Input.actions["Move"];
+            p2Confirm = programManager.p2Input.actions["Confirm"];
+            p2Back = programManager.p2Input.actions["Back"];
+
+            p2Move.performed += OnMove;
+            p2Confirm.performed += OnConfirm;
+            p2Back.performed += OnBack;
+        }
+
         mainMenu = FindObjectOfType<MainMenuManager>();
 
         modeLauncher = GetComponent<ModeLauncher>();
+    }
+
+    private void OnDisable()
+    {
+        p1Move.performed -= OnMove;
+        p1Confirm.performed -= OnConfirm;
+        p1Back.performed -= OnBack;
+
+        p2Move.performed -= OnMove;
+        p2Confirm.performed -= OnConfirm;
+        p2Back.performed -= OnBack;
     }
 
     public void Process(int player, Vector2Int direction)
@@ -74,8 +116,8 @@ public class CharacterSelectorManager : MonoBehaviour
         int player = 1;
 
         //Testing that auto confirms p2 character due to holding down a button sends multiple commands
-        //if (p1Selected)
-            //player = 2;
+        if (p1Selected)
+            player = 2;
 
 
         //Check which player did it

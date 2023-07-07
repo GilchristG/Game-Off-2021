@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
-  m_Name: Arial 5L- Jab
+  m_Name: 2M
   m_EditorClassIdentifier: 
   motionSequence: 0
-  attackbuttons: 00000000
-  neededStance: 2
-  animationName: L
-  animationClip: {fileID: 7400000, guid: 1c575808dd891254ab9fea1a29347b3c, type: 2}
-  damage: 5
-  windupTime: 4
-  activeTime: 7
-  basicRecovery: 9
-  bufferWindow: 5
-  hitStunTime: 8
-  blockStunTime: 6
-  knockbackForce: 2
+  attackbuttons: 01000000
+  neededStance: 1
+  animationName: CM
+  animationClip: {fileID: 7400000, guid: b398142a96eff864c97a2fff2e5b402a, type: 2}
+  damage: 8
+  windupTime: 8
+  activeTime: 4
+  basicRecovery: 7
+  bufferWindow: 7
+  hitStunTime: 11
+  blockStunTime: 9
+  knockbackForce: 2.5
   launchForce: 0

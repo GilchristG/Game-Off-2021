@@ -473,7 +473,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""ed8fdff7-5c8a-4747-b732-c532c0a4d344"",
-                    ""path"": ""<DualShockGamepad>/dpad/right"",
+                    ""path"": ""<DualShockGamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PS4"",
@@ -543,7 +543,13 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         {
             ""name"": ""PS4"",
             ""bindingGroup"": ""PS4"",
-            ""devices"": []
+            ""devices"": [
+                {
+                    ""devicePath"": ""<DualShockGamepad>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
         },
         {
             ""name"": ""Keyboard"",
@@ -551,7 +557,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<Keyboard>"",
-                    ""isOptional"": false,
+                    ""isOptional"": true,
                     ""isOR"": false
                 }
             ]

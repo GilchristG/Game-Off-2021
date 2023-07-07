@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class OfflineBBGame : MonoBehaviour
 {
@@ -21,12 +22,63 @@ public class OfflineBBGame : MonoBehaviour
 
     [SerializeField] bool matchRunning = false;
 
-    private void Awake()
+    [SerializeField] ProgramManager manager;
+
+    InputAction p1Walk;
+    InputAction p1Light;
+    InputAction p1Medium;
+    InputAction p1Heavy;
+    InputAction p1Special;
+
+    InputAction p2Walk;
+    InputAction p2Light;
+    InputAction p2Medium;
+    InputAction p2Heavy;
+    InputAction p2Special;
+
+    private void OnEnable()
     {
+        manager = FindObjectOfType<ProgramManager>();
+
+        if (manager.p1Input != null)
+        {
+            manager.p1Input.SwitchCurrentActionMap("Fight");
+            p1Walk = manager.p1Input.actions["Walk"];
+            p1Light = manager.p1Input.actions["LightAttack"];
+            p1Medium = manager.p1Input.actions["MidAttack"];
+            p1Heavy = manager.p1Input.actions["HeavyAttack"];
+            p1Special = manager.p1Input.actions["Special"];
+        }
+
+        if (manager.p2Input != null)
+        {
+            manager.p2Input.SwitchCurrentActionMap("Fight");
+            p2Walk = manager.p2Input.actions["Walk"];
+            p2Light = manager.p2Input.actions["LightAttack"];
+            p2Medium = manager.p2Input.actions["MidAttack"];
+            p2Heavy = manager.p2Input.actions["HeavyAttack"];
+            p2Special = manager.p2Input.actions["Special"];
+        }
+
         if (matchRunning)
         {
             InitializeCamera();
         }
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
+    public void OnPlayerLeft(PlayerInput player)
+    {
+
+    }
+
+    public void OnPlayerJoin(PlayerInput player)
+    {
+
     }
 
     public void InitializeCamera()
@@ -65,6 +117,10 @@ public class OfflineBBGame : MonoBehaviour
         }
 
         InitializeCamera();
+
+
+        //Can add a delay here
+        matchRunning = true;
     }
 
 
@@ -77,89 +133,105 @@ public class OfflineBBGame : MonoBehaviour
 
         moveDirection_P1 = new Vector3(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.A))
+        if (p1Walk != null)
         {
-            moveDirection_P1 = new Vector3(-1, 0, 0);
-        }
 
-        if (Input.GetKey(KeyCode.D))
-        {
-            moveDirection_P1 = new Vector3(1, 0, 0);
-        }
+            Vector2 p1Dir = p1Walk.ReadValue<Vector2>();
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            moveDirection_P1 += new Vector3(0, 1, 0);
-        }
+            if (p1Dir != null)
+                moveDirection_P1 += new Vector3(p1Dir.x, p1Dir.y, 0);
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            moveDirection_P1 += new Vector3(0, -1, 0);
-        }
+            /*if (Input.GetKey(KeyCode.A))
+            {
+                moveDirection_P1 = new Vector3(-1, 0, 0);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            attackButtons_P1[0] = 1;
-        }
+            if (Input.GetKey(KeyCode.D))
+            {
+                moveDirection_P1 = new Vector3(1, 0, 0);
+            }
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            attackButtons_P1[1] = 1;
-        }
+            if (Input.GetKey(KeyCode.W))
+            {
+                moveDirection_P1 += new Vector3(0, 1, 0);
+            }
 
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            attackButtons_P1[2] = 1;
-        }
+            if (Input.GetKey(KeyCode.S))
+            {
+                moveDirection_P1 += new Vector3(0, -1, 0);
+            }*/
 
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            attackButtons_P1[3] = 1;
-        }
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                attackButtons_P1[0] = 1;
+            }
 
+            if (Input.GetKeyDown(KeyCode.H))
+            {
+                attackButtons_P1[1] = 1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                attackButtons_P1[2] = 1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                attackButtons_P1[3] = 1;
+            }
+        }
 
         moveDirection_P2 = new Vector3(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (p2Walk != null)
         {
-            moveDirection_P2 = new Vector3(-1, 0, 0);
-        }
 
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveDirection_P2 = new Vector3(1, 0, 0);
-        }
+            Vector2 p2Dir = p2Walk.ReadValue<Vector2>();
 
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            moveDirection_P2 += new Vector3(0, 1, 0);
-        }
+            if (p2Dir != null)
+                moveDirection_P2 += new Vector3(p2Dir.x, p2Dir.y, 0);
 
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            moveDirection_P2 += new Vector3(0, -1, 0);
-        }
+            /*if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveDirection_P2 = new Vector3(-1, 0, 0);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Keypad5))
-        {
-            attackButtons_P2[0] = 1;
-        }
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                moveDirection_P2 = new Vector3(1, 0, 0);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Keypad2))
-        {
-            attackButtons_P2[1] = 1;
-        }
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                moveDirection_P2 += new Vector3(0, 1, 0);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            attackButtons_P2[2] = 1;
-        }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                moveDirection_P2 += new Vector3(0, -1, 0);
+            }*/
 
-        if (Input.GetKeyDown(KeyCode.Keypad6))
-        {
-            attackButtons_P2[3] = 1;
-        }
+            if (Input.GetKeyDown(KeyCode.Keypad5))
+            {
+                attackButtons_P2[0] = 1;
+            }
 
+            if (Input.GetKeyDown(KeyCode.Keypad2))
+            {
+                attackButtons_P2[1] = 1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Keypad3))
+            {
+                attackButtons_P2[2] = 1;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Keypad6))
+            {
+                attackButtons_P2[3] = 1;
+            }
+        }
 
         if (nextFrameTime < Time.time)
         {
@@ -175,4 +247,5 @@ public class OfflineBBGame : MonoBehaviour
         }
     }
 
+    
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   motionSequence: 3
   attackbuttons: 03000000
   neededStance: 1
-  animationName: 3
+  animationName: 2S
   animationClip: {fileID: 7400000, guid: 2e80408e9ab2d0640b208a83fb9949f5, type: 2}
   damage: 18
   windupTime: 9

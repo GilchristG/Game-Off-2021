@@ -7,6 +7,7 @@ public class FrameUIElement : MonoBehaviour
     public Image lightBtn;
     public Image mediumBtn;
     public Image heavyBtn;
+    public Image specialBtn;
 
     public Sprite[] elementIcons;
 
@@ -18,5 +19,6 @@ public class FrameUIElement : MonoBehaviour
         lightBtn.gameObject.SetActive(frame.inputs[1] == 1);
         mediumBtn.gameObject.SetActive(frame.inputs[2] == 1);
         heavyBtn.gameObject.SetActive(frame.inputs[3] == 1);
+        //specialBtn.gameObject.SetActive(frame.inputs[4] == 1);
     }
 }

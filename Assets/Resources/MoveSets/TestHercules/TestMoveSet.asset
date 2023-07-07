@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: TestMoveSet
   m_EditorClassIdentifier: 
   moves:
+  - {fileID: 11400000, guid: a9eed064adaad4e4282a4b71cfae8b2c, type: 2}
   - {fileID: 11400000, guid: 47e838036466fb24b92df43fe561c004, type: 2}
   - {fileID: 11400000, guid: b6ab4cc9823a4fe49a9dff19cb881147, type: 2}
+  - {fileID: 11400000, guid: f7bf491f2ac19ed43b2711d171edcc55, type: 2}
+  - {fileID: 11400000, guid: 9b81d5a50b2e5094c83d7a4886081fbc, type: 2}
+  - {fileID: 11400000, guid: 9f522ed49787ae14fae72141180b89bc, type: 2}
   - {fileID: 11400000, guid: a9eed064adaad4e4282a4b71cfae8b2c, type: 2}
-  - {fileID: 11400000, guid: 4d596fc35087aaa42b66f6aed8fe73e5, type: 2}

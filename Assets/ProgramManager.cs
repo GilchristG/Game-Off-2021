@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,26 +34,6 @@ public class ProgramManager : MonoBehaviour
             _GameState = GameState.Menu;
         }
     }
-
-    public void OnPlayerJoined(PlayerInput newPlayer)
-    {
-        //I think this will set it to UI vs Fight bindings
-
-        if(_GameState == GameState.Menu)
-        {
-            newPlayer.currentActionMap.ChangeBinding(1);
-        }
-        else
-        {
-            newPlayer.currentActionMap.ChangeBinding(0);
-        }
-    }
-
-    public void OnPlayerLeft(PlayerInput leftPlayer)
-    {
-        
-    }
-
 
     public void SelectP1Character(EnumCharacter character)
     {
@@ -104,5 +85,44 @@ public class ProgramManager : MonoBehaviour
         //Wait for match end or quit to menu
 
         isLoading = false;
+    }
+
+
+    //Input handling
+
+    public PlayerInput p1Input;
+    public PlayerInput p2Input;
+
+    Action<PlayerInput> onPlayer1Joined;
+    Action onPlayer1Left;
+    Action<PlayerInput> onPlayer2Joined;
+    Action onPlayer2Left;
+
+    public void OnPlayerJoined(PlayerInput newPlayer)
+    {
+        if(p1Input == null)
+        {
+            p1Input = newPlayer;
+            onPlayer1Joined?.Invoke(p1Input);
+        }
+        else if(p2Input == null)
+        {
+            p2Input = newPlayer;
+            onPlayer2Joined?.Invoke(p2Input);
+        }
+    }
+
+    public void OnPlayerLeft(PlayerInput leftPlayer)
+    {
+        if (p1Input == leftPlayer)
+        {
+            onPlayer1Left?.Invoke();
+            p1Input = null;
+        }
+        else if (p2Input == leftPlayer)
+        {
+            onPlayer2Left?.Invoke();
+            p2Input = null;
+        }
     }
 }

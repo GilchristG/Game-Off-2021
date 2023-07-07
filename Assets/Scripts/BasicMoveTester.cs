@@ -117,6 +117,7 @@ public class BasicMoveTester : MonoBehaviour
         currentFrame.inputs[1] = attackButtons[0];
         currentFrame.inputs[2] = attackButtons[1];
         currentFrame.inputs[3] = attackButtons[2];
+        currentFrame.inputs[4] = attackButtons[3];
 
         characterInput.PushIntoBuffer(currentFrame);
 
@@ -179,6 +180,8 @@ public class BasicMoveTester : MonoBehaviour
 
             foreach (MoveData md in subSection)
             {
+                Debug.Log((md.attackbuttons[0] + 1).ToString());
+
                 //TODO: Add checks for multiple buttons
                 if (currentFrame.inputs[(int)md.attackbuttons[0] + 1] == 1)
                 {
@@ -525,12 +528,12 @@ public class BasicMoveTester : MonoBehaviour
 
     public void AddForceX(float forceX)
     {
-        rb.velocity = new Vector2(forceX, rb.velocity.y);
+        rb.velocity = new Vector2(forceX *(facingRight?1:-1), rb.velocity.y);
     }
 
     public void AddForceY(float forceY)
     {
-        rb.velocity = new Vector2(rb.velocity.x, forceY);
+        rb.velocity = new Vector2(rb.velocity.x, forceY * (facingRight ? 1 : -1));
     }
 
 
