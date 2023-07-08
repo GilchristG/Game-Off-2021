@@ -153,7 +153,7 @@ public class BasicMoveTester : MonoBehaviour
         List<MotionType> movesDetected = motionChecker.CheckForAllApplicable(characterInput, facingRight);
 
         //May have to remove this if we add character specific dashes
-        if (currentFrame.inputs[1] == 1 || currentFrame.inputs[2] == 1 || currentFrame.inputs[3] == 1)
+        if (currentFrame.inputs[1] == 1 || currentFrame.inputs[2] == 1 || currentFrame.inputs[3] == 1 || currentFrame.inputs[4] == 1)
         {
             MoveData neutral = null;
 

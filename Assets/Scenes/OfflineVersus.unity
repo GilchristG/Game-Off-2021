@@ -303,8 +303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f43ecfa923aee40a45f21d8a59e7cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fighter1: {fileID: 1686496008}
-  fighter2: {fileID: 2016646827}
+  fighter1: {fileID: 0}
+  fighter2: {fileID: 0}
   cameraTargetGroup: {fileID: 1814278781}
   characterList: {fileID: 11400000, guid: 96dabbbbc63ff8041bf888f998ac5fb2, type: 2}
   frameDuration: 0.016
@@ -1682,7 +1682,7 @@ PrefabInstance:
     - target: {fileID: 2555957071419133713, guid: 847945fbea0f31443991ccd94ba80fdb,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2555957071419133719, guid: 847945fbea0f31443991ccd94ba80fdb,
         type: 3}
@@ -1953,7 +1953,7 @@ PrefabInstance:
     - target: {fileID: 2555957071419133713, guid: 847945fbea0f31443991ccd94ba80fdb,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2555957071419133720, guid: 847945fbea0f31443991ccd94ba80fdb,
         type: 3}

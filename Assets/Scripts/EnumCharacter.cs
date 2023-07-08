@@ -1,6 +1,6 @@
 public enum EnumCharacter
 {
     Dummy,
-    Hercules,
-    Bombadier
+    Hercules
+    //Bombadier
 }

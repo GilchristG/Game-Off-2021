@@ -14,7 +14,7 @@ public class CharacterSelectorManager : MonoBehaviour
     [SerializeField] int p1Element = 0;
     bool p1Selected = false;
     [SerializeField] CharacterPanel p2Selection;
-    int p2Element = 1;
+    [SerializeField] int p2Element = 0;
     bool p2Selected = false;
 
     public GameObject p1PointerGraphic;
@@ -42,9 +42,9 @@ public class CharacterSelectorManager : MonoBehaviour
             p1Confirm = programManager.p1Input.actions["Confirm"];
             p1Back = programManager.p1Input.actions["Back"];
 
-            p1Move.performed += OnMove;
-            p1Confirm.performed += OnConfirm;
-            p1Back.performed += OnBack;
+            p1Move.performed += OnMove1;
+            p1Confirm.performed += OnConfirm1;
+            p1Back.performed += OnBack1;
         }
 
         if (programManager.p2Input != null)
@@ -53,9 +53,9 @@ public class CharacterSelectorManager : MonoBehaviour
             p2Confirm = programManager.p2Input.actions["Confirm"];
             p2Back = programManager.p2Input.actions["Back"];
 
-            p2Move.performed += OnMove;
-            p2Confirm.performed += OnConfirm;
-            p2Back.performed += OnBack;
+            p2Move.performed += OnMove2;
+            p2Confirm.performed += OnConfirm2;
+            p2Back.performed += OnBack2;
         }
 
         mainMenu = FindObjectOfType<MainMenuManager>();
@@ -65,13 +65,13 @@ public class CharacterSelectorManager : MonoBehaviour
 
     private void OnDisable()
     {
-        p1Move.performed -= OnMove;
-        p1Confirm.performed -= OnConfirm;
-        p1Back.performed -= OnBack;
+        p1Move.performed -= OnMove1;
+        p1Confirm.performed -= OnConfirm1;
+        p1Back.performed -= OnBack1;
 
-        p2Move.performed -= OnMove;
-        p2Confirm.performed -= OnConfirm;
-        p2Back.performed -= OnBack;
+        p2Move.performed -= OnMove2;
+        p2Confirm.performed -= OnConfirm2;
+        p2Back.performed -= OnBack2;
     }
 
     public void Process(int player, Vector2Int direction)
@@ -99,10 +99,18 @@ public class CharacterSelectorManager : MonoBehaviour
         }
     }
 
-    public void OnMove(InputAction.CallbackContext context)
+    public void OnMove1(InputAction.CallbackContext context)
     {
-        int player = 1;
+        OnMove(context, 1);
+    }
 
+    public void OnMove2(InputAction.CallbackContext context)
+    {
+        OnMove(context, 2);
+    }
+
+    public void OnMove(InputAction.CallbackContext context, int player)
+    {
         Vector2 newInput = context.ReadValue<Vector2>();
 
         Vector2Int newDirection = new Vector2Int((int)newInput.x, (int)newInput.y); //new Vector2Int(Mathf.RoundToInt(newInput.x), Mathf.RoundToInt(newInput.y));
@@ -111,15 +119,18 @@ public class CharacterSelectorManager : MonoBehaviour
         Process(player, newDirection);
     }
 
-    public void OnConfirm(InputAction.CallbackContext context)
+    public void OnConfirm1(InputAction.CallbackContext context)
     {
-        int player = 1;
+        OnConfirm(context, 1);
+    }
 
-        //Testing that auto confirms p2 character due to holding down a button sends multiple commands
-        if (p1Selected)
-            player = 2;
+    public void OnConfirm2(InputAction.CallbackContext context)
+    {
+        OnConfirm(context, 2);
+    }
 
-
+    public void OnConfirm(InputAction.CallbackContext context, int player)
+    {
         //Check which player did it
         switch (player)
         {
@@ -146,10 +157,18 @@ public class CharacterSelectorManager : MonoBehaviour
         }
     }
 
-    public void OnBack(InputAction.CallbackContext context)
+    public void OnBack1(InputAction.CallbackContext context)
     {
-        int player = 1;
+        OnBack(context, 1);
+    }
 
+    public void OnBack2(InputAction.CallbackContext context)
+    {
+        OnBack(context, 2);
+    }
+
+    public void OnBack(InputAction.CallbackContext context, int player)
+    {
         switch (player)
         {
             case 1:

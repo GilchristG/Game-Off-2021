@@ -12,13 +12,16 @@ public class BufferVisualizer : MonoBehaviour
 
     public void DisplayBuffer(InputFrame currentFrame)
     {
-        var element = Instantiate(entryPF, parentToSpawnOn.transform);
-        element.GetComponent<FrameUIElement>().Setup(currentFrame);
-        moveEntries.Enqueue(element);
-        if(moveEntries.Count > maxEntiresShown)
+        if (parentToSpawnOn != null)
         {
-            var lastElement = moveEntries.Dequeue();
-            Destroy(lastElement);
+            var element = Instantiate(entryPF, parentToSpawnOn.transform);
+            element.GetComponent<FrameUIElement>().Setup(currentFrame);
+            moveEntries.Enqueue(element);
+            if (moveEntries.Count > maxEntiresShown)
+            {
+                var lastElement = moveEntries.Dequeue();
+                Destroy(lastElement);
+            }
         }
     }
 }

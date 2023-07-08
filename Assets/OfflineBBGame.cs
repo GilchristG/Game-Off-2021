@@ -60,10 +60,6 @@ public class OfflineBBGame : MonoBehaviour
             p2Special = manager.p2Input.actions["Special"];
         }
 
-        if (matchRunning)
-        {
-            InitializeCamera();
-        }
     }
 
     private void OnDisable()
@@ -89,12 +85,6 @@ public class OfflineBBGame : MonoBehaviour
             cameraTargetGroup.AddMember(fighter1.transform, 1f, 0);
             cameraTargetGroup.AddMember(fighter2.transform, 1f, 0);
         }
-
-        if (fighter1 != null && fighter2 != null)
-        {
-            fighter1.opponentTransform = fighter2.transform;
-            fighter2.opponentTransform = fighter1.transform;
-        }
     }
 
     public void InitializeMatch(EnumCharacter p1, EnumCharacter p2)
@@ -115,6 +105,10 @@ public class OfflineBBGame : MonoBehaviour
                 break;
             }
         }
+
+        fighter1.opponentTransform = fighter2.transform;
+        fighter2.opponentTransform = fighter1.transform;
+
 
         InitializeCamera();
 
@@ -141,42 +135,22 @@ public class OfflineBBGame : MonoBehaviour
             if (p1Dir != null)
                 moveDirection_P1 += new Vector3(p1Dir.x, p1Dir.y, 0);
 
-            /*if (Input.GetKey(KeyCode.A))
-            {
-                moveDirection_P1 = new Vector3(-1, 0, 0);
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                moveDirection_P1 = new Vector3(1, 0, 0);
-            }
-
-            if (Input.GetKey(KeyCode.W))
-            {
-                moveDirection_P1 += new Vector3(0, 1, 0);
-            }
-
-            if (Input.GetKey(KeyCode.S))
-            {
-                moveDirection_P1 += new Vector3(0, -1, 0);
-            }*/
-
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (p1Light.WasPerformedThisFrame())
             {
                 attackButtons_P1[0] = 1;
             }
 
-            if (Input.GetKeyDown(KeyCode.H))
+            if (p1Medium.WasPerformedThisFrame())
             {
                 attackButtons_P1[1] = 1;
             }
 
-            if (Input.GetKeyDown(KeyCode.J))
+            if (p1Heavy.WasPerformedThisFrame())
             {
                 attackButtons_P1[2] = 1;
             }
 
-            if (Input.GetKeyDown(KeyCode.U))
+            if (p1Special.WasPerformedThisFrame())
             {
                 attackButtons_P1[3] = 1;
             }
@@ -192,42 +166,22 @@ public class OfflineBBGame : MonoBehaviour
             if (p2Dir != null)
                 moveDirection_P2 += new Vector3(p2Dir.x, p2Dir.y, 0);
 
-            /*if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                moveDirection_P2 = new Vector3(-1, 0, 0);
-            }
-
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                moveDirection_P2 = new Vector3(1, 0, 0);
-            }
-
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                moveDirection_P2 += new Vector3(0, 1, 0);
-            }
-
-            if (Input.GetKey(KeyCode.DownArrow))
-            {
-                moveDirection_P2 += new Vector3(0, -1, 0);
-            }*/
-
-            if (Input.GetKeyDown(KeyCode.Keypad5))
+            if (p2Light.WasPerformedThisFrame())
             {
                 attackButtons_P2[0] = 1;
             }
 
-            if (Input.GetKeyDown(KeyCode.Keypad2))
+            if (p2Medium.WasPerformedThisFrame())
             {
                 attackButtons_P2[1] = 1;
             }
 
-            if (Input.GetKeyDown(KeyCode.Keypad3))
+            if (p2Heavy.WasPerformedThisFrame())
             {
                 attackButtons_P2[2] = 1;
             }
 
-            if (Input.GetKeyDown(KeyCode.Keypad6))
+            if (p2Special.WasPerformedThisFrame())
             {
                 attackButtons_P2[3] = 1;
             }
