@@ -11,6 +11,9 @@ public class OfflineBBGame : MonoBehaviour
     public CinemachineTargetGroup cameraTargetGroup;
     public GameModeCharacterList characterList;
 
+    Transform p1Spawn;
+    Transform p2Spawn;
+
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
 
@@ -126,15 +129,18 @@ public class OfflineBBGame : MonoBehaviour
 
     public void InitializeMatch(EnumCharacter p1, EnumCharacter p2)
     {
-        foreach(CharacterPref cPref in characterList.charactersForMode)
+        p1Spawn = GameObject.FindGameObjectWithTag("P1Spawn").transform;
+        p2Spawn = GameObject.FindGameObjectWithTag("P2Spawn").transform;
+
+        foreach (CharacterPref cPref in characterList.charactersForMode)
         {
             if(p1 == cPref.characterType)
             {
-                fighter1 = Instantiate(cPref.character_pf).GetComponent<BasicMoveTester>();
+                fighter1 = Instantiate(cPref.character_pf, p1Spawn.position, p1Spawn.rotation).GetComponent<BasicMoveTester>();
             }
             if(p2 == cPref.characterType)
             {
-                fighter2 = Instantiate(cPref.character_pf).GetComponent<BasicMoveTester>();
+                fighter2 = Instantiate(cPref.character_pf, p2Spawn.position, p2Spawn.rotation).GetComponent<BasicMoveTester>();
             }
 
             if(fighter1 != null && fighter2 != null)
