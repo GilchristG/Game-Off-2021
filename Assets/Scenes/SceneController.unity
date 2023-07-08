@@ -159,6 +159,8 @@ MonoBehaviour:
     type: 3}
   p1Character: 0
   p2Character: 0
+  p1Input: {fileID: 0}
+  p2Input: {fileID: 0}
 --- !u!4 &422368401
 Transform:
   m_ObjectHideFlags: 0

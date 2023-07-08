@@ -22,6 +22,9 @@ public class OfflineBBGame : MonoBehaviour
 
     [SerializeField] bool matchRunning = false;
 
+    bool p1Disconnect = false;
+    bool p2Disconnect = false;
+
     [SerializeField] ProgramManager manager;
 
     InputAction p1Walk;
@@ -39,6 +42,9 @@ public class OfflineBBGame : MonoBehaviour
     private void OnEnable()
     {
         manager = FindObjectOfType<ProgramManager>();
+
+        manager.onPlayerJoined += OnPlayerJoin;
+        manager.onPlayerLeft += OnPlayerLeft;
 
         if (manager.p1Input != null)
         {
@@ -64,17 +70,48 @@ public class OfflineBBGame : MonoBehaviour
 
     private void OnDisable()
     {
-        
+        manager.onPlayerJoined -= OnPlayerJoin;
+        manager.onPlayerLeft -= OnPlayerLeft;
     }
 
     public void OnPlayerLeft(PlayerInput player)
     {
+        //Can potentially add a pause here to let player reconnect their controller
 
+        if(player.playerIndex == 0)
+        {
+            p1Disconnect = true;
+        }
+        else if(player.playerIndex == 1)
+        {
+            p2Disconnect = true;
+        }
     }
 
     public void OnPlayerJoin(PlayerInput player)
     {
+        if(player.playerIndex == 0)
+        {
+            manager.p1Input.SwitchCurrentActionMap("Fight");
+            p1Walk = manager.p1Input.actions["Walk"];
+            p1Light = manager.p1Input.actions["LightAttack"];
+            p1Medium = manager.p1Input.actions["MidAttack"];
+            p1Heavy = manager.p1Input.actions["HeavyAttack"];
+            p1Special = manager.p1Input.actions["Special"];
 
+            p1Disconnect = false;
+        }
+        else if(player.playerIndex == 1)
+        {
+            manager.p2Input.SwitchCurrentActionMap("Fight");
+            p2Walk = manager.p2Input.actions["Walk"];
+            p2Light = manager.p2Input.actions["LightAttack"];
+            p2Medium = manager.p2Input.actions["MidAttack"];
+            p2Heavy = manager.p2Input.actions["HeavyAttack"];
+            p2Special = manager.p2Input.actions["Special"];
+
+            p2Disconnect = false;
+        }
     }
 
     public void InitializeCamera()
@@ -127,7 +164,7 @@ public class OfflineBBGame : MonoBehaviour
 
         moveDirection_P1 = new Vector3(0, 0, 0);
 
-        if (p1Walk != null)
+        if (!p1Disconnect)
         {
 
             Vector2 p1Dir = p1Walk.ReadValue<Vector2>();
@@ -158,7 +195,7 @@ public class OfflineBBGame : MonoBehaviour
 
         moveDirection_P2 = new Vector3(0, 0, 0);
 
-        if (p2Walk != null)
+        if (!p2Disconnect)
         {
 
             Vector2 p2Dir = p2Walk.ReadValue<Vector2>();

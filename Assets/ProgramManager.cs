@@ -93,35 +93,39 @@ public class ProgramManager : MonoBehaviour
     public PlayerInput p1Input;
     public PlayerInput p2Input;
 
-    Action<PlayerInput> onPlayer1Joined;
-    Action onPlayer1Left;
-    Action<PlayerInput> onPlayer2Joined;
-    Action onPlayer2Left;
+    public Action<PlayerInput> onPlayerJoined;
+    public Action<PlayerInput> onPlayerLeft;
 
     public void OnPlayerJoined(PlayerInput newPlayer)
     {
+        Debug.Log("Player " + newPlayer.playerIndex + " joined the game");
+
         if(p1Input == null)
         {
             p1Input = newPlayer;
-            onPlayer1Joined?.Invoke(p1Input);
+            onPlayerJoined?.Invoke(p1Input);
         }
         else if(p2Input == null)
         {
             p2Input = newPlayer;
-            onPlayer2Joined?.Invoke(p2Input);
+            onPlayerJoined?.Invoke(p2Input);
         }
     }
 
     public void OnPlayerLeft(PlayerInput leftPlayer)
     {
+        Debug.Log("Player " + leftPlayer.playerIndex + " left the game");
+
         if (p1Input == leftPlayer)
         {
-            onPlayer1Left?.Invoke();
+            onPlayerLeft?.Invoke(p1Input);
+            Destroy(p1Input.gameObject);
             p1Input = null;
         }
         else if (p2Input == leftPlayer)
         {
-            onPlayer2Left?.Invoke();
+            onPlayerLeft?.Invoke(p2Input);
+            Destroy(p2Input.gameObject);
             p2Input = null;
         }
     }
