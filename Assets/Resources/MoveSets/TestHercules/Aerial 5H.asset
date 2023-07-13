@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9e0184b100822743b484b52366d98b4, type: 3}
-  m_Name: Arial 5L- Jab
+  m_Name: Aerial 5H
   m_EditorClassIdentifier: 
   motionSequence: 0
-  attackbuttons: 00000000
+  attackbuttons: 02000000
   neededStance: 2
-  animationName: AL
-  animationClip: {fileID: 7400000, guid: 58d1c8f67bedf2b4e950e1b3b06a20cc, type: 2}
-  damage: 5
-  windupTime: 6
-  activeTime: 4
-  basicRecovery: 5
-  bufferWindow: 5
-  hitStunTime: 8
-  blockStunTime: 6
-  knockbackForce: 2
-  launchForce: 1
+  animationName: AH
+  animationClip: {fileID: 7400000, guid: 2f54d5a59e8796649b7eae96e5b07fbc, type: 2}
+  damage: 15
+  windupTime: 10
+  activeTime: 9
+  basicRecovery: 9
+  bufferWindow: 9
+  hitStunTime: 15
+  blockStunTime: 10
+  knockbackForce: 3
+  launchForce: 3

@@ -20,6 +20,12 @@ public class PlayerHealthListener : MonoBehaviour
             playerToCheck.onPlayerHealthLoss += UpdateHealth;
     }
 
+    private void OnDisable()
+    {
+        if (playerToCheck != null)
+            playerToCheck.onPlayerHealthLoss -= UpdateHealth;
+    }
+
     public void UpdateHealth(int difference)
     {
         totalHealth -= difference;

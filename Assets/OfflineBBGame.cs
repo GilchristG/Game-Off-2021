@@ -14,6 +14,13 @@ public class OfflineBBGame : MonoBehaviour
     Transform p1Spawn;
     Transform p2Spawn;
 
+    GameObject p1Health_UI;
+    GameObject p2Health_UI;
+
+    GameObject p1FrameData_UI;
+    GameObject p2FrameData_UI;
+
+
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
 
@@ -148,6 +155,9 @@ public class OfflineBBGame : MonoBehaviour
                 break;
             }
         }
+
+        fighter1.GetComponent<BufferVisualizer>().SetupBV(GameObject.FindGameObjectWithTag("P1Buffer"));
+        fighter2.GetComponent<BufferVisualizer>().SetupBV(GameObject.FindGameObjectWithTag("P2Buffer"));
 
         fighter1.opponentTransform = fighter2.transform;
         fighter2.opponentTransform = fighter1.transform;

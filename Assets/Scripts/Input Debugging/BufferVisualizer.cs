@@ -10,6 +10,11 @@ public class BufferVisualizer : MonoBehaviour
 
     public int maxEntiresShown;
 
+    public void SetupBV(GameObject UIParent)
+    {
+        parentToSpawnOn = UIParent;
+    }
+
     public void DisplayBuffer(InputFrame currentFrame)
     {
         if (parentToSpawnOn != null)

@@ -8,6 +8,8 @@ TagManager:
   - GameUI
   - P1Spawn
   - P2Spawn
+  - P1Buffer
+  - P2Buffer
   layers:
   - Default
   - TransparentFX
