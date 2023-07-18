@@ -6,6 +6,7 @@ using TMPro;
 public class PlayerHealthListener : MonoBehaviour
 {
     public BasicMoveTester playerToCheck;
+    public int player = 1;
     [SerializeField] public int totalHealth = 100;
     [SerializeField] TextMeshProUGUI healthText;
 

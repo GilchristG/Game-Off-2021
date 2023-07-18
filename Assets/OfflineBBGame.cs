@@ -32,8 +32,8 @@ public class OfflineBBGame : MonoBehaviour
 
     [SerializeField] bool matchRunning = false;
 
-    bool p1Disconnect = false;
-    bool p2Disconnect = false;
+    bool p1Disconnect = true;
+    bool p2Disconnect = true;
 
     [SerializeField] ProgramManager manager;
 
@@ -64,6 +64,7 @@ public class OfflineBBGame : MonoBehaviour
             p1Medium = manager.p1Input.actions["MidAttack"];
             p1Heavy = manager.p1Input.actions["HeavyAttack"];
             p1Special = manager.p1Input.actions["Special"];
+            p1Disconnect = false;
         }
 
         if (manager.p2Input != null)
@@ -74,6 +75,7 @@ public class OfflineBBGame : MonoBehaviour
             p2Medium = manager.p2Input.actions["MidAttack"];
             p2Heavy = manager.p2Input.actions["HeavyAttack"];
             p2Special = manager.p2Input.actions["Special"];
+            p2Disconnect = false;
         }
 
     }
@@ -158,6 +160,21 @@ public class OfflineBBGame : MonoBehaviour
 
         fighter1.GetComponent<BufferVisualizer>().SetupBV(GameObject.FindGameObjectWithTag("P1Buffer"));
         fighter2.GetComponent<BufferVisualizer>().SetupBV(GameObject.FindGameObjectWithTag("P2Buffer"));
+
+        var healthBars = FindObjectsOfType<PlayerHealthListener>();
+
+        foreach(PlayerHealthListener phl in healthBars)
+        {
+            if(phl.player == 1)
+            {
+                phl.playerToCheck = fighter1;
+            }
+            else if(phl.player == 2)
+            {
+                phl.playerToCheck = fighter2;
+            }
+        }
+
 
         fighter1.opponentTransform = fighter2.transform;
         fighter2.opponentTransform = fighter1.transform;

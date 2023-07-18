@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerToCheck: {fileID: 2016646827}
+  player: 2
   totalHealth: 100
   healthText: {fileID: 243858411}
 --- !u!114 &243858411
@@ -440,6 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerToCheck: {fileID: 1686496008}
+  player: 1
   totalHealth: 100
   healthText: {fileID: 690278021}
 --- !u!114 &690278021

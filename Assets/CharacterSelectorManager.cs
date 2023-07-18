@@ -17,6 +17,9 @@ public class CharacterSelectorManager : MonoBehaviour
     [SerializeField] int p2Element = 0;
     bool p2Selected = false;
 
+    bool singlePlayer = true;
+    bool p1p2ControlActive = false;
+
     public GameObject p1PointerGraphic;
     public GameObject p2PointerGraphic;
 
@@ -35,6 +38,9 @@ public class CharacterSelectorManager : MonoBehaviour
     private void OnEnable()
     {
         programManager = FindObjectOfType<ProgramManager>();
+
+        programManager.onPlayerJoined += OnPlayerJoin;
+        programManager.onPlayerLeft += OnPlayerLeft;
 
         if (programManager.p1Input != null)
         {
@@ -56,6 +62,11 @@ public class CharacterSelectorManager : MonoBehaviour
             p2Move.performed += OnMove2;
             p2Confirm.performed += OnConfirm2;
             p2Back.performed += OnBack2;
+            singlePlayer = false;
+        }
+        else
+        {
+            singlePlayer = true;
         }
 
         mainMenu = FindObjectOfType<MainMenuManager>();
@@ -72,6 +83,9 @@ public class CharacterSelectorManager : MonoBehaviour
         p2Move.performed -= OnMove2;
         p2Confirm.performed -= OnConfirm2;
         p2Back.performed -= OnBack2;
+
+        programManager.onPlayerJoined -= OnPlayerJoin;
+        programManager.onPlayerLeft -= OnPlayerLeft;
     }
 
     public void Process(int player, Vector2Int direction)
@@ -101,7 +115,7 @@ public class CharacterSelectorManager : MonoBehaviour
 
     public void OnMove1(InputAction.CallbackContext context)
     {
-        OnMove(context, 1);
+        OnMove(context, p1p2ControlActive?2:1);
     }
 
     public void OnMove2(InputAction.CallbackContext context)
@@ -121,7 +135,7 @@ public class CharacterSelectorManager : MonoBehaviour
 
     public void OnConfirm1(InputAction.CallbackContext context)
     {
-        OnConfirm(context, 1);
+        OnConfirm(context, p1p2ControlActive ? 2 : 1);
     }
 
     public void OnConfirm2(InputAction.CallbackContext context)
@@ -139,6 +153,11 @@ public class CharacterSelectorManager : MonoBehaviour
                 {
                     programManager.SelectP1Character(p1Selection.panelCharacter);
                     p1Selected = true;
+
+                    if(singlePlayer)
+                    {
+                        p1p2ControlActive = true;
+                    }
                 }
                 break;
             case 2:
@@ -159,7 +178,7 @@ public class CharacterSelectorManager : MonoBehaviour
 
     public void OnBack1(InputAction.CallbackContext context)
     {
-        OnBack(context, 1);
+        OnBack(context, p1p2ControlActive ? 2 : 1);
     }
 
     public void OnBack2(InputAction.CallbackContext context)
@@ -189,11 +208,73 @@ public class CharacterSelectorManager : MonoBehaviour
                 }
                 else
                 {
+                    if (singlePlayer)
+                    {
+                        //Go control p1
+                        p1p2ControlActive = false;
+                        p1Selected = false;
+                    }
+
                     //Go back a menu or selection OR just prevent p2 from doing anything
+                    mainMenu.ToMainMenu((int)MainMenuManager.MenuScreens.LocalPlay);
                 }
                 break;
         }
 
 
     }
+
+    public void OnPlayerLeft(PlayerInput player)
+    {
+        //Can potentially add a pause here to let player reconnect their controller
+
+        if (player.playerIndex == 0)
+        {
+            p1Move.performed -= OnMove1;
+            p1Confirm.performed -= OnConfirm1;
+            p1Back.performed -= OnBack1;
+
+            //p1Disconnect = true;
+        }
+        else if (player.playerIndex == 1)
+        {
+            p2Move.performed -= OnMove2;
+            p2Confirm.performed -= OnConfirm2;
+            p2Back.performed -= OnBack2;
+
+            singlePlayer = true;
+            //p2Disconnect = true;
+        }
+    }
+
+    public void OnPlayerJoin(PlayerInput player)
+    {
+        if (player.playerIndex == 0)
+        {
+            p1Move = programManager.p1Input.actions["Move"];
+            p1Confirm = programManager.p1Input.actions["Confirm"];
+            p1Back = programManager.p1Input.actions["Back"];
+
+            p1Move.performed += OnMove1;
+            p1Confirm.performed += OnConfirm1;
+            p1Back.performed += OnBack1;
+            //p1Disconnect = false;
+        }
+        else if (player.playerIndex == 1)
+        {
+            p2Move = programManager.p2Input.actions["Move"];
+            p2Confirm = programManager.p2Input.actions["Confirm"];
+            p2Back = programManager.p2Input.actions["Back"];
+
+            p2Move.performed += OnMove2;
+            p2Confirm.performed += OnConfirm2;
+            p2Back.performed += OnBack2;
+            singlePlayer = false;
+            //p2Disconnect = false;
+
+            singlePlayer = false;
+        }
+        
+    }
+
 }
