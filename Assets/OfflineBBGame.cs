@@ -203,7 +203,9 @@ public class OfflineBBGame : MonoBehaviour
             Vector2 p1Dir = p1Walk.ReadValue<Vector2>();
 
             if (p1Dir != null)
-                moveDirection_P1 += new Vector3(p1Dir.x, p1Dir.y, 0);
+            {
+                moveDirection_P1 += new Vector3(Mathf.Clamp(p1Dir.x*10,-1f,1f), Mathf.Clamp(p1Dir.y*10, -1f, 1f), 0);
+            }
 
             if (p1Light.WasPerformedThisFrame())
             {
@@ -234,7 +236,7 @@ public class OfflineBBGame : MonoBehaviour
             Vector2 p2Dir = p2Walk.ReadValue<Vector2>();
 
             if (p2Dir != null)
-                moveDirection_P2 += new Vector3(p2Dir.x, p2Dir.y, 0);
+                moveDirection_P2 += new Vector3(Mathf.Clamp(p2Dir.x * 10, -1f, 1f), Mathf.Clamp(p2Dir.y * 10, -1f, 1f), 0);
 
             if (p2Light.WasPerformedThisFrame())
             {
