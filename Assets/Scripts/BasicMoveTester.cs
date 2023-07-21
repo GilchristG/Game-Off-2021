@@ -533,7 +533,7 @@ public class BasicMoveTester : MonoBehaviour
 
     public void AddForceY(float forceY)
     {
-        rb.velocity = new Vector2(rb.velocity.x, forceY * (facingRight ? 1 : -1));
+        rb.velocity = new Vector2(rb.velocity.x, forceY);
     }
 
 
