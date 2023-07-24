@@ -15,21 +15,24 @@ public class PlayerHealthListener : MonoBehaviour
         healthText = GetComponent<TextMeshProUGUI>();
     }
 
-    private void OnEnable()
+    public void AssignPlayer(BasicMoveTester player)
     {
-        if(playerToCheck != null)
+        playerToCheck = player;
+
+        if (playerToCheck != null)
             playerToCheck.onPlayerHealthLoss += UpdateHealth;
     }
 
-    private void OnDisable()
+    public void ResetHealth()
     {
-        if (playerToCheck != null)
-            playerToCheck.onPlayerHealthLoss -= UpdateHealth;
+        totalHealth = 100;
+        healthText?.SetText(totalHealth.ToString());
     }
 
     public void UpdateHealth(int difference)
     {
         totalHealth -= difference;
+        totalHealth = Mathf.Clamp(totalHealth, 0, 100);
         healthText?.SetText(totalHealth.ToString());
     }
 }

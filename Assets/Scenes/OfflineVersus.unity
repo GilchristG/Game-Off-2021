@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c37ae10b0fe47746bf08d65706680cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerToCheck: {fileID: 2016646827}
+  playerToCheck: {fileID: 0}
   player: 2
   totalHealth: 100
   healthText: {fileID: 243858411}
@@ -366,10 +366,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9f43ecfa923aee40a45f21d8a59e7cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  p1Rounds: 0
+  p2Rounds: 0
   fighter1: {fileID: 0}
   fighter2: {fileID: 0}
   cameraTargetGroup: {fileID: 1814278781}
   characterList: {fileID: 11400000, guid: 96dabbbbc63ff8041bf888f998ac5fb2, type: 2}
+  p1HealthUI: {fileID: 690278020}
+  p2HealthUI: {fileID: 243858410}
+  heightTarget: {fileID: 1683326121}
   frameDuration: 0.016
   nextFrameTime: 0
   matchRunning: 1
@@ -440,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c37ae10b0fe47746bf08d65706680cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerToCheck: {fileID: 1686496008}
+  playerToCheck: {fileID: 0}
   player: 1
   totalHealth: 100
   healthText: {fileID: 690278021}
@@ -1836,18 +1841,6 @@ PrefabInstance:
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 847945fbea0f31443991ccd94ba80fdb, type: 3}
---- !u!114 &1686496008 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2555957071419133722, guid: 847945fbea0f31443991ccd94ba80fdb,
-    type: 3}
-  m_PrefabInstance: {fileID: 1686496007}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01ded6002cc1a6b40a9923bb1b663c9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1814278780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,15 +2084,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 847945fbea0f31443991ccd94ba80fdb, type: 3}
---- !u!114 &2016646827 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2555957071419133722, guid: 847945fbea0f31443991ccd94ba80fdb,
-    type: 3}
-  m_PrefabInstance: {fileID: 2016646826}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01ded6002cc1a6b40a9923bb1b663c9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

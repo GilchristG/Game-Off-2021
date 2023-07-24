@@ -13,6 +13,8 @@ public class MoveData : ScriptableObject
 
     public FighterStance neededStance;
 
+    
+
     [Tooltip("Animation trigger name for use in animator")]
     [SerializeField] string animationName;
     [Tooltip("Animation clip for direct use")]
@@ -43,6 +45,8 @@ public class MoveData : ScriptableObject
     float recoveryTimeHit;
     float recoveryTimeMiss;
     float recoveryTimeBlocked;
+
+    AttackTypes attackHitHeight;
 
     public Move CreateMove()
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,18 @@ using UnityEngine.InputSystem;
 
 public class OfflineBBGame : MonoBehaviour
 {
+    [SerializeField] MatchSettings matchSettings = new MatchSettings();
+
+    [SerializeField] int p1Rounds = 0;
+    [SerializeField] int p2Rounds = 0;
+
     public BasicMoveTester fighter1;
     public BasicMoveTester fighter2;
     public CinemachineTargetGroup cameraTargetGroup;
     public GameModeCharacterList characterList;
+
+    public PlayerHealthListener p1HealthUI;
+    public PlayerHealthListener p2HealthUI;
 
     Transform p1Spawn;
     Transform p2Spawn;
@@ -20,6 +29,7 @@ public class OfflineBBGame : MonoBehaviour
     GameObject p1FrameData_UI;
     GameObject p2FrameData_UI;
 
+    public Transform heightTarget;
 
     public double frameDuration = 0.016f;
     public double nextFrameTime = 0;
@@ -129,14 +139,17 @@ public class OfflineBBGame : MonoBehaviour
     public void InitializeCamera()
     {
         cameraTargetGroup = FindObjectOfType<CinemachineTargetGroup>();
+        Array.Clear(cameraTargetGroup.m_Targets, 0, cameraTargetGroup.m_Targets.Length);
+
         if (cameraTargetGroup != null)
         {
+            cameraTargetGroup.AddMember(heightTarget, 1f, 0);
             cameraTargetGroup.AddMember(fighter1.transform, 1f, 0);
             cameraTargetGroup.AddMember(fighter2.transform, 1f, 0);
         }
     }
 
-    public void InitializeMatch(EnumCharacter p1, EnumCharacter p2)
+    public bool InitializeMatch(EnumCharacter p1, EnumCharacter p2)
     {
         p1Spawn = GameObject.FindGameObjectWithTag("P1Spawn").transform;
         p2Spawn = GameObject.FindGameObjectWithTag("P2Spawn").transform;
@@ -161,20 +174,27 @@ public class OfflineBBGame : MonoBehaviour
         fighter1.GetComponent<BufferVisualizer>().SetupBV(GameObject.FindGameObjectWithTag("P1Buffer"));
         fighter2.GetComponent<BufferVisualizer>().SetupBV(GameObject.FindGameObjectWithTag("P2Buffer"));
 
-        var healthBars = FindObjectsOfType<PlayerHealthListener>();
+        /*var healthBars = FindObjectsOfType<PlayerHealthListener>();
 
         foreach(PlayerHealthListener phl in healthBars)
         {
             if(phl.player == 1)
             {
-                phl.playerToCheck = fighter1;
+                phl.AssignPlayer(fighter1);
             }
             else if(phl.player == 2)
             {
-                phl.playerToCheck = fighter2;
+                phl.AssignPlayer(fighter2);
             }
-        }
+        }*/
 
+        p1HealthUI.ResetHealth();
+        p2HealthUI.ResetHealth();
+
+        fighter1.onPlayerHealthLoss += OnPlayer1HealthChange;
+        fighter1.onPlayerHealthLoss += p1HealthUI.UpdateHealth;
+        fighter2.onPlayerHealthLoss += OnPlayer2HealthChange;
+        fighter2.onPlayerHealthLoss += p2HealthUI.UpdateHealth;
 
         fighter1.opponentTransform = fighter2.transform;
         fighter2.opponentTransform = fighter1.transform;
@@ -185,6 +205,8 @@ public class OfflineBBGame : MonoBehaviour
 
         //Can add a delay here
         matchRunning = true;
+
+        return true;
     }
 
 
@@ -273,5 +295,93 @@ public class OfflineBBGame : MonoBehaviour
         }
     }
 
+
+    public void OnPlayer1HealthChange(int healthChange)
+    {
+        if(fighter1.playerHealth <= 0)
+        {
+            WinRound(2);
+        }
+    }
+
+    public void OnPlayer2HealthChange(int healthChange)
+    {
+        if (fighter2.playerHealth <= 0)
+        {
+            WinRound(1);
+        }
+    }
+
     
+    public void WinRound(int playerNumber)
+    {
+        switch(playerNumber)
+        {
+            case 1:
+                p1Rounds++;
+                if(p1Rounds >= matchSettings.roundsWinsPerSet)
+                {
+                    StartCoroutine(EndMatchAndGoToTitle(playerNumber));
+                    return;
+                }
+                break;
+            case 2:
+                p2Rounds++;
+                if (p2Rounds >= matchSettings.roundsWinsPerSet)
+                {
+                    StartCoroutine(EndMatchAndGoToTitle(playerNumber));
+                    return;
+                }
+                break;
+        }
+
+        StartCoroutine(EndOfRoundAndRest(playerNumber));
+    }
+
+    IEnumerator EndOfRoundAndRest(int playerRoundWinner)
+    {
+        matchRunning = false;
+
+        //Queue any victory animations and text
+
+        yield return new WaitForSeconds(3f);
+
+
+        yield return new WaitForFixedUpdate();
+
+
+        //AddQuickLoadingScreen;
+
+        manager.StartLoadScreen();
+
+        yield return new WaitForSeconds(1f);
+
+        fighter1.onPlayerHealthLoss -= OnPlayer1HealthChange;
+        fighter1.onPlayerHealthLoss -= p1HealthUI.UpdateHealth;
+        fighter2.onPlayerHealthLoss -= OnPlayer2HealthChange;
+        fighter2.onPlayerHealthLoss -= p2HealthUI.UpdateHealth;
+
+        Destroy(fighter1.gameObject);
+        Destroy(fighter2.gameObject);
+
+        yield return new WaitForSeconds(0.5f);
+
+        yield return new WaitUntil(() => InitializeMatch(manager.p1Character, manager.p2Character));
+
+        manager.EndLoadScreen();
+
+        yield return new WaitForSeconds(1f);
+
+        matchRunning = true;
+    }
+
+    IEnumerator EndMatchAndGoToTitle(int playermatchWinner)
+    {
+        matchRunning = false;
+
+        //Show text and give a time out for back to main menu
+
+
+        yield return new WaitForFixedUpdate();
+    }
 }

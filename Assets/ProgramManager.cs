@@ -88,6 +88,32 @@ public class ProgramManager : MonoBehaviour
     }
 
 
+    bool loadScreenCheck = false;
+
+    public void StartLoadScreen()
+    {
+        StartCoroutine(IE_StartLoadscreen());
+    }
+
+    IEnumerator IE_StartLoadscreen()
+    {
+        loadScreenCheck = false;
+
+        var loadScreenInstance = Instantiate(loadScreen_pf, loadScreenCanvas.transform);
+        loadScreenInstance.GetComponent<Animator>().SetTrigger("Start");
+
+        yield return new WaitUntil(() => loadScreenCheck);
+
+        //Remove loadscreen
+        loadScreenInstance.GetComponent<Animator>().SetTrigger("Finish");
+    }
+
+    public void EndLoadScreen()
+    {
+        loadScreenCheck = true;
+    }
+
+
     //Input handling
 
     public PlayerInput p1Input;
