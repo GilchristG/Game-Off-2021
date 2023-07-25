@@ -77,9 +77,6 @@ public class ProgramManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        //InitializeMatch
-        FindObjectOfType<OfflineBBGame>().InitializeMatch(p1Character, p2Character);
-
         //Remove loadscreen
         loadScreenInstance.GetComponent<Animator>().SetTrigger("Finish");
 

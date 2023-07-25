@@ -21,7 +21,7 @@ MonoBehaviour:
   windupTime: 3
   activeTime: 13
   basicRecovery: 5
-  bufferWindow: 0
+  bufferWindow: 15
   hitStunTime: 0
   blockStunTime: 0
   knockbackForce: 0
