@@ -15,6 +15,8 @@ public class ProgramManager : MonoBehaviour
 
     bool isLoading = false;
 
+    [SerializeField] string currentlyLoadedScene = "MainMenu";
+
     public enum GameState
     {
         Menu,
@@ -26,11 +28,10 @@ public class ProgramManager : MonoBehaviour
 
     void Awake()
     {
-
-
         if(SceneManager.sceneCount == 1)
         {
-            SceneManager.LoadScene("MainMenu");
+            currentlyLoadedScene = "MainMenu";
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Additive);
             _GameState = GameState.Menu;
         }
     }
@@ -45,7 +46,51 @@ public class ProgramManager : MonoBehaviour
         p2Character = character;
     }
 
-    
+    public void ToMainMenu()
+    {
+        if(!isLoading)
+        {
+            isLoading = true;
+            StartCoroutine(LoadMainMenu());
+        }
+    }
+
+    IEnumerator LoadMainMenu()
+    {
+        //Spawn in loadscreen
+        var loadScreenInstance = Instantiate(loadScreen_pf, loadScreenCanvas.transform);
+        loadScreenInstance.GetComponent<Animator>().SetTrigger("Start");
+
+        yield return new WaitForSeconds(1f);
+
+        //Deload menus
+        AsyncOperation deloadMenu = SceneManager.UnloadSceneAsync(currentlyLoadedScene);
+        yield return new WaitUntil(() => deloadMenu.isDone == true);
+
+        //Load new scene
+        AsyncOperation loadStage = SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Additive);
+
+        currentlyLoadedScene = "MainMenu";
+
+
+        yield return new WaitUntil(() => loadStage.isDone == true);
+
+        yield return new WaitForSeconds(1f);
+
+        //InitializeMatch
+        FindObjectOfType<OfflineBBGame>().InitializeMatch(p1Character, p2Character);
+
+        //Remove loadscreen
+        loadScreenInstance.GetComponent<Animator>().SetTrigger("Finish");
+
+        //Start music, intro animations, etc
+        //Start match
+        //Wait for match end or quit to menu
+
+        isLoading = false;
+    }
+
+
     public void LoadLocalMatch()
     {
         if (!isLoading)
@@ -64,11 +109,13 @@ public class ProgramManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         //Deload menus
-        AsyncOperation deloadMenu = SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("MainMenu"));
+        AsyncOperation deloadMenu = SceneManager.UnloadSceneAsync(currentlyLoadedScene);
         yield return new WaitUntil(() => deloadMenu.isDone == true );
 
         //Load new scene
         AsyncOperation loadStage = SceneManager.LoadSceneAsync("OfflineVersus",LoadSceneMode.Additive);
+
+        currentlyLoadedScene = "OfflineVersus";
 
         yield return new WaitUntil(() => loadStage.isDone == true);
 

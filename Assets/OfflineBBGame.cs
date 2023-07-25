@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class OfflineBBGame : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class OfflineBBGame : MonoBehaviour
 
     Transform p1Spawn;
     Transform p2Spawn;
+
+    [SerializeField] TextMeshProUGUI p1Rounds_Text;
+    [SerializeField] TextMeshProUGUI p2Rounds_Text;
+    [SerializeField] TextMeshProUGUI winText;
 
     GameObject p1Health_UI;
     GameObject p2Health_UI;
@@ -364,6 +369,10 @@ public class OfflineBBGame : MonoBehaviour
         Destroy(fighter1.gameObject);
         Destroy(fighter2.gameObject);
 
+        p1Rounds_Text.text = p1Rounds.ToString();
+        p2Rounds_Text.text = p2Rounds.ToString();
+
+
         yield return new WaitForSeconds(0.5f);
 
         yield return new WaitUntil(() => InitializeMatch(manager.p1Character, manager.p2Character));
@@ -380,8 +389,14 @@ public class OfflineBBGame : MonoBehaviour
         matchRunning = false;
 
         //Show text and give a time out for back to main menu
+        winText.gameObject.SetActive(true);
 
+        yield return new WaitForSeconds(2f);
 
-        yield return new WaitForFixedUpdate();
+        winText.gameObject.SetActive(false);
+
+        //Go to main menu or give option to rematch
+
+        manager.ToMainMenu();
     }
 }
